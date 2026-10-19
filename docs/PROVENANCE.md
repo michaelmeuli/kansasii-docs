@@ -12,3 +12,5 @@ bash /shares/sander.imm.uzh/MM/kansasii/repos/kansasii-docs/bin/write_manifest.s
 It records date, host, user, repo, `git` commit and dirty flag, script, active conda env (with a
 hash of `conda list --export`) and the inputs. A dirty flag of `dirty` means the commit alone does
 not reproduce the result.
+
+Regenerate the overview after runs: `python3 repos/kansasii-docs/bin/make_summary.py` (-> `output/SUMMARY.html`).

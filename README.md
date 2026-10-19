@@ -45,8 +45,10 @@ Check for uncommitted or unpushed work in all repos: `bash repos/check_sync.sh`.
 - **Which file feeds which repo (with diagram):** [docs/DATAFLOW.md](docs/DATAFLOW.md).
 - **Run everything after the pipeline:** `bash repos/immensekansasii/scripts/run_downstream.sh --dry-run`.
 - **Samples, species, public data:** `immensekansasii/{SAMPLES,SPECIES,PROJECTS}.md`.
-- **Drafts:** `mlsa-kansasii/article/hsp65_sanger_identification.md`,
-  `hsp65-refalign/article/hsp65_differentiates_kansasii_complex.md`.
+- **Draft article:** `hsp65-refalign/article/hsp65_differentiates_kansasii_complex.md` (the earlier
+  mlsa-kansasii draft was merged into it).
+- **Overview of all results:** `python3 repos/kansasii-docs/bin/make_summary.py` writes
+  `output/SUMMARY.html` (manifests, figure index).
 - **Git conventions:** `immensekansasii/GIT.md`.
 
 ## Conventions

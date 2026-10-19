@@ -16,7 +16,8 @@ file. Repo-specific details live in each repo's own README.
 | `data/` | inputs only: GTDB genomes, Illumina reads, Sanger `.ab1`, `imm/` tables, lab protocols | active |
 | `output/` | results, one directory per repo or analysis (see `output/README.md`) | active |
 | `runs/` | Nextflow run dirs (large `work/`) and SLURM logs | temporary, large |
-| `output-old/`, `output/mlsa-old` | superseded results | do not use |
+| `output-old/`, `output/mlsa-old` | superseded results (`output-old/README.md` lists them) | do not use |
+| `scratch/` | unexplained one-off files (`scratch/README.md`) | safe to delete |
 | `singularity_images_cache/` | container cache | regenerable |
 
 **Rule:** scripts read from `data/` and `runs/` only. `output/` receives copies and results.
@@ -53,6 +54,11 @@ Check for uncommitted or unpushed work in all repos: `bash repos/check_sync.sh`.
 - Scripts are numbered by the order they are called (`01_...`, `02_...`).
 - Isolates are keyed by `PROBENNUMMER`; the link table is `data/imm/screening_map_link.csv`, the
   results table `data/imm/screening_map_results.csv`.
+- Paths in scripts, sbatch files and docs are literal `/shares/sander.imm.uzh/MM/kansasii/...`;
+  Python and shell code that honours `KANSASII_ROOT` says so in its header. If the project moves,
+  `grep -r /shares/sander.imm.uzh/MM/kansasii repos` finds every place to change.
+- SLURM job logs go to `output/<name>/logs/` (set by `#SBATCH --output`; the directory must
+  exist before `sbatch`). `run_downstream.sh` logs to `runs/downstream-<date>/`.
 - Real runs go through `sbatch`, not the login node (it is shared and can stall).
 - Each result directory gets a `MANIFEST.txt` (script, commit, date, inputs) written by
   `repos/kansasii-docs/bin/write_manifest.sh`; see [docs/PROVENANCE.md](docs/PROVENANCE.md).

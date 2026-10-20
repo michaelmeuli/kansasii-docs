@@ -1,0 +1,14 @@
+#!/bin/sh
+# Block commits when this repo's .gitattributes differs from the shared
+# canonical copy (kansasii-docs/templates/gitattributes).
+# Fix with: bash repos/check_sync.sh --fix
+
+canon="$(cd "$(dirname "$0")/.." && pwd)/templates/gitattributes"
+[ -f "$canon" ] || exit 0
+top="$(git rev-parse --show-toplevel)"
+
+if ! cmp -s "$canon" "$top/.gitattributes"; then
+    echo "pre-commit: .gitattributes differs from $canon" >&2
+    echo "pre-commit: run 'bash repos/check_sync.sh --fix'" >&2
+    exit 1
+fi

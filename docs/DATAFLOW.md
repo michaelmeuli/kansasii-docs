@@ -40,7 +40,8 @@ flowchart TD
 | File | Produced by | Consumed by |
 |---|---|---|
 | `data/imm/screening_map_link.csv` | `immensekansasii/scripts/02_screening_map_link.py` | mic, mlsa, arm, mst, cgmlst |
-| `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | arm (reannot), mlsa main4, iTOL, SAMPLES.md |
+| `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | arm (reannot), mlsa main4, iTOL, SAMPLES.md, mst, cgmlst (`excluded`) |
+| `output/cgmlst/sample_qc.tsv` | `kansasii-cgmlst/scripts/07_summarise_scheme.py` | results table (`cgmlst_called_pct`, `excluded`) |
 | `output/mic/{mhk,mgit}/` | `kansasii-mic/scripts/run_analysis.py` | results table, arm |
 | `output/mlsa/main1..4/` | `mlsa-kansasii` sbatch programs | results table (`species_mlsa1/2`, `species_ref`), sanger-microsynth |
 | `runs/<run>/` and `output/<run>/` | `run_IMMENSE.sh` | results table, arm, mst, cgmlst |

@@ -3,6 +3,11 @@
 Notable changes to data tables and outputs, newest first.
 
 ## 2026-10-21
+- `screening_map_results.csv`: new columns `cgmlst_called_pct` (% of cgMLST95 loci called, kansasii-cgmlst `output/cgmlst/sample_qc.tsv`) and
+  `excluded` (= contaminated or < 90 % called) after `contamination_flag`. kansasii-cgmlst (steps 08-10), kansasii-mst and
+  kansasii-amr-marker-screen use `excluded`; additionally excluded: Mkan329-055 only (81.5 %, as in Ridom). hsp65-refalign and
+  mlsa-kansasii main4 stay on `contamination_flag` (species-call validation).
+- kansasii-cgmlst: plasmid contigs of the reference genomes (pMK12478 of ATCC 12478) are removed before seeding, PTF training and allele calling.
 - mlsa-kansasii `93de64d`, sanger-microsynth `ce2c956`: `_COMP` in `refalign.py` now has the full IUPAC complement (reverse-strand
   hits with R/Y/K/M/S/W were not complemented). mlsa-kansasii also gets opt-in `--iupac` alignment; tested on 127 hsp65 reads, no call
   changes, so the default stays. New output `output/mlsa/main3_reference_alignment_hsp65_iupac/` (runs B-E and the consensus references).

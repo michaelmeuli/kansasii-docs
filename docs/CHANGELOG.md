@@ -7,6 +7,7 @@ Notable changes to data tables and outputs, newest first.
   hits with R/Y/K/M/S/W were not complemented). mlsa-kansasii also gets opt-in `--iupac` alignment; tested on 127 hsp65 reads, no call
   changes, so the default stays. New output `output/mlsa/main3_reference_alignment_hsp65_iupac/` (runs B-E and the consensus references).
   See mlsa-kansasii README, section "IUPAC-aware alignment".
+- `output/mlsa/main3_reference_alignment_hsp65_iupac/F_consensus_k1_noatypical/`: IUPAC consensus without the 3 Korean kansasii genomes; persicum margin 2.85 -> 7.1+, i.e. the narrow persicum/kansasii margin comes from those genomes (README, "The margin to the second-best species").
 
 ## 2026-10-20
 - `output/ridom_assemblies.tar.gz` rebuilt by the new `kansasii-cgmlst/scripts/10_export_ridom.py`: it now holds real FASTA files

@@ -39,11 +39,11 @@ flowchart TD
 
 | File | Produced by | Consumed by |
 |---|---|---|
-| `data/imm/screening_map_link.csv` | `immensekansasii/scripts/02_screening_map_link.py` | mic, mlsa, gwas, arm, mst, cgmlst |
-| `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | gwas, arm (reannot), mlsa main4, iTOL, SAMPLES.md |
-| `output/mic/{mhk,mgit}/` | `kansasii-mic/scripts/run_analysis.py` | results table, gwas, arm |
+| `data/imm/screening_map_link.csv` | `immensekansasii/scripts/02_screening_map_link.py` | mic, mlsa, arm, mst, cgmlst |
+| `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | arm (reannot), mlsa main4, iTOL, SAMPLES.md |
+| `output/mic/{mhk,mgit}/` | `kansasii-mic/scripts/run_analysis.py` | results table, arm |
 | `output/mlsa/main1..4/` | `mlsa-kansasii` sbatch programs | results table (`species_mlsa1/2`, `species_ref`), sanger-microsynth |
-| `runs/<run>/` and `output/<run>/` | `run_IMMENSE.sh` | results table, gwas, arm, mst, cgmlst |
+| `runs/<run>/` and `output/<run>/` | `run_IMMENSE.sh` | results table, arm, mst, cgmlst |
 | `output/arm/`, `output/arm_bam/` | `kansasii-amr-marker-screen/submit_arm*.sbatch` | reports only |
 
 `screening_map_results.csv` has `NGS_USED` (after `NGS_MM`): the sequencing data used per isolate.

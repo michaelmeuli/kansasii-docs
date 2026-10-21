@@ -9,7 +9,7 @@ Results, one directory per repo or analysis. Scripts write here; they never read
 | `mlsa/{main1..main4,genome_identity_check}` and `*_excluded` variants | mlsa-kansasii (`_excluded` = run without the excluded isolates) |
 | `hsp65_refalign` | hsp65-refalign |
 | `gwas` | kansasii-gwas |
-| `arm`, `arm_bam` | kansasii-arm |
+| `arm`, `arm_bam` | kansasii-amr-marker-screen |
 | `mst`, `cgmlst`, `ridom` | kansasii-mst, kansasii-cgmlst (`ridom`: all assemblies except isolates with `contamination_flag` = contaminated, CheckM > 5 %: Mkan329-010, -021, -035, -106, -113; `ridom_assemblies.tar.gz` is built by kansasii-cgmlst `10_export_ridom.py`: real files, renamed M001 ..., plus 7 reference genomes) |
 | `sanger-microsynth/<date>_species_panel` | sanger-microsynth |
 | `imm`, `iTOL`, `<run_name>` | immensekansasii (pipeline results, iTOL files) |

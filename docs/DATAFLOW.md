@@ -26,7 +26,7 @@ flowchart TD
   PIPE --> RES
   RES --> RT[(screening_map_results.csv)]
   RT --> GWAS[kansasii-gwas]
-  RT --> ARM[kansasii-arm]
+  RT --> ARM[kansasii-amr-marker-screen]
   MIC --> GWAS
   MIC --> ARM
   PIPE --> GWAS
@@ -48,7 +48,7 @@ flowchart TD
 | `output/mlsa/main1..4/` | `mlsa-kansasii` sbatch programs | results table (`species_mlsa1/2`, `species_ref`), sanger-microsynth |
 | `runs/<run>/` and `output/<run>/` | `run_IMMENSE.sh` | results table, gwas, arm, mst, cgmlst |
 | `output/gwas/` | `kansasii-gwas/run_all.sbatch` | reports only |
-| `output/arm/`, `output/arm_bam/` | `kansasii-arm/submit_arm*.sbatch` | reports only |
+| `output/arm/`, `output/arm_bam/` | `kansasii-amr-marker-screen/submit_arm*.sbatch` | reports only |
 
 `screening_map_results.csv` has `NGS_USED` (after `NGS_MM`): the sequencing data used per isolate.
 If `NGS_MM` was done it is used, not `NGS_JC`; `NGS_JC` only if there is no `NGS_MM` (Mkan329-001..133

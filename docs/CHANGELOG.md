@@ -2,6 +2,12 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-10-23
+- mlsa-kansasii programs renamed (dirs, scripts, `output/mlsa/` folders; file names inside unchanged): `main1_locus_discovery` -> `locus_discovery`,
+  `main2_sanger_differentiation` -> `sanger_mlsa`, `main3_reference_alignment` -> `sanger_refalign` (+ `_hsp65_amplicons`, `_hsp65_iupac`),
+  `main4_hsp65_vs_wgs` -> `sanger_vs_wgs`; `_excluded` suffixes kept. Columns of `sanger_vs_wgs/sanger_vs_wgs.tsv` renamed likewise
+  (`main2_*` -> `sanger_mlsa_*`, `main3_*` -> `sanger_refalign_*`). Entries below use the old names.
+
 ## 2026-10-21
 - `screening_map_results.csv`: new columns `cgmlst_called_pct` (% of cgMLST95 loci called, kansasii-cgmlst `output/cgmlst/sample_qc.tsv`) and
   `excluded` (= contaminated or < 90 % called) after `contamination_flag`. kansasii-cgmlst (steps 08-10), kansasii-mst and

@@ -17,10 +17,10 @@ flowchart TD
   READS --> PIPE[IMMENSE pipeline, runs/]
   LT --> MIC[kansasii-mic]
   MICIN --> MIC
-  GTDB --> MLSA[mlsa-kansasii main1-3, genome_identity_check]
+  GTDB --> MLSA[mlsa-kansasii (locus_discovery, sanger_mlsa, sanger_refalign), genome_identity_check]
   SANG --> MLSA
   LT --> MLSA
-  MLSA --> M4[main4 / hsp65-refalign]
+  MLSA --> M4[sanger_vs_wgs / hsp65-refalign]
   MIC --> RES[06 screening_map_results.py]
   MLSA --> RES
   PIPE --> RES
@@ -40,10 +40,10 @@ flowchart TD
 | File | Produced by | Consumed by |
 |---|---|---|
 | `data/imm/screening_map_link.csv` | `immensekansasii/scripts/02_screening_map_link.py` | mic, mlsa, arm, mst, cgmlst |
-| `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | arm (reannot), mlsa main4, iTOL, SAMPLES.md, mst, cgmlst (`excluded`) |
+| `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | arm (reannot), mlsa sanger_vs_wgs, iTOL, SAMPLES.md, mst, cgmlst (`excluded`) |
 | `output/cgmlst/sample_qc.tsv` | `kansasii-cgmlst/scripts/07_summarise_scheme.py` | results table (`cgmlst_called_pct`, `excluded`) |
 | `output/mic/{mhk,mgit}/` | `kansasii-mic/scripts/run_analysis.py` | results table, arm |
-| `output/mlsa/main1..4/` | `mlsa-kansasii` sbatch programs | results table (`species_mlsa1/2`, `species_ref`), sanger-microsynth |
+| `output/mlsa/<program>/` (locus_discovery, sanger_mlsa, sanger_refalign, sanger_vs_wgs, ...) | `mlsa-kansasii` sbatch programs | results table (`species_mlsa1/2`, `species_ref`), sanger-microsynth |
 | `runs/<run>/` and `output/<run>/` | `run_IMMENSE.sh` | results table, arm, mst, cgmlst |
 | `output/arm/`, `output/arm_bam/` | `kansasii-amr-marker-screen/submit_arm*.sbatch` | reports only |
 

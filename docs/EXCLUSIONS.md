@@ -42,7 +42,7 @@ say why 010 and 021 are not on that list; I did not check whether they lack an h
 Control strains (`LABEL` set) are not marked `excluded` even when non-complex; complex-only analyses drop them by species/`LABEL`:
 
 - Controls (`LABEL` set), NR 126-133: H37Rv, M. avium ATCC 19421, M. kansasii ATCC 12478, M. abscessus, M. xenopi, M. ulcerans (GTDB: marinum), M. persicum DSM 104278, M. pseudokansasii DSM 107152. MST drops all of them; cgMLST keeps the complex ones (128, 132, 133).
-- Non-complex clinical sample: NR 184 (avium), now `excluded` = true (section 1). NR 181 is ostraviense, which is in the complex (counted as a complex species in `SPECIES.md`).
+- Non-complex clinical sample: NR 184 (avium), now `excluded` = true (section 1).
 - `immensekansasii/SPECIES.md` lists the non-complex species as avium 2, tuberculosis, abscessus, xenopi, marinum.
 
 ## 4. Reference genomes left out (mlsa-kansasii)
@@ -76,11 +76,15 @@ Mkan329-056 was suspected contaminated, resequenced as `Mkan329-056-jc`; `contam
 
 ## Sample counts by stage
 
-| Stage | Cohort samples |
-|---|---|
-| `screening_map_results.csv` | 186 |
-| cgMLST step 00 / allele calling (pool: complex, not contaminated) | 175 (+ 7 public GTDB references) |
-| cgMLST steps 08-10, MST (`keep`) | 174 |
+| Stage | Genomes | Notes |
+|---|---|---|
+| `screening_map_results.csv` | 186 | all rows |
+| cgMLST step 00 / allele calling (pool: complex, not contaminated) | 175 (+ 7 public GTDB references) | includes NR 55 |
+| cgMLST steps 08-10 (`keep`): distance matrices | 174 (+ 7 references) | 186 - 7 excluded - 5 non-complex controls; the 3 complex controls (NR 128, 132, 133) are kept |
+| cgMLST complex MST (`output/cgmlst/mst/mst_nodes_complex.tsv`) | 181 = 174 + 7 references | 179 nodes: genomes with identical allele profiles share a node |
+| SNP MST (`output/mst/mst_nodes_complex.tsv`, `samples_used.tsv`) | 171 | no references; the 3 controls are dropped as well; 78 nodes |
+
+The MST outputs date from 2026-10-21, before NR 184 became `excluded`; the counts are unaffected because both repos already dropped it as "not in complex".
 
 ## Maintenance
 

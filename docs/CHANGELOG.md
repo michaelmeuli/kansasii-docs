@@ -2,6 +2,14 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-10-24
+- `screening_map_results.csv`: `excluded` is now also true for non-complex clinical samples (`LABEL` empty, GTDB species outside the
+  complex): NR 184 (*M. avium*). Non-complex control strains (NR 126, 127, 129, 130, 131) are unchanged. cgMLST/MST sample counts are
+  unchanged (they already dropped 184 as "not in complex"); kansasii-amr-marker-screen keeps reporting it as `non_complex(avium)`.
+  Full regeneration also refreshed `arm_mut` of NR 10, 21 and 55 (`rrs-A514C` -> empty, from the current `output/arm`).
+  `output/imm/screening_map_results.csv` (2026-10-20) is an older copy and was not updated.
+- New `docs/EXCLUSIONS.md`: which samples are excluded from which analysis, and why.
+
 ## 2026-10-23
 - mlsa-kansasii programs renamed (dirs, scripts, `output/mlsa/` folders; file names inside unchanged): `main1_locus_discovery` -> `locus_discovery`,
   `main2_sanger_differentiation` -> `sanger_mlsa`, `main3_reference_alignment` -> `sanger_refalign` (+ `_hsp65_amplicons`, `_hsp65_iupac`),

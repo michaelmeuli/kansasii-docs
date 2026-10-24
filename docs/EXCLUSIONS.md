@@ -2,12 +2,13 @@
 
 One place that lists which isolates/genomes are left out of which analysis. The per-sample source of truth is
 `output/screening_map_results.csv` (built by `immensekansasii/scripts/06_screening_map_results.py`); this file only
-explains it. If the two disagree, the CSV wins. Counts as of 2026-10-24 (186 rows, NR 1-186).
+explains it. If the two disagree, the CSV wins. Counts as of 2026-10-24 (186 rows, NR 1-186). Rule: `excluded` = contaminated, or < 90 % cgMLST loci called, or a clinical sample (`LABEL` empty) outside the complex.
 
 ## 1. The `excluded` column
 
-`excluded` = true when `contamination_flag` = `contaminated` (CheckM contamination > 5 %, `--max-contamination`) **or**
-`cgmlst_called_pct` < 90 (Ridom's good-target threshold). Six isolates:
+`excluded` = true when `contamination_flag` = `contaminated` (CheckM contamination > 5 %, `--max-contamination`), **or**
+`cgmlst_called_pct` < 90 (Ridom's good-target threshold), **or** the row is a clinical sample (`LABEL` empty) whose GTDB species is
+outside the complex (since 2026-10-24). Seven isolates:
 
 | NR | Isolate | Species | Reason | Value |
 |---|---|---|---|---|
@@ -17,6 +18,7 @@ explains it. If the two disagree, the CSV wins. Counts as of 2026-10-24 (186 row
 | 55 | Mkan329-055 | persicum | low cgMLST coverage | 81.52 % of loci called (CheckM 2.47 %, not contaminated) |
 | 106 | Mkan329-106 | kansasii | contaminated | CheckM 20.44 % |
 | 113 | Mkan329-113 | persicum | contaminated | CheckM 61.40 % |
+| 184 | Mkan329-184 | avium | not in the *M. kansasii* complex | clinical sample, `LABEL` empty |
 
 Contaminated isolates are mixed cultures (see `immensekansasii/SPECIES.md`). CheckM is the criterion, not a species call.
 The 5 % threshold was documented as 10 % until 2026-10-21; NR 10 and 21 sit between the two (CHANGELOG 2026-10-21).
@@ -28,7 +30,7 @@ The 5 % threshold was documented as 10 % until 2026-10-21; NR 10 and 21 sit betw
 | kansasii-cgmlst steps 08-10 (distances, MSTs, Ridom export) | `excluded`. Step 00 takes 175 QC-passing assemblies: no contaminated, no non-complex; ATCC/DSM controls of complex species (NR 128/132/133) kept | `kansasii-cgmlst/README.md` |
 | kansasii-mst | `excluded` = true, plus control strains (`LABEL` set) and non-complex species | `kansasii-mst/README.md`, `scripts/01_select_samples.py` -> `output/mst/samples_used.tsv` |
 | kansasii-amr-marker-screen | complex species with `excluded` = false | `kansasii-amr-marker-screen/README.md` |
-| `output/ridom/`, `ridom_assemblies.tar.gz` | all assemblies except `contamination_flag` = contaminated (010, 021, 035, 106, 113). 055 is not removed by this rule | `output-README.md`, CHANGELOG |
+| `output/ridom/`, `ridom_assemblies.tar.gz` | all assemblies except `contamination_flag` = contaminated (010, 021, 035, 106, 113). Uses `contamination_flag`, not `excluded`: 055 and the non-complex rows (incl. 184) are not removed by this rule | `output-README.md`, CHANGELOG |
 | hsp65-refalign, mlsa `sanger_vs_wgs` | `contamination_flag` only (035, 106, 113 have an hsp65 read); validates species calls, so low cgMLST coverage is irrelevant | `hsp65-refalign/README.md` |
 | kansasii-mic | flat-profile MIC rows (>= 8 distinct antibiotics with an identical point estimate within one TNR) go to `excluded_qc.csv` with `exclusion_reason`. Currently `output/mic/mhk/excluded_qc.csv` has a header only, so no rows are removed | `kansasii-mic/README.md` |
 
@@ -37,10 +39,10 @@ say why 010 and 021 are not on that list; I did not check whether they lack an h
 
 ## 3. Non-complex and control strains
 
-Not "excluded" in the CSV (`excluded` is empty) but left out of complex-only analyses:
+Control strains (`LABEL` set) are not marked `excluded` even when non-complex; complex-only analyses drop them by species/`LABEL`:
 
 - Controls (`LABEL` set), NR 126-133: H37Rv, M. avium ATCC 19421, M. kansasii ATCC 12478, M. abscessus, M. xenopi, M. ulcerans (GTDB: marinum), M. persicum DSM 104278, M. pseudokansasii DSM 107152. MST drops all of them; cgMLST keeps the complex ones (128, 132, 133).
-- Non-complex clinical isolates: NR 184 (avium). NR 181 is ostraviense, which is in the complex (counted as a complex species in `SPECIES.md`).
+- Non-complex clinical sample: NR 184 (avium), now `excluded` = true (section 1). NR 181 is ostraviense, which is in the complex (counted as a complex species in `SPECIES.md`).
 - `immensekansasii/SPECIES.md` lists the non-complex species as avium 2, tuberculosis, abscessus, xenopi, marinum.
 
 ## 4. Reference genomes left out (mlsa-kansasii)
@@ -71,6 +73,14 @@ From project notes of 2026-10-05; the `kansasii-gwas` repo directory is not unde
 The `-jc` resequencing copies (`Mkan329-009-jc`, `Mkan329-056-jc`) were removed from `output/ridom/` (originals kept; CHANGELOG, 185 -> 183).
 `NGS_USED` in `screening_map_results.csv` says which sequencing run is used per isolate (`NGS_MM` if present, else `NGS_JC`); the resequencing run `mkan329_jc` is otherwise not used (`DATAFLOW.md`).
 Mkan329-056 was suspected contaminated, resequenced as `Mkan329-056-jc`; `contamination_flag` does not exclude it (`immensekansasii/WORKFLOW.md`).
+
+## Sample counts by stage
+
+| Stage | Cohort samples |
+|---|---|
+| `screening_map_results.csv` | 186 |
+| cgMLST step 00 / allele calling (pool: complex, not contaminated) | 175 (+ 7 public GTDB references) |
+| cgMLST steps 08-10, MST (`keep`) | 174 |
 
 ## Maintenance
 

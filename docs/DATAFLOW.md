@@ -43,7 +43,7 @@ flowchart TD
 | `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | arm (reannot), mlsa sanger_vs_wgs, iTOL, SAMPLES.md, mst, cgmlst (`excluded`) |
 | `output/cgmlst/sample_qc.tsv` | `kansasii-cgmlst/scripts/07_summarise_scheme.py` | results table (`cgmlst_called_pct`, `excluded`) |
 | `output/mic/{mhk,mgit}/` | `kansasii-mic/scripts/run_analysis.py` | results table, arm |
-| `output/mlsa/<program>/` (locus_discovery, sanger_mlsa, sanger_refalign, sanger_vs_wgs, ...) | `mlsa-kansasii` sbatch programs | results table (`species_mlsa1/2`, `species_ref`), sanger-microsynth |
+| `output/mlsa/<program>/` (locus_discovery, sanger_mlsa, sanger_refalign, sanger_vs_wgs, ...) | `mlsa-kansasii` sbatch programs | results table (`species_sanger_mlsa`/`species_sanger_mlsa_excl`, `species_ref`), sanger-microsynth |
 | `runs/<run>/` and `output/<run>/` | `run_IMMENSE.sh` | results table, arm, mst, cgmlst |
 | `output/arm/`, `output/amr_bam/` | `kansasii-amr-marker-screen/submit_arm*.sbatch` | reports only |
 

@@ -58,22 +58,36 @@ A matching hsp65 variant exists (`submit_hsp65_iupac_excluded.sbatch`).
 - hsp65 vs WGS: of 133 analysed isolates 109 get a call (all correct) and 24 do not: 13 Rothia mucilaginosa contaminant reads (genomes are clean), 10 unusable traces, 1 poor reads (Mkan329-102). These isolates stay in all genome analyses. Details in `hsp65-refalign/README.md`.
 - 69 of 177 complex isolates have no MLSA call, probably missing Sanger reads (`immensekansasii/SPECIES.md`).
 
-## 6. Genotype-phenotype (GWAS) cohort
-
-From project notes of 2026-10-05; the `kansasii-gwas` repo directory is not under `repos/` any more, so re-check these against
-`output/gwas/MANIFEST.txt` and the scripts before quoting them.
-
-- Usable N for MIC x genotype was 30 of 44 isolates with MIC (the rest have no NGS data): 21 kansasii, 5 persicum, 2 pseudokansasii, 1 attenuatum, 1 innocens.
-- NR 134-183 have NGS numbers but no reads/assembly yet, including the three SXT-resistant MIC isolates (NR 168, 179, 182), so SXT resistance cannot be studied genotypically.
-- Mkan329-068 was excluded from the Gubbins-tree stratification: its 28,959-SNP terminal branch is a tree artifact (raw distance normal).
-- MGIT: 47 usable isolates, only one overlaps the MIC cohort.
-- History: `output-old/gwas_2026-10-06_pre-jc` (131 genomes / 44 MIC isolates, before the jc resequenced isolates) and `output-old/gwas_2026-10-20_excl-10-21` (NR 10 and 21 excluded by hand; kept only for comparison with the rerun that includes them; same for `mst_2026-10-20_excl-10-21`).
-
-## 7. Resequenced duplicates
+## 6. Resequenced duplicates
 
 The `-jc` resequencing copies (`Mkan329-009-jc`, `Mkan329-056-jc`) were removed from `output/ridom/` (originals kept; CHANGELOG, 185 -> 183).
 `NGS_USED` in `screening_map_results.csv` says which sequencing run is used per isolate (`NGS_MM` if present, else `NGS_JC`); the resequencing run `mkan329_jc` is otherwise not used (`DATAFLOW.md`).
 Mkan329-056 was suspected contaminated, resequenced as `Mkan329-056-jc`; `contamination_flag` does not exclude it (`immensekansasii/WORKFLOW.md`).
+
+## 7. Ridom export (`output/ridom_assemblies.tar.gz`)
+
+Rerun on 2026-10-24 (cgMLST step 10, job 7543102, 17.5 min) after `excluded` was extended to NR 184. The result is unchanged: the same 181
+FASTA files plus `ridom/metadata.tsv`, identical content hashes (the tarball differs only in embedded timestamps). The export contains
+the `keep` set (section 2): 174 cohort assemblies, 3 of them complex control strains (NR 128, 132, 133), plus the 7 public GTDB references.
+
+| Species in the export | Genomes |
+|---|---|
+| *M. kansasii* | 123 |
+| *M. persicum* | 29 |
+| *M. pseudokansasii* | 21 |
+| *M. attenuatum* | 3 |
+| *M. innocens* | 2 |
+| *M. ostraviense* | 2 |
+| *M. gastri* | 1 |
+
+Not exported: 12 of the 186 rows.
+
+| Reason | Samples |
+|---|---|
+| Contaminated (CheckM > 5 %): mixed cultures | Mkan329-010 (7.67 %), -021 (7.76 %), -035 (113.37 %), -106 (20.44 %), -113 (61.40 %) |
+| Low cgMLST coverage (< 90 % of loci called) | Mkan329-055 (81.52 %) |
+| Not in the complex, control strains | Mkan329-126 (*M. tuberculosis* H37Rv), -127 (*M. avium* ATCC 19421), -129 (*M. abscessus*), -130 (*M. xenopi*), -131 (*M. ulcerans*) |
+| Not in the complex, clinical sample | Mkan329-184 (*M. avium*) |
 
 ## Sample counts by stage
 

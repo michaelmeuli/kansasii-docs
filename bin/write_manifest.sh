@@ -2,6 +2,7 @@
 # write_manifest.sh - record how an output directory was produced.
 # Usage: write_manifest.sh OUTDIR REPO_DIR SCRIPT [INPUT ...]
 # Writes OUTDIR/MANIFEST.txt (overwrites; one run = one manifest).
+# MANIFEST_NAME=<file> overrides the file name, for scripts that share a directory.
 set -euo pipefail
 [[ $# -ge 3 ]] || { echo "usage: $0 OUTDIR REPO_DIR SCRIPT [INPUT ...]" >&2; exit 1; }
 out=$1 repo=$2 script=$3; shift 3
@@ -22,4 +23,4 @@ fi
   echo "env:     ${CONDA_DEFAULT_ENV:-none} (conda list sha256 $envhash)"
   echo "inputs:"
   for f in "$@"; do echo "  $f"; done
-} > "$out/MANIFEST.txt"
+} > "$out/${MANIFEST_NAME:-MANIFEST.txt}"

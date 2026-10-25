@@ -30,6 +30,7 @@ file. Repo-specific details live in each repo's own README.
 | `kansasii-mic` | MIC outlier analysis (MHK and MGIT) | `scripts/run_analysis.py` |
 | `mlsa-kansasii` | species-complex differentiation by MLSA, Sanger and reference alignment (main1-4) | `submit_*.sbatch` |
 | `hsp65-refalign` | checks that hsp65 reference alignment of the Sanger reads gives the genome species | `01-04_*.py` |
+| `gyrA-refalign` | gyrA from assemblies vs 72 public genomes: persicum-like/other subtypes, project and public separate | `01-03_*.py` |
 | `kansasii-amr-marker-screen` | literature AMR-marker screen on assemblies and reads | `submit_arm*.sbatch` |
 | `kansasii-mst` | core-SNP minimum spanning tree figures | `run_all.sbatch` |
 | `kansasii-cgmlst` | chewBBACA cgMLST scheme and Ridom-style MST | `run_all.sbatch` |

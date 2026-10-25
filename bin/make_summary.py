@@ -13,8 +13,12 @@ from __future__ import annotations
 import argparse
 import html
 import os
+import sys
 import time
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "templates"))
+from kansasii_paths import ROOT  # noqa: E402
 
 SKIP_DIRS = {"logs", "work", ".nextflow"}
 FIG_EXT = {".png", ".svg"}
@@ -90,8 +94,9 @@ def file_manifests(output: Path) -> str:
 def section(d: Path, out_dir: Path) -> str:
     figs, docs, n, newest = scan(d)
     man = d / "MANIFEST.txt"
+    extra = sorted(d.glob("MANIFEST_*.txt"))  # further jobs writing into the same directory (MANIFEST_NAME)
     if man.exists():
-        meta = manifest_table(man)
+        meta = manifest_table(man) + "".join(f"<h3>{html.escape(e.stem.removeprefix('MANIFEST_'))}</h3>{manifest_table(e)}" for e in extra)
     elif sub_manifests(d):
         meta = "".join(f"<h3>{html.escape(s.parent.name)}</h3>{manifest_table(s)}" for s in sub_manifests(d))
     else:
@@ -112,7 +117,7 @@ def section(d: Path, out_dir: Path) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--root", default=os.environ.get("KANSASII_ROOT", "/shares/sander.imm.uzh/MM/kansasii"))
+    ap.add_argument("--root", default=str(ROOT))
     ap.add_argument("--out")
     a = ap.parse_args()
     root = Path(a.root)

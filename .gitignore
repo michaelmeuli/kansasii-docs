@@ -2,3 +2,6 @@ __pycache__/
 .mypy_cache/
 .pytest_cache/
 *.log
+*.pyc
+.ipynb_checkpoints/
+*.egg-info/

@@ -35,7 +35,6 @@ file. Repo-specific details live in each repo's own README.
 | `kansasii-mst` | core-SNP minimum spanning tree figures | `run_all.sbatch` |
 | `kansasii-cgmlst` | chewBBACA cgMLST scheme and Ridom-style MST | `run_all.sbatch` |
 | `sanger-microsynth` | routine: fetch Microsynth Sanger results by mail, identify, report | `submit_fetch_analyse.sbatch` |
-| `kansasii-lit` | exploratory GTDB and type-strain look-ups (not in the run order) | `scripts/01-05` |
 
 Check for uncommitted or unpushed work in all repos: `bash repos/check_sync.sh`.
 The same script flags `.gitattributes` drift from `templates/gitattributes` (the shared

@@ -4,8 +4,8 @@ The same strain, genome or sequencing run is known under different numbers in di
 labels for the same object, some are labels for related but different objects. This note sorts out which is which,
 using the *M. kansasii* complex data of this project (mostly *M. ostraviense*, which shows nearly every case).
 
-Sources of the examples: `data/lit/gtdb/gtdb232/` (GTDB r232 tables), `repos/kansasii-lit/scripts/04_get_mkc_type_strains.sh`
-(type-strain designations from LPSN), `data/imm/screening_map_*.csv` (lab numbers), `data/illumina/public/*/metadata.tsv` (SRA).
+Sources of the examples: `data/lit/gtdb/gtdb232/` (GTDB r232 tables), type-strain
+designations from LPSN, `data/imm/screening_map_*.csv` (lab numbers), `data/illumina/public/*/metadata.tsv` (SRA).
 
 ## 1. The one rule
 
@@ -111,8 +111,7 @@ What this means in practice:
   (`kansasii_complex_type_strains.tsv`) lists six complex species and *M. ostraviense* is not one of them. GTDB therefore does
   not mark 241/15 as type strain of species there. I have not looked into why (it may be that GTDB's designation list has not
   caught up with a species described in 2020). The genome is still the GTDB representative, so using it as reference is fine.
-- The representative can be replaced between releases. The `kansasii-lit` scripts compare r226 and r232 type-strain tables for
-  this reason (`03_lit_gtdb_ref_check.sh`). Pin the accession, not "the GTDB representative".
+- The representative can be replaced between releases (compare the r226 and r232 type-strain tables). Pin the accession, not "the GTDB representative".
 - Other tools use their own numbering. MetaPhlAn4 reports species-level genome bins (SGBs, `mpa_vJan25_CHOCOPhlAnSGB`) and its
   own species names. GTDB-Tk, MetaPhlAn, hsp65 and 16S can each give a different species for one sample. Example: Mkan329-035
   is GTDB-Tk *kansasii* (ANI 99.66 to GCF_000157895.3), MetaPhlAn *ostraviense* and hsp65 *ostraviense*, because it is a mixed

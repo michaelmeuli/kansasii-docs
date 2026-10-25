@@ -38,7 +38,8 @@ file. Repo-specific details live in each repo's own README.
 
 Check for uncommitted or unpushed work in all repos: `bash repos/check_sync.sh`.
 The same script flags `.gitattributes` drift from `templates/gitattributes` (the shared
-canonical copy; `--fix` restores it) and CRLF files. `bin/install_hooks.sh` installs a
+canonical copy; `--fix` restores it), `.vscode/settings.json` drift from
+`templates/vscode-settings.json` (same `--fix`), and CRLF files. `bin/install_hooks.sh` installs a
 pre-commit guard in every repo that blocks commits while `.gitattributes` differs; re-run
 it after a fresh clone.
 

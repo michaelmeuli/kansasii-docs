@@ -67,16 +67,18 @@ persicum-like gyrA calls are genome-persicum. Exceptions and notes:
 | SRR27048434 | PRJNA1048499 | | pseudokansasii (GCA_000524055.1, 0 diffs) | kansasii | GTDB-kansasii with a pseudokansasii hsp65; hsp65 is the only discordant gene, gyrA is kansasii. Sanger hsp65 would call it pseudokansasii |
 | SRR27048675 | PRJNA1048499 | | attenuatum (GCA_002086865.1, 0 diffs) | kansasii | as above, attenuatum-like hsp65 |
 
-For the 80 GTDB-persicum samples hsp65 was run separately (`output/hsp65_refalign/public_persicum/`, needed to judge the gyrA cases below).
+For the 80 GTDB-persicum samples hsp65 was run separately (`output/hsp65_refalign/public_persicum/`, needed to judge the gyrA cases below): all 80 have a persicum-like hsp65
+(69 closest to a persicum genome, 11 to the Korean-type kansasii genomes with persicum as runner-up), including the five whose gyrA is kansasii-like. So in those five
+the two markers disagree: hsp65 persicum, gyrA kansasii.
 
 **gyrA (1033 callable samples).** 1026 agree with the GTDB species. Seven disagree, **all in PRJNA1078897** (the Taiwan phylogeography study,
 Emerg Infect Dis 2024, doi 10.3201/eid3008.240021):
 
 | Sample | GTDB species | gyrA | Genome checks | Reading |
 |---|---|---|---|---|
-| SRR28038252 | persicum | kansasii | CheckM contamination 100 %, assembly 10.5 Mb | **mixed culture** (persicum + kansasii), explains the gyrA |
-| SRR28038242 | persicum | kansasii | CheckM 0.45 %, MetaPhlAn persicum 99.8 %, ANI 99.5 % to persicum, ST 418 | clean persicum genome with kansasii gyrA |
-| SRR28038316, -317, -318 | persicum | kansasii | CheckM 0.45 %, purity ~100 %, ANI 99.5 % to persicum, ST 418 | clean persicum genomes with kansasii gyrA: three samples of one batch carry the same pattern |
+| SRR28038252 | persicum | kansasii | CheckM contamination 100 %, assembly 10.5 Mb; hsp65 persicum-like | **mixed culture** (persicum + kansasii), explains the gyrA |
+| SRR28038242 | persicum | kansasii | CheckM 0.45 %, MetaPhlAn persicum 99.8 %, ANI 99.5 % to persicum, ST 418; hsp65 persicum-like | clean persicum genome with kansasii gyrA |
+| SRR28038316, -317, -318 | persicum | kansasii | CheckM 0.45 %, purity ~100 %, ANI 99.5 % to persicum, ST 418; hsp65 persicum-like | clean persicum genomes with kansasii gyrA: three samples of one batch carry the same pattern |
 | SRR28038314, SRR28038483 | kansasii | persicum | CheckM 0.15 %, ANI 99.2 / 98.9 % to ATCC 12478 | clean kansasii genomes with a persicum gyrA; their hsp65 is kansasii (the 3-base persicum vs kansasii difference decides) |
 
 The six clean ones (242, 316, 317, 318 persicum; 314, 483 kansasii) are **interspecies mosaics or recombinants** if the assemblies are right. CheckM and

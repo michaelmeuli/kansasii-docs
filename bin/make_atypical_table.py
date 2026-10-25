@@ -109,6 +109,8 @@ def public_rows(hsp: Path, gyra: Path) -> list[dict[str, str]]:
         gs = g.at[sid, "status"] if sid in g.index else ""
         hc = h.at[sid, "closest_species"] if sid in h.index else ""
         hs = h.at[sid, "status"] if sid in h.index else ""
+        if sid in h.index and h.at[sid, "atypical"] == "True":
+            hc = "persicum-like (Korean-type genome)"  # the closest reference is one of the 3 atypical-hsp65 kansasii genomes
         if sid in g.index:
             if gs in ("ok", "ambiguous") and gc != sp:
                 cat.append("gyrA_other_species")
@@ -127,7 +129,7 @@ def public_rows(hsp: Path, gyra: Path) -> list[dict[str, str]]:
             elif h.at[sid, "atypical"] == "True" and sp == "kansasii":
                 cat.append("hsp65_persicum_like")
                 detail.append(f"hsp65 closest to {h.at[sid, 'closest_accession']} (Korean-type), runner-up {h.at[sid, 'second_species']}, margin {h.at[sid, 'margin']}")
-            elif hc and hc != sp:
+            elif hc and hc != sp and h.at[sid, "atypical"] != "True":
                 cat.append("hsp65_other_species")
                 detail.append(f"hsp65 identical to {h.at[sid, 'closest_accession']} ({hc})")
         if not cat:

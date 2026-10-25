@@ -2,7 +2,8 @@
 """Project overview page: one section per output directory with its MANIFEST.txt and its figures.
 
 Usage: make_summary.py [--root DIR] [--out FILE]
-Reads  DIR/output/*/MANIFEST.txt (written by write_manifest.sh) and lists figures (png/svg/pdf, two
+Reads  DIR/output/*/MANIFEST.txt and DIR/output/*.MANIFEST.txt (written by write_manifest.sh; the latter
+describe single files in output/ itself, e.g. screening_map_link.csv) and lists figures (png/svg/pdf, two
 levels deep; `logs`, `work` and obsolete `*-old` directories are skipped). Writes a self-contained
 HTML file next to the figures (default DIR/output/SUMMARY.html), so relative image links work.
 Standard library only.
@@ -75,6 +76,17 @@ def sub_manifests(d: Path) -> list[Path]:
     return sorted(d.glob("*/MANIFEST.txt"))
 
 
+def file_manifests(output: Path) -> str:
+    """Section for manifests of loose files directly in output/ (MANIFEST_NAME=<file>.MANIFEST.txt)."""
+    mans = sorted(output.glob("*.MANIFEST.txt"))
+    if not mans:
+        return ""
+    rows = "".join(
+        f"<h3>{html.escape(m.name.removesuffix('.MANIFEST.txt'))}</h3>{manifest_table(m)}" for m in mans
+    )
+    return f"<section><h2>files in output/</h2>{rows}</section>"
+
+
 def section(d: Path, out_dir: Path) -> str:
     figs, docs, n, newest = scan(d)
     man = d / "MANIFEST.txt"
@@ -107,7 +119,8 @@ def main() -> None:
     out = Path(a.out) if a.out else root / "output" / "SUMMARY.html"
     dirs = sorted(d for d in (root / "output").iterdir() if d.is_dir() and not d.name.endswith("-old"))
     with_m = [d for d in dirs if (d / "MANIFEST.txt").exists() or sub_manifests(d)]
-    body = "".join(section(d, out.parent) for d in dirs)
+    body = "".join(section(d, out.parent) for d in dirs) + file_manifests(root / "output")
+    n_files = len(list((root / "output").glob("*.MANIFEST.txt")))
     page = f"""<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
 <title>kansasii output summary</title>
 <style>
@@ -121,7 +134,7 @@ section{{border-top:1px solid var(--line);padding:8px 0 16px}} h2{{margin:.4em 0
 </style>
 <h1>kansasii output summary</h1>
 <p class=s>Generated {time.strftime('%Y-%m-%d %H:%M')} by kansasii-docs/bin/make_summary.py from {html.escape(str(root / 'output'))}.
-{len(with_m)} of {len(dirs)} output directories have a MANIFEST.txt.</p>
+{len(with_m)} of {len(dirs)} output directories have a MANIFEST.txt; {n_files} loose file manifest(s) in output/.</p>
 {body}</html>"""
     out.write_text(page)
     print(f"wrote {out} ({len(dirs)} directories, {len(with_m)} with manifest)")

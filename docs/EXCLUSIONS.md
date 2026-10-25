@@ -31,7 +31,8 @@ The 5 % threshold was documented as 10 % until 2026-10-21; NR 10 and 21 sit betw
 | kansasii-mst | `excluded` = true, plus control strains (`LABEL` set) and non-complex species | `kansasii-mst/README.md`, `scripts/01_select_samples.py` -> `output/mst/samples_used.tsv` |
 | kansasii-amr-marker-screen | complex species with `excluded` = false | `kansasii-amr-marker-screen/README.md` |
 | `output/ridom_assemblies.tar.gz` (cgMLST step 10) | `keep`, as for the distance matrices and MSTs: 174 cohort assemblies (no `excluded`, no non-complex, so without 055 and 184; the 3 complex controls kept) + 7 public references = 181 | `kansasii-cgmlst/scripts/10_export_ridom.py` |
-| `output/ridom/` (older export, 2026-10-21 or earlier) | all assemblies except `contamination_flag` = contaminated (010, 021, 035, 106, 113), so 055, 184 and the other non-complex rows are in it; 181 files, no references | `output-README.md`, CHANGELOG |
+| `output/ridom/` (older hand-made collection, 2026-10-21 or earlier; no longer read by any script) | all assemblies except `contamination_flag` = contaminated (010, 021, 035, 106, 113), so 055, 184 and the other non-complex rows are in it; 181 files, no references | `output-README.md`, CHANGELOG |
+| gyrA-refalign | no exclusion: every Mkan329 isolate except the reference strains 126-133 is called; contaminated and non-complex isolates are flagged (`contaminated`, `wgs_species`) and listed in `docs/ATYPICAL.md` | `gyrA-refalign/README.md` |
 | hsp65-refalign, mlsa `sanger_vs_wgs` | `contamination_flag` only (035, 106, 113 have an hsp65 read); validates species calls, so low cgMLST coverage is irrelevant | `hsp65-refalign/README.md` |
 | kansasii-mic | flat-profile MIC rows (>= 8 distinct antibiotics with an identical point estimate within one TNR) go to `excluded_qc.csv` with `exclusion_reason`. Currently `output/mic/mhk/excluded_qc.csv` has a header only, so no rows are removed | `kansasii-mic/README.md` |
 

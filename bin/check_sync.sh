@@ -98,7 +98,7 @@ for gitdir in "$root"/*/.git; do
         esac
     done < <(git -C "$repo" ls-files '*.sbatch')
     # the only allowed literal is the fallback of the `source .../kansasii_paths.sh` bootstrap line
-    lit=$(git -C "$repo" grep -nI -e "$ROOT_LITERAL" -- '*.py' '*.sh' ':!*kansasii_paths.*' ':!immensekansasii/bin' 2>/dev/null \
+    lit=$(git -C "$repo" grep -nI -e "$ROOT_LITERAL" -- '*.py' '*.sh' ':!*kansasii_paths.*' ':!immensekansasii/bin' ':!bin/check_sync.sh' 2>/dev/null \
           | grep -v 'kansasii_paths.sh' | grep -vE '^[^:]+:[0-9]+:\s*#' || true)
     [ -n "$lit" ] && problems+=("literal $ROOT_LITERAL in code (use kansasii_paths): $(echo "$lit" | head -3 | cut -d: -f1,2 | tr '\n' ' ')")
 

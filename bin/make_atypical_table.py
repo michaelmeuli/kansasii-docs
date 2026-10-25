@@ -76,7 +76,7 @@ def project_rows(hsp: Path, gyra: Path, results: Path) -> list[dict[str, str]]:
         if hc and hc != sp and sp:
             cat.append("hsp65_other_species")
             detail.append(f"Sanger hsp65 reads call {hc}")
-        if pn in k.index and k.at[pn, "korean_type"] == "True" and sp == "kansasii":
+        if pn in k.index and k.at[pn, "korean_type"] == "True":
             cat.append("hsp65_persicum_like")
             detail.append("assembly hsp65 closer to the Korean-type amplicon than to ATCC 12478")
         if hv == "no call: read does not match own genome":

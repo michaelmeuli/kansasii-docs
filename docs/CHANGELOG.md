@@ -2,6 +2,26 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-10-25
+- **Repo layout and constants unified (all repos).** `templates/kansasii_paths.{py,sh}` define every shared path with one name; each repo vendors the
+  Python file (checked by `check_sync.sh`). Renames: `GTDB_MLSA_ROOT`/`GTDB_GENOMES` -> `GTDB_COMPLEX_GENOMES`, `REFERENCES`/`GTDB_REPS` ->
+  `GTDB_REPRESENTATIVES`, `REFERENCES_HSP65` -> `HSP65_AMPLICONS`, `SCREENING_MAP` -> `SCREENING_MAP_LINK`, `SCREENING_RESULTS` ->
+  `SCREENING_MAP_RESULTS`, `SCREENING_MAP_TNR_COLUMNS` -> `TNR_COLUMNS`, `RES` -> `ASSEMBLIES`, `REF_FASTA/REF_GFF` -> `ATCC12478_FASTA/GFF`,
+  `OUT` -> `OUTPUT`. Scripts take these paths as flags (`--gtdb-representatives`, `--hsp65-amplicons`, `--complex-genomes`, ...).
+  Every repo reads `data/imm/screening_map_{link,results}.csv` (hsp65-refalign, gyrA-refalign, kansasii-amr-marker-screen read the `output/` copy before).
+- Files moved: numbered entry scripts are in `scripts/` everywhere (hsp65-refalign, gyrA-refalign, kansasii-amr-marker-screen, sanger-microsynth
+  `main1/main2` -> `01_fetch_mail.py`/`02_analyse_report.py`, mlsa-kansasii programs -> `scripts/04..10`, kansasii-mic `run_analysis.py` ->
+  `01_run_analysis.py`); `run_all.sbatch` -> `submit_all.sbatch` (mst, cgmlst); sbatch files only at the repo root; amr tables in `config/`;
+  mlsa `*_excluded` programs -> `--exclude-atypical`; conda env `kansasii_mic` -> `env_mic`.
+- kansasii-cgmlst reads the cohort assemblies and the mlst type from the pipeline results (`ASSEMBLIES`) instead of the hand-made `output/ridom/`
+  symlinks and `manifest.tsv`; the Ridom tarball has `output/ridom_assemblies.MANIFEST.txt`.
+- hsp65-refalign: the Korean-type check wrote its manifest to a directory `korean_check/` that never held outputs; it is now
+  `MANIFEST_korean_type_check.txt` next to the outputs. `submit_public.sbatch persicum` runs the in-silico hsp65 on all GTDB-persicum samples.
+- `run_downstream.sh` now covers hsp65-refalign, gyrA-refalign, both cgMLST phases, the atypical-sample table and SUMMARY.html; whole chain rerun
+  2026-10-25 (log `runs/downstream-20261025/`). Outputs of before the rerun: `output-old/pre-rerun_2026-10-25.tar.gz`, `pre-rerun_runs-cgmlst_2026-10-25.tar.gz`.
+- New `docs/ATYPICAL.md` + `output/atypical_samples/` (samples with an atypical gyrA or hsp65, project and public), `docs/VENDORED.md`.
+- Fixed strict-typing errors in `immensekansasii/scripts/06` and `10` (they had been unchecked).
+
 ## 2026-10-24
 - `screening_map_results.csv`: `excluded` is now also true for non-complex clinical samples (`LABEL` empty, GTDB species outside the
   complex): NR 184 (*M. avium*). Non-complex control strains (NR 126, 127, 129, 130, 131) are unchanged. cgMLST/MST sample counts are

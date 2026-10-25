@@ -122,7 +122,9 @@ def public_rows(hsp: Path, gyra: Path) -> list[dict[str, str]]:
                 cat.append("gyrA_novel_haplotype")
                 detail.append(f"gyrA haplotype {g.at[sid, 'haplotype']}, {g.at[sid, 'diffs']} difference(s) to {g.at[sid, 'closest_accession']}")
         if sid in h.index:
-            if h.at[sid, "atypical"] == "True":
+            if h.at[sid, "atypical"] == "True" and sp == "persicum":
+                pass  # a persicum genome is expected to sit next to the persicum-like (Korean-type) kansasii genomes
+            elif h.at[sid, "atypical"] == "True" and sp == "kansasii":
                 cat.append("hsp65_persicum_like")
                 detail.append(f"hsp65 closest to {h.at[sid, 'closest_accession']} (Korean-type), runner-up {h.at[sid, 'second_species']}, margin {h.at[sid, 'margin']}")
             elif hc and hc != sp:

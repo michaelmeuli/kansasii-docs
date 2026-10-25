@@ -4,7 +4,7 @@ The same strain, genome or sequencing run is known under different numbers in di
 labels for the same object, some are labels for related but different objects. This note sorts out which is which,
 using the *M. kansasii* complex data of this project (mostly *M. ostraviense*, which shows nearly every case).
 
-Sources of the examples: `data/lit/gtdb/gtdb232/` (GTDB r232 tables), type-strain
+Sources of the examples: `data/immensekansasii/gtdb/gtdb232/` (GTDB r232 tables), type-strain
 designations from LPSN, `data/imm/screening_map_*.csv` (lab numbers), `data/illumina/public/*/metadata.tsv` (SRA).
 
 ## 1. The one rule

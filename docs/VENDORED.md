@@ -24,7 +24,7 @@ Change a shared constant in the template and run `bash repos/check_sync.sh --fix
 | `common.load_samples` (QC exclusion rules) | `kansasii-mst/scripts/common.py` | `kansasii-cgmlst/scripts/common.py` | cgmlst keeps complex control strains (NR 128/132/133) and has the `in_pool` column on purpose |
 
 When the alignment or trimming logic changes in `mlsa-kansasii`, apply it to the three copies and rerun their checks
-(`hsp65-refalign` submit_validate must still give 109 correct / 0 wrong for the same reads; `gyrA-refalign` leave-one-out
+(`hsp65-refalign` submit_validate must still give 108 correct / 0 wrong for the same reads; `gyrA-refalign` leave-one-out
 72/72). The vendoring is deliberate: hsp65-refalign and gyrA-refalign are meant to stand alone, and sanger-microsynth is a routine
 tool that must not break when the research repo is reorganised. Nothing imports another repo.
 

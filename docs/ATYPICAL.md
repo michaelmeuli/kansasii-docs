@@ -41,9 +41,9 @@ call them hsp65 types Ib/IIb with WGS subtype I). The three are near-clonal (ANI
 
 ## 2. Project isolates (Mkan329-*)
 
-**hsp65.** No uncontaminated kansasii isolate carries the Korean-type hsp65: of 122 kansasii isolates the closest the assembly amplicon comes to the Korean amplicon is
+**hsp65.** No uncontaminated kansasii isolate carries the Korean-type hsp65: of 121 kansasii isolates the closest the assembly amplicon comes to the Korean amplicon is
 10 differences, and the farthest from the ATCC 12478 amplicon is 1 (`korean_type_check.tsv`). So the atypical lineage is **absent from the project**.
-The Sanger hsp65 reads give 109 correct calls and 0 wrong among the 133 analysed isolates; 24 isolates have no call: 13 whose reads are a *Rothia mucilaginosa*
+The Sanger hsp65 reads give 108 correct calls and 0 wrong among the 132 analysed isolates; 24 isolates have no call: 13 whose reads are a *Rothia mucilaginosa*
 contaminant (`hsp65_read_not_genome`, genomes clean, CheckM <= 3.3 %), 11 whose traces are unusable or poor (details: hsp65-refalign README, `isolates.tsv`).
 
 **gyrA.** gyrA agrees with the genome species in 171 of 171 callable uncontaminated isolates. No kansasii isolate is persicum-like at gyrA and all 28

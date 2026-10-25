@@ -36,8 +36,8 @@ The 5 % threshold was documented as 10 % until 2026-10-21; NR 10 and 21 sit betw
 | hsp65-refalign, mlsa `sanger_vs_wgs` | `contamination_flag` only (035, 106, 113 have an hsp65 read); validates species calls, so low cgMLST coverage is irrelevant | `hsp65-refalign/README.md` |
 | kansasii-mic | flat-profile MIC rows (>= 8 distinct antibiotics with an identical point estimate within one TNR) go to `excluded_qc.csv` with `exclusion_reason`. Currently `output/mic/mhk/excluded_qc.csv` has a header only, so no rows are removed | `kansasii-mic/README.md` |
 
-hsp65-refalign removes only 035, 106 and 113 (136 complex isolates with an hsp65 read, 3 removed, 133 analysed). Its README does not
-say why 010 and 021 are not on that list; I did not check whether they lack an hsp65 read.
+hsp65-refalign removes 021, 035, 106 and 113 (136 complex isolates with an hsp65 read, 4 removed, 132 analysed; rerun 2026-10-25). The first run
+(2026-10-16) predated the 5 % CheckM threshold and kept 021; Mkan329-010 has no Sanger hsp65 read, so it never appears there.
 
 ## 3. Non-complex and control strains
 
@@ -56,7 +56,7 @@ A matching hsp65 variant exists (`submit_hsp65_iupac_excluded.sbatch`).
 
 ## 5. Per-analysis no-calls (not exclusions)
 
-- hsp65 vs WGS: of 133 analysed isolates 109 get a call (all correct) and 24 do not: 13 Rothia mucilaginosa contaminant reads (genomes are clean), 10 unusable traces, 1 poor reads (Mkan329-102). These isolates stay in all genome analyses. Details in `hsp65-refalign/README.md`.
+- hsp65 vs WGS: of 132 analysed isolates 108 get a call (all correct) and 24 do not: 13 Rothia mucilaginosa contaminant reads (genomes are clean), 10 unusable traces, 1 poor reads (Mkan329-102). These isolates stay in all genome analyses. Details in `hsp65-refalign/README.md`.
 - 69 of 177 complex isolates have no MLSA call, probably missing Sanger reads (`immensekansasii/SPECIES.md`).
 
 ## 6. Resequenced duplicates

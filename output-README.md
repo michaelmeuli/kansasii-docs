@@ -13,7 +13,7 @@ Results, one directory per repo or analysis. Scripts write here; they never read
 | `mst`, `cgmlst`, `ridom` | kansasii-mst, kansasii-cgmlst (`ridom`: all assemblies except isolates with `contamination_flag` = contaminated, CheckM > 5 %: Mkan329-010, -021, -035, -106, -113; `ridom_assemblies.tar.gz` is built by kansasii-cgmlst `10_export_ridom.py`: real files, renamed M001 ..., plus 7 reference genomes) |
 | `sanger-microsynth/<date>_species_panel` | sanger-microsynth |
 | `imm`, `iTOL`, `<run_name>` | immensekansasii (pipeline results, iTOL files) |
-| `lit`, `kansasii_complex_gtdb_representatives` | immensekansasii (GTDB look-ups, reference tree) |
+| `immensekansasii`, `kansasii_complex_gtdb_representatives` | immensekansasii (GTDB look-ups, reference tree) |
 | `*_Mkan329-035` | one-off contamination diagnostics for isolate Mkan329-035 |
 | `mlsa-old` | obsolete, do not use |
 

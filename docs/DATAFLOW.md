@@ -62,6 +62,7 @@ flowchart TD
 | `output/atypical_samples/` | `kansasii-docs/bin/make_atypical_table.py` | reports only (docs/ATYPICAL.md) |
 | `data/imm/ridom-kansasii-plasmids.csv` | NCBI Genome export (manual) | docs/PLASMIDS.md only |
 | `output/ridom_assemblies.tar.gz`, `output/ridom_assemblies.zip` | `kansasii-cgmlst/scripts/10_export_ridom.py` | Ridom SeqSphere+ (manual) |
+| `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of `output/iTOL/mkan329_patients/` (tree, AST dots, species ring) | figure only, no script reads it |
 | `output/arm/`, `output/amr_bam/` | `kansasii-amr-marker-screen/submit_arm*.sbatch` | reports only |
 
 `screening_map_results.csv` has `NGS_USED` (after `NGS_MM`): the sequencing data used per isolate.

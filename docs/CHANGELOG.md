@@ -3,6 +3,7 @@
 Notable changes to data tables and outputs, newest first.
 
 ## 2026-10-29
+- New figure `data/imm/midpoint-rooted-tree.{pdf,svg}`: iTOL export of the midpoint-rooted patient tree with AST dots and species ring (inputs in `output/iTOL/mkan329_patients/`); made by hand, documented in `DATAFLOW.md` and `immensekansasii/WORKFLOW.md`.
 - New `docs/PLASMIDS.md`: plasmids excluded from the Ridom targets (`data/imm/ridom-kansasii-plasmids.csv`) and from the kansasii-cgmlst scheme.
 - `make_atypical_table.py` also writes `output/atypical_samples/ATYPICAL_SAMPLES.docx` (same tables as the .md, landscape A4; needs python-docx, so run it in `env_mlsa`).
 - `kansasii-cgmlst/scripts/10_export_ridom.py` now also writes `output/ridom_assemblies.zip` (same files and layout as the tarball; verified against it).

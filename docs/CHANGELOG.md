@@ -3,6 +3,7 @@
 Notable changes to data tables and outputs, newest first.
 
 ## 2026-10-29
+- New `docs/PLASMIDS.md`: plasmids excluded from the Ridom targets (`data/imm/ridom-kansasii-plasmids.csv`) and from the kansasii-cgmlst scheme.
 - `make_atypical_table.py` also writes `output/atypical_samples/ATYPICAL_SAMPLES.docx` (same tables as the .md, landscape A4; needs python-docx, so run it in `env_mlsa`).
 - `kansasii-cgmlst/scripts/10_export_ridom.py` now also writes `output/ridom_assemblies.zip` (same files and layout as the tarball; verified against it).
 - Deleted the stale `output/ridom/` (hand-made symlinks incl. `Mkan329-055`/`-184`, no references, unrenamed controls) and `output/ridom.zip`

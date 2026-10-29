@@ -2,6 +2,11 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-10-29
+- `kansasii-cgmlst/scripts/10_export_ridom.py` now also writes `output/ridom_assemblies.zip` (same files and layout as the tarball; verified against it).
+- Deleted the stale `output/ridom/` (hand-made symlinks incl. `Mkan329-055`/`-184`, no references, unrenamed controls) and `output/ridom.zip`
+  (a zip of it). The Ridom export is only `ridom_assemblies.tar.gz` / `.zip`.
+
 ## 2026-10-25
 - **Repo layout and constants unified (all repos).** `templates/kansasii_paths.{py,sh}` define every shared path with one name; each repo vendors the
   Python file (checked by `check_sync.sh`). Renames: `GTDB_MLSA_ROOT`/`GTDB_GENOMES` -> `GTDB_COMPLEX_GENOMES`, `REFERENCES`/`GTDB_REPS` ->

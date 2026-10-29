@@ -11,7 +11,7 @@ Results, one directory per repo or analysis. Scripts write here; they never read
 | `gyrA_refalign` | gyrA-refalign (`project/`, `public/` separate) |
 | `arm`, `amr_bam` | kansasii-amr-marker-screen |
 | `mst`, `cgmlst` | kansasii-mst, kansasii-cgmlst |
-| `ridom_assemblies.tar.gz` | kansasii-cgmlst `10_export_ridom.py` (manifest `ridom_assemblies.MANIFEST.txt`): the `keep` cohort as real files renamed M001 ..., plus 7 reference genomes. `ridom/` (hand-made symlinks of 2026-10-15..21, all assemblies except contaminated) is no longer read by any script (see `output-old/`) |
+| `ridom_assemblies.tar.gz`, `ridom_assemblies.zip` (same content) | kansasii-cgmlst `10_export_ridom.py` (manifest `ridom_assemblies.MANIFEST.txt`): the `keep` cohort as real files renamed M001 ..., plus 7 reference genomes. |
 | `atypical_samples` | kansasii-docs `bin/make_atypical_table.py` (samples with an atypical gyrA or hsp65, project and public; `docs/ATYPICAL.md`) |
 | `SUMMARY.html` | kansasii-docs `bin/make_summary.py` |
 | `sanger-microsynth/<date>_species_panel` | sanger-microsynth |

@@ -30,8 +30,7 @@ The 5 % threshold was documented as 10 % until 2026-10-21; NR 10 and 21 sit betw
 | kansasii-cgmlst steps 08-10 (distances, MSTs, Ridom export) | `excluded`. Step 00 takes 175 QC-passing assemblies: no contaminated, no non-complex; ATCC/DSM controls of complex species (NR 128/132/133) kept | `kansasii-cgmlst/README.md` |
 | kansasii-mst | `excluded` = true, plus control strains (`LABEL` set) and non-complex species | `kansasii-mst/README.md`, `scripts/01_select_samples.py` -> `output/mst/samples_used.tsv` |
 | kansasii-amr-marker-screen | complex species with `excluded` = false | `kansasii-amr-marker-screen/README.md` |
-| `output/ridom_assemblies.tar.gz` (cgMLST step 10) | `keep`, as for the distance matrices and MSTs: 174 cohort assemblies (no `excluded`, no non-complex, so without 055 and 184; the 3 complex controls kept) + 7 public references = 181 | `kansasii-cgmlst/scripts/10_export_ridom.py` |
-| `output/ridom/` (older hand-made collection, 2026-10-21 or earlier; no longer read by any script) | all assemblies except `contamination_flag` = contaminated (010, 021, 035, 106, 113), so 055, 184 and the other non-complex rows are in it; 181 files, no references | `output-README.md`, CHANGELOG |
+| `output/ridom_assemblies.tar.gz` and `.zip` (cgMLST step 10) | `keep`, as for the distance matrices and MSTs: 174 cohort assemblies (no `excluded`, no non-complex, so without 055 and 184; the 3 complex controls kept) + 7 public references = 181 | `kansasii-cgmlst/scripts/10_export_ridom.py` |
 | gyrA-refalign | no exclusion: every Mkan329 isolate except the reference strains 126-133 is called; contaminated and non-complex isolates are flagged (`contaminated`, `wgs_species`) and listed in `docs/ATYPICAL.md` | `gyrA-refalign/README.md` |
 | hsp65-refalign, mlsa `sanger_vs_wgs` | `contamination_flag` only (035, 106, 113 have an hsp65 read); validates species calls, so low cgMLST coverage is irrelevant | `hsp65-refalign/README.md` |
 | kansasii-mic | flat-profile MIC rows (>= 8 distinct antibiotics with an identical point estimate within one TNR) go to `excluded_qc.csv` with `exclusion_reason`. Currently `output/mic/mhk/excluded_qc.csv` has a header only, so no rows are removed | `kansasii-mic/README.md` |
@@ -61,11 +60,10 @@ A matching hsp65 variant exists (`submit_hsp65_iupac_excluded.sbatch`).
 
 ## 6. Resequenced duplicates
 
-The `-jc` resequencing copies (`Mkan329-009-jc`, `Mkan329-056-jc`) were removed from `output/ridom/` (originals kept; CHANGELOG, 185 -> 183).
 `NGS_USED` in `screening_map_results.csv` says which sequencing run is used per isolate (`NGS_MM` if present, else `NGS_JC`); the resequencing run `mkan329_jc` is otherwise not used (`DATAFLOW.md`).
 Mkan329-056 was suspected contaminated, resequenced as `Mkan329-056-jc`; `contamination_flag` does not exclude it (`immensekansasii/WORKFLOW.md`).
 
-## 7. Ridom export (`output/ridom_assemblies.tar.gz`)
+## 7. Ridom export (`output/ridom_assemblies.tar.gz`, `.zip`)
 
 Rerun on 2026-10-24 (cgMLST step 10, job 7543102, 17.5 min) after `excluded` was extended to NR 184. The result is unchanged: the same 181
 FASTA files plus `ridom/metadata.tsv`, identical content hashes (the tarball differs only in embedded timestamps). The export contains

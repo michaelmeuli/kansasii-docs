@@ -64,7 +64,7 @@ Genomes are GTDB representatives (`$GTDB_REPRESENTATIVES/<accession>_query.fasta
 
 ## B. Literature behind each marker
 
-Generated from `config/markers.tsv` (DOI column, or the PMID in `notes` when the DOI is NA). "Species" is where the marker was observed; only *M. kansasii* evidence is direct.
+Generated from `config/markers.tsv` (`citekey` is derived from the DOI column, or the PMID in `notes` when the DOI is NA). "Species" is where the marker was observed; only *M. kansasii* evidence is direct.
 
 | Gene | Marker | Species | Evidence | Citekey |
 |---|---|---|---|---|
@@ -134,7 +134,19 @@ Rows with no literature source in `markers.tsv`:
 - NA: NO VALIDATED MARKER (doxycycline)
 - NA: NO VALIDATED MARKER (sulfamethoxazole-trimethoprim)
 
-Candidate (not asserted): `wang2019roles` reports Lys43Arg, A514C and the Glu92Asp + Ala205Ala gidB pair in 302 *M. tuberculosis* isolates, so it probably covers gid A205A and could be added to that row; K88R, 903-906, 512-516 and 1401/1402 need a source search.
+### Proposed sources for the unsourced rows (in the `citekey` column of `markers.tsv` with a `proposed:` prefix)
+
+Found by PubMed search 2026-10-29; abstracts read, full texts not. All but the last two rows are *M. tuberculosis*.
+
+| Row | Proposed citekey | What the abstract supports |
+|---|---|---|
+| rpsL K88R | `hlaing2017mutations`, `khosravi2017frequency` | Lys88Arg (and Lys88Thr) in STR-R isolates; 3 of 32 in the Iranian series |
+| gid A205A | `sun2016characterization`, `jagielski2014screening`, `wang2019roles` | E92D (a276c) + A205A (a615g) co-occur and mark the Beijing lineage |
+| rrs 512-516 / 903-906 (530 loop and 912 region) | `finken1993molecular`, `cooksey1996characterization`, `shrestha2020molecular` | STR resistance from rrs changes in the 530 pseudoknot and 912 loop; exact positions are not in the abstracts, check the full texts |
+| doxycycline GAP | `li2023vitro` | poor in vitro activity of six tetracyclines incl. doxycycline against *M. kansasii*, MIC90 >= 8; supports the 96% resistance, no mechanism |
+| SXT GAP | `liu2015role` | folP1/folP2 expression changes SMX/TMP MIC in *M. smegmatis*/Mtb; mechanism only, no *M. kansasii* marker |
+
+No source found for rrs 1401/1402 as a streptomycin marker. Positions 1401/1402 are the usual aminoglycoside/capreomycin positions in *M. tuberculosis* (to be confirmed), so the row label may need rechecking. Likewise 903-906 sits in the 912 region, not the 530 loop that the row name says.
 
 No marker rows at all (genes extracted but not screened): tap, folP (2 copies), folC, dfrA, thyA. Their only link to resistance is the drug name in `config/targets.tsv`.
 

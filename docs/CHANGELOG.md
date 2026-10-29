@@ -3,7 +3,7 @@
 Notable changes to data tables and outputs, newest first.
 
 ## 2026-10-29
-- New `docs/REFERENCES.md` and `docs/references.bib` (23 papers): sequence references (accessions, lengths, sequence checksums) and the literature behind each marker of `kansasii-amr-marker-screen`; 7 marker rows still have no source. New `kansasii-amr-marker-screen/scripts/verify_refs.sh` re-fetches the 9 numbering references from NCBI and checks the target coordinates against the GFF (all pass); table in `config/seq_refs.tsv`.
+- New `docs/REFERENCES.md` and `docs/references.bib` (23 papers): sequence references (accessions, lengths, sequence checksums) and the literature behind each marker of `kansasii-amr-marker-screen`; 7 marker rows still have no source. New `kansasii-amr-marker-screen/scripts/verify_refs.sh` re-fetches the 9 numbering references from NCBI and checks the target coordinates against the GFF (all pass); table in `config/seq_refs.tsv`. `config/markers.tsv` gains a `citekey` column (BibTeX key; `proposed:` = candidate source, abstract read only); 9 more papers added to the bib for the unsourced rows.
 - New figure `data/imm/midpoint-rooted-tree.{pdf,svg}` (copy in `output/iTOL/mkan329_patients/`): iTOL export of the midpoint-rooted patient tree with AST dots and species ring; made by hand, documented in `DATAFLOW.md` and `immensekansasii/WORKFLOW.md`.
 - New `docs/PLASMIDS.md`: plasmids excluded from the Ridom targets (`data/imm/ridom-kansasii-plasmids.csv`) and from the kansasii-cgmlst scheme.
 - `make_atypical_table.py` also writes `output/atypical_samples/ATYPICAL_SAMPLES.docx` (same tables as the .md, landscape A4; needs python-docx, so run it in `env_mlsa`).

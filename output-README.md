@@ -16,7 +16,7 @@ Results, one directory per repo or analysis. Scripts write here; they never read
 | `SUMMARY.html` | kansasii-docs `bin/make_summary.py` |
 | `sanger-microsynth/<date>_species_panel` | sanger-microsynth |
 | `imm`, `iTOL`, `<run_name>` | immensekansasii (pipeline results, iTOL files) |
-| `immensekansasii`, `kansasii_complex_gtdb_representatives` | immensekansasii (GTDB look-ups, reference tree) |
+| `immensekansasii` | immensekansasii (GTDB look-ups; the reference-tree run itself stays in `runs/kansasii_complex_gtdb_representatives`, its iTOL files are in `iTOL/`) |
 | `*_Mkan329-035` | one-off contamination diagnostics for isolate Mkan329-035 |
 | `mlsa-old` | obsolete, do not use |
 | `<dir>/logs/` | SLURM logs of the jobs of that directory (`mlsa/logs/legacy/`: logs of before 2026-10-25 that lay in the repo) |

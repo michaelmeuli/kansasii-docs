@@ -54,22 +54,22 @@ flowchart TD
 | `HSP65_AMPLICONS` (`.../kansasii_complex_hsp65_amplicons/`) | `mlsa-kansasii/scripts/06_make_hsp65_references.py` | hsp65-refalign `04/05`, mlsa `submit_hsp65_amplicon_alignment`, sanger-microsynth (flag `--hsp65-amplicons`) |
 | `GYRA_REFERENCES` (`.../kansasii_complex_gyrA/`) | `gyrA-refalign/scripts/01` | gyrA-refalign `02/03` (flag `--gyra-references`) |
 | `GTDB_COMPLEX_GENOMES` (`.../mlsa-kansasii/<species>/`) | `mlsa-kansasii/scripts/02_link_gtdb_kansasii_complex.sh` | mlsa `04/05/08`, gyrA-refalign `01` (flag `--complex-genomes`) |
-| `output/cgmlst/sample_qc.tsv` | `kansasii-cgmlst/scripts/07_summarise_scheme.py` | results table (`cgmlst_called_pct`, `excluded`) |
-| `output/mic/{mhk,mgit}/` | `kansasii-mic/submit_mic.sbatch` (`scripts/01_run_analysis.py`) | results table, amr |
-| `output/mlsa/<program>/` (locus_discovery, sanger_mlsa, sanger_refalign, sanger_vs_wgs, ...) | `mlsa-kansasii` `submit_*.sbatch` (`scripts/04-10`) | results table (`species_sanger_mlsa`/`species_sanger_mlsa_excl`, `species_ref`), sanger-microsynth |
+| `output/kansasii-cgmlst/results/sample_qc.tsv` | `kansasii-cgmlst/scripts/07_summarise_scheme.py` | results table (`cgmlst_called_pct`, `excluded`) |
+| `output/kansasii-mic/results/{mhk,mgit}/` | `kansasii-mic/submit_mic.sbatch` (`scripts/01_run_analysis.py`) | results table, amr |
+| `output/mlsa-kansasii/results/<program>/` (locus_discovery, sanger_mlsa, sanger_refalign, sanger_vs_wgs, ...) | `mlsa-kansasii` `submit_*.sbatch` (`scripts/04-10`) | results table (`species_sanger_mlsa`/`species_sanger_mlsa_excl`, `species_ref`), sanger-microsynth |
 | `runs/<run>/` and `output/<run>/` | `run_IMMENSE.sh` | results table, amr, mst, cgmlst (reads `runs/mkan329/assembly/results/` directly), hsp65/gyrA-refalign |
-| `output/hsp65_refalign/`, `output/gyrA_refalign/{project,public}/` | hsp65-refalign, gyrA-refalign `submit_*.sbatch` | `kansasii-docs/bin/make_atypical_table.py` |
-| `output/atypical_samples/` | `kansasii-docs/bin/make_atypical_table.py` | reports only (docs/ATYPICAL.md) |
+| `output/hsp65-refalign/results/`, `output/gyrA-refalign/results/{project,public}/` | hsp65-refalign, gyrA-refalign `submit_*.sbatch` | `kansasii-docs/bin/make_atypical_table.py` |
+| `output/kansasii-docs/results/atypical_samples/` | `kansasii-docs/bin/make_atypical_table.py` | reports only (docs/ATYPICAL.md) |
 | `data/imm/ridom-kansasii-plasmids.csv` | NCBI Genome export (manual) | docs/PLASMIDS.md only |
-| `output/ridom_assemblies.tar.gz`, `output/ridom_assemblies.zip` | `kansasii-cgmlst/scripts/10_export_ridom.py` | Ridom SeqSphere+ (manual) |
-| `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of `output/iTOL/mkan329_patients/` (tree, AST dots, species ring); copy in that directory | figure only, no script reads it |
-| `output/amr/`, `output/amr_bam/` | `kansasii-amr-marker-screen/submit_amr*.sbatch` | reports only |
+| `output/kansasii-cgmlst/ridom_assemblies.tar.gz`, `output/kansasii-cgmlst/ridom_assemblies.zip` | `kansasii-cgmlst/scripts/10_export_ridom.py` | Ridom SeqSphere+ (manual) |
+| `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of `output/immensekansasii/results/iTOL/mkan329_patients/` (tree, AST dots, species ring); copy in that directory | figure only, no script reads it |
+| `output/kansasii-amr-marker-screen/results/assembly/`, `output/kansasii-amr-marker-screen/results/bam/` | `kansasii-amr-marker-screen/submit_amr*.sbatch` | reports only |
 
 `screening_map_results.csv` has `NGS_USED` (after `NGS_MM`): the sequencing data used per isolate.
 If `NGS_MM` was done it is used, not `NGS_JC`; `NGS_JC` only if there is no `NGS_MM` (Mkan329-001..133
 = `NGS_MM`, 134..186 = `NGS_JC`). Mkan329-009 and -056 have both and use `NGS_MM`; their `-jc`
 resequencing (run `mkan329_jc`) is not used. The canonical files are in `data/imm/` (`SCREENING_MAP_LINK`, `SCREENING_MAP_RESULTS`); scripts read only these. `output/` gets a copy
-with a `<file>.MANIFEST.txt` from 02 and 06; `output/imm/` and `output/iTOL/mkan329/` hold older copies kept by hand (not read by any script).
+with a `<file>.MANIFEST.txt` from 02 and 06; `output/immensekansasii/results/imm/` and `output/immensekansasii/results/iTOL/mkan329/` hold older copies kept by hand (not read by any script).
 
 `bash immensekansasii/scripts/run_downstream.sh` runs every row above except the pipeline and sanger-microsynth; the order of
 its dependency chain is the order of this table.

@@ -7,6 +7,18 @@ REPOS=$ROOT/repos
 DATA=$ROOT/data
 RUNS=$ROOT/runs
 OUTPUT_ROOT=$ROOT/output
+# One directory per repo below OUTPUT_ROOT, named exactly like the repo (results/, logs/, MANIFEST.txt inside).
+OUT_AMR=$OUTPUT_ROOT/kansasii-amr-marker-screen
+OUT_CGMLST=$OUTPUT_ROOT/kansasii-cgmlst
+OUT_DOCS=$OUTPUT_ROOT/kansasii-docs
+OUT_GWAS=$OUTPUT_ROOT/kansasii-gwas
+OUT_MIC=$OUTPUT_ROOT/kansasii-mic
+OUT_MST=$OUTPUT_ROOT/kansasii-mst
+OUT_MLSA=$OUTPUT_ROOT/mlsa-kansasii
+OUT_GYRA=$OUTPUT_ROOT/gyrA-refalign
+OUT_HSP65=$OUTPUT_ROOT/hsp65-refalign
+OUT_IMM=$OUTPUT_ROOT/immensekansasii
+OUT_MICROSYNTH=$OUTPUT_ROOT/sanger-microsynth
 MANIFEST_SCRIPT=$REPOS/kansasii-docs/bin/write_manifest.sh
 
 GTDB_DIR=$DATA/gtdb_genomes/Mycobacteriaceae
@@ -17,7 +29,7 @@ HSP65_AMPLICONS=$GTDB_DIR/kansasii_complex_hsp65_amplicons
 GYRA_REFERENCES=$GTDB_DIR/kansasii_complex_gyrA
 GTDB_RELEASE=232
 GTDB_METADATA_DIR=$DATA/immensekansasii/gtdb/gtdb$GTDB_RELEASE
-GTDB_ACCESSIONS_DIR=$OUTPUT_ROOT/immensekansasii/gtdb/gtdb$GTDB_RELEASE
+GTDB_ACCESSIONS_DIR=$OUT_IMM/gtdb/gtdb$GTDB_RELEASE
 ATCC12478_ACCESSION=GCF_000157895.3
 ATCC12478_DIR=$NCBI_DATASET/$ATCC12478_ACCESSION
 ATCC12478_FASTA=$ATCC12478_DIR/${ATCC12478_ACCESSION}_ASM15789v2_genomic.fna

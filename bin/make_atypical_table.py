@@ -15,7 +15,7 @@ and the current findings are explained in docs/ATYPICAL.md):
           hsp65_read_not_genome Sanger hsp65 read does not match the isolate's own genome (co-amplified contaminant)
 
 Reads  output/{hsp65_refalign,gyrA_refalign}/..., data/imm/screening_map_results.csv, data/illumina/public/*/selected.tsv.
-Writes output/atypical_samples/{atypical_samples.tsv, ATYPICAL_SAMPLES.md, ATYPICAL_SAMPLES.docx, MANIFEST.txt}.
+Writes output/kansasii-docs/results/atypical_samples/{atypical_samples.tsv, ATYPICAL_SAMPLES.md, ATYPICAL_SAMPLES.docx, MANIFEST.txt}.
 Usage: make_atypical_table.py [--out DIR]    Needs pandas and python-docx (env_mlsa).
 """
 from __future__ import annotations
@@ -28,8 +28,8 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "templates"))
-from kansasii_paths import (ATYPICAL_HSP65_GENOMES, MANIFEST_SCRIPT, OUTPUT_ROOT, PUBLIC_PROJECTS, PUBLIC_READS,  # noqa: E402
-                            REFERENCE_STRAINS, REPOS, SCREENING_MAP_RESULTS)
+from kansasii_paths import (ATYPICAL_HSP65_GENOMES, MANIFEST_SCRIPT, OUT_DOCS, OUT_GYRA, OUT_HSP65, PUBLIC_PROJECTS,  # noqa: E402
+                            PUBLIC_READS, REFERENCE_STRAINS, REPOS, SCREENING_MAP_RESULTS)
 
 MAJOR = {"hsp65_persicum_like", "hsp65_other_species", "gyrA_other_species", "gyrA_divergent", "mixed_culture"}
 COLUMNS = ["source", "sample", "bioproject", "genome_species", "hsp65_closest", "hsp65_status", "gyrA_closest", "gyrA_status",
@@ -225,10 +225,10 @@ def write_docx(df: pd.DataFrame, path: Path) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--hsp65-dir", type=Path, default=OUTPUT_ROOT / "hsp65_refalign")
-    ap.add_argument("--gyra-dir", type=Path, default=OUTPUT_ROOT / "gyrA_refalign")
+    ap.add_argument("--hsp65-dir", type=Path, default=OUT_HSP65 / "results")
+    ap.add_argument("--gyra-dir", type=Path, default=OUT_GYRA / "results")
     ap.add_argument("--screening-map-results", type=Path, default=SCREENING_MAP_RESULTS)
-    ap.add_argument("--out", type=Path, default=OUTPUT_ROOT / "atypical_samples")
+    ap.add_argument("--out", type=Path, default=OUT_DOCS / "results" / "atypical_samples")
     args = ap.parse_args()
     rows = (reference_rows(args.gyra_dir) + project_rows(args.hsp65_dir, args.gyra_dir, args.screening_map_results)
             + public_rows(args.hsp65_dir, args.gyra_dir))

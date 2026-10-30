@@ -8,7 +8,7 @@ Sequence checks: `bash repos/kansasii-amr-marker-screen/scripts/verify_refs.sh` 
 
 ### A1. Genome the targets are taken from
 
-*M. kansasii* ATCC 12478, RefSeq GCF_000157895.3 (ASM15789v2), chromosome NC_022663.1. Genome paper: `wang2015insights`. Coordinates are resolved from the RefSeq GFF by `scripts/02_make_targets.py` (`output/amr/work/targets.resolved.tsv`); `verify_refs.sh` checks locus tag and coordinates against the GFF.
+*M. kansasii* ATCC 12478, RefSeq GCF_000157895.3 (ASM15789v2), chromosome NC_022663.1. Genome paper: `wang2015insights`. Coordinates are resolved from the RefSeq GFF by `scripts/02_make_targets.py` (`output/kansasii-amr-marker-screen/results/assembly/work/targets.resolved.tsv`); `verify_refs.sh` checks locus tag and coordinates against the GFF.
 
 | Gene | Locus tag | Start-end (strand) | Length bp | Numbering reference |
 |---|---|---|---|---|
@@ -29,11 +29,11 @@ Sequence checks: `bash repos/kansasii-amr-marker-screen/scripts/verify_refs.sh` 
 | thyA | MKAN_RS23940 | 5532824-5533624 (+) | 801 | NONE |
 | nucS | MKAN_RS06000 | 1404711-1405382 (-) | 672 | NONE |
 
-Not found in the ATCC 12478 GFF: whiB7, eis (`output/amr/work/targets.missing.txt`). `erm` is looked for by homology only.
+Not found in the ATCC 12478 GFF: whiB7, eis (`output/kansasii-amr-marker-screen/results/assembly/work/targets.missing.txt`). `erm` is looked for by homology only.
 
 ### A2. Numbering references (external sequences)
 
-Published markers use *E. coli* rRNA or *M. tuberculosis* / *M. avium* protein numbering; the pipeline transfers them by alignment. Files are in `output/amr/refs/`, listed in `config/seq_refs.tsv`.
+Published markers use *E. coli* rRNA or *M. tuberculosis* / *M. avium* protein numbering; the pipeline transfers them by alignment. Files are in `output/kansasii-amr-marker-screen/results/assembly/refs/`, listed in `config/seq_refs.tsv`.
 
 | File | Accession | Organism | Length | sha256 (first 16, of sequence) | Numbers |
 |---|---|---|---|---|---|

@@ -52,7 +52,7 @@ it after a fresh clone.
 - **Which file feeds which repo (with diagram):** [docs/DATAFLOW.md](docs/DATAFLOW.md).
 - **Which samples are excluded, and why:** [docs/EXCLUSIONS.md](docs/EXCLUSIONS.md).
 - **Samples with an atypical gyrA or hsp65 (project and public):** [docs/ATYPICAL.md](docs/ATYPICAL.md); the table is
-  `output/atypical_samples/atypical_samples.tsv`.
+  `output/kansasii-docs/results/atypical_samples/atypical_samples.tsv`.
 - **Sequence and literature references of the AMR marker screen (accessions, checksums, BibTeX):** [docs/REFERENCES.md](docs/REFERENCES.md), [docs/references.bib](docs/references.bib).
 - **Code copied between repos (refalign, sanger_io, kansasii_paths):** [docs/VENDORED.md](docs/VENDORED.md).
 - **Run everything after the pipeline:** `bash repos/immensekansasii/scripts/run_downstream.sh --dry-run`.

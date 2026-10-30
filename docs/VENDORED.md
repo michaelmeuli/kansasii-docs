@@ -30,5 +30,5 @@ tool that must not break when the research repo is reorganised. Nothing imports 
 
 ## 3. Copies of data tables
 
-`output/screening_map_{link,results}.csv` (+ `.MANIFEST.txt`) are copies of the files in `data/imm/` written by
+`output/immensekansasii/results/screening_map_{link,results}.csv` (+ `.MANIFEST.txt`) are copies of the files in `data/imm/` written by
 `immensekansasii/scripts/02` and `06`; scripts read only `data/imm/`. See `DATAFLOW.md`.

@@ -6,8 +6,8 @@ kansasii are only 3 bases apart). A sample is called **atypical** here when one 
 whole genome gives (GTDB-Tk / ANI), or is unlike every reference. This page lists every such sample, project isolates and public
 data separately, says what is known about each and what is not.
 
-**Source of truth:** `output/atypical_samples/atypical_samples.tsv` (one row per sample and flag, with strain, country and BioSample for
-public samples) and `output/atypical_samples/ATYPICAL_SAMPLES.md` (the same as tables), written by
+**Source of truth:** `output/kansasii-docs/results/atypical_samples/atypical_samples.tsv` (one row per sample and flag, with strain, country and BioSample for
+public samples) and `output/kansasii-docs/results/atypical_samples/ATYPICAL_SAMPLES.md` (the same as tables), written by
 `kansasii-docs/bin/make_atypical_table.py` from the outputs of `hsp65-refalign` and `gyrA-refalign`. If this page and the table disagree,
 the table wins. Figures below are from the run of 2026-10-25 (project: 186 rows of `screening_map_results.csv`, 178 Mkan329 isolates
 after the reference strains 126-133; public: 1039 GTDB-complex samples of the four BioProjects).
@@ -67,7 +67,7 @@ persicum-like gyrA calls are genome-persicum. Exceptions and notes:
 | SRR27048434 | PRJNA1048499 | | pseudokansasii (GCA_000524055.1, 0 diffs) | kansasii | GTDB-kansasii with a pseudokansasii hsp65; hsp65 is the only discordant gene, gyrA is kansasii. Sanger hsp65 would call it pseudokansasii |
 | SRR27048675 | PRJNA1048499 | | attenuatum (GCA_002086865.1, 0 diffs) | kansasii | as above, attenuatum-like hsp65 |
 
-For the 80 GTDB-persicum samples hsp65 was run separately (`output/hsp65_refalign/public_persicum/`, needed to judge the gyrA cases below): all 80 have a persicum-like hsp65
+For the 80 GTDB-persicum samples hsp65 was run separately (`output/hsp65-refalign/results/public_persicum/`, needed to judge the gyrA cases below): all 80 have a persicum-like hsp65
 (69 closest to a persicum genome, 11 to the Korean-type kansasii genomes with persicum as runner-up), including the five whose gyrA is kansasii-like. So in those five
 the two markers disagree: hsp65 persicum, gyrA kansasii.
 

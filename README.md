@@ -31,7 +31,7 @@ file. Repo-specific details live in each repo's own README.
 | `mlsa-kansasii` | species-complex differentiation by MLSA, Sanger and reference alignment | `submit_*.sbatch` (`scripts/04-10_*.py`) |
 | `hsp65-refalign` | checks that hsp65 reference alignment of the Sanger reads gives the genome species; atypical hsp65 in project and public assemblies | `submit_validate/korean_check/public.sbatch` |
 | `gyrA-refalign` | gyrA from assemblies vs 72 public genomes: persicum-like/other species, project and public separate | `submit_gyrA.sbatch` |
-| `kansasii-amr-marker-screen` | literature AMR-marker screen on assemblies and reads | `submit_arm*.sbatch` |
+| `kansasii-amr-marker-screen` | literature AMR-marker screen on assemblies and reads | `submit_amr*.sbatch` |
 | `kansasii-mst` | core-SNP minimum spanning tree figures | `submit_all.sbatch` |
 | `kansasii-cgmlst` | chewBBACA cgMLST scheme and Ridom-style MST | `submit_all.sbatch` |
 | `sanger-microsynth` | routine: fetch Microsynth Sanger results by mail, identify, report | `submit_fetch_analyse.sbatch` |

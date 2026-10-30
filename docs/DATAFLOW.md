@@ -34,9 +34,9 @@ flowchart TD
   MLSA --> RES
   PIPE --> RES
   RES --> RT[(screening_map_results.csv)]
-  RT --> ARM[kansasii-amr-marker-screen]
-  MIC --> ARM
-  PIPE --> ARM
+  RT --> AMR[kansasii-amr-marker-screen]
+  MIC --> AMR
+  PIPE --> AMR
   PIPE --> MST[kansasii-mst]
   PIPE --> CG[kansasii-cgmlst]
   RT --> ITOL[iTOL labels, SAMPLES.md]
@@ -48,22 +48,22 @@ flowchart TD
 
 | File | Produced by | Consumed by |
 |---|---|---|
-| `data/imm/screening_map_link.csv` | `immensekansasii/scripts/02_screening_map_link.py` | mic, mlsa, arm, mst, cgmlst |
-| `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | arm (reannot), mlsa sanger_vs_wgs, hsp65-refalign, gyrA-refalign, iTOL, SAMPLES.md, mst, cgmlst (`excluded`) |
-| `GTDB_REPRESENTATIVES` (`data/gtdb_genomes/.../kansasii_complex_gtdb_representatives/`) | `immensekansasii/scripts/03_run_gtdb_tree.sh` (links of the 7 type-strain genomes) | mlsa `09/10`, hsp65-refalign `01`, sanger-microsynth, cgmlst `00`, arm `03b` (flag `--gtdb-representatives` / `-g`) |
+| `data/imm/screening_map_link.csv` | `immensekansasii/scripts/02_screening_map_link.py` | mic, mlsa, amr, mst, cgmlst |
+| `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | amr (reannot), mlsa sanger_vs_wgs, hsp65-refalign, gyrA-refalign, iTOL, SAMPLES.md, mst, cgmlst (`excluded`) |
+| `GTDB_REPRESENTATIVES` (`data/gtdb_genomes/.../kansasii_complex_gtdb_representatives/`) | `immensekansasii/scripts/03_run_gtdb_tree.sh` (links of the 7 type-strain genomes) | mlsa `09/10`, hsp65-refalign `01`, sanger-microsynth, cgmlst `00`, amr `03b` (flag `--gtdb-representatives` / `-g`) |
 | `HSP65_AMPLICONS` (`.../kansasii_complex_hsp65_amplicons/`) | `mlsa-kansasii/scripts/06_make_hsp65_references.py` | hsp65-refalign `04/05`, mlsa `submit_hsp65_amplicon_alignment`, sanger-microsynth (flag `--hsp65-amplicons`) |
 | `GYRA_REFERENCES` (`.../kansasii_complex_gyrA/`) | `gyrA-refalign/scripts/01` | gyrA-refalign `02/03` (flag `--gyra-references`) |
 | `GTDB_COMPLEX_GENOMES` (`.../mlsa-kansasii/<species>/`) | `mlsa-kansasii/scripts/02_link_gtdb_kansasii_complex.sh` | mlsa `04/05/08`, gyrA-refalign `01` (flag `--complex-genomes`) |
 | `output/cgmlst/sample_qc.tsv` | `kansasii-cgmlst/scripts/07_summarise_scheme.py` | results table (`cgmlst_called_pct`, `excluded`) |
-| `output/mic/{mhk,mgit}/` | `kansasii-mic/submit_mic.sbatch` (`scripts/01_run_analysis.py`) | results table, arm |
+| `output/mic/{mhk,mgit}/` | `kansasii-mic/submit_mic.sbatch` (`scripts/01_run_analysis.py`) | results table, amr |
 | `output/mlsa/<program>/` (locus_discovery, sanger_mlsa, sanger_refalign, sanger_vs_wgs, ...) | `mlsa-kansasii` `submit_*.sbatch` (`scripts/04-10`) | results table (`species_sanger_mlsa`/`species_sanger_mlsa_excl`, `species_ref`), sanger-microsynth |
-| `runs/<run>/` and `output/<run>/` | `run_IMMENSE.sh` | results table, arm, mst, cgmlst (reads `runs/mkan329/assembly/results/` directly), hsp65/gyrA-refalign |
+| `runs/<run>/` and `output/<run>/` | `run_IMMENSE.sh` | results table, amr, mst, cgmlst (reads `runs/mkan329/assembly/results/` directly), hsp65/gyrA-refalign |
 | `output/hsp65_refalign/`, `output/gyrA_refalign/{project,public}/` | hsp65-refalign, gyrA-refalign `submit_*.sbatch` | `kansasii-docs/bin/make_atypical_table.py` |
 | `output/atypical_samples/` | `kansasii-docs/bin/make_atypical_table.py` | reports only (docs/ATYPICAL.md) |
 | `data/imm/ridom-kansasii-plasmids.csv` | NCBI Genome export (manual) | docs/PLASMIDS.md only |
 | `output/ridom_assemblies.tar.gz`, `output/ridom_assemblies.zip` | `kansasii-cgmlst/scripts/10_export_ridom.py` | Ridom SeqSphere+ (manual) |
 | `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of `output/iTOL/mkan329_patients/` (tree, AST dots, species ring); copy in that directory | figure only, no script reads it |
-| `output/arm/`, `output/amr_bam/` | `kansasii-amr-marker-screen/submit_arm*.sbatch` | reports only |
+| `output/amr/`, `output/amr_bam/` | `kansasii-amr-marker-screen/submit_amr*.sbatch` | reports only |
 
 `screening_map_results.csv` has `NGS_USED` (after `NGS_MM`): the sequencing data used per isolate.
 If `NGS_MM` was done it is used, not `NGS_JC`; `NGS_JC` only if there is no `NGS_MM` (Mkan329-001..133

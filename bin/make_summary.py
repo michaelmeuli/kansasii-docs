@@ -2,7 +2,7 @@
 """Project overview page: one section per output directory with its MANIFEST.txt and its figures.
 
 Usage: make_summary.py [--root DIR] [--out FILE]
-Reads  DIR/output/*/MANIFEST.txt and DIR/output/*.MANIFEST.txt (written by write_manifest.sh; the latter
+Reads  DIR/output/<repo>/{MANIFEST.txt,results/**/MANIFEST.txt} and loose <file>.MANIFEST.txt (written by write_manifest.sh; the latter
 describe single files in output/ itself, e.g. screening_map_link.csv) and lists figures (png/svg/pdf, two
 levels deep; `logs`, `work` and obsolete `*-old` directories are skipped). Writes a self-contained
 HTML file next to the figures (default DIR/output/SUMMARY.html), so relative image links work.
@@ -77,12 +77,13 @@ def manifest_table(man: Path) -> str:
 
 
 def sub_manifests(d: Path) -> list[Path]:
-    return sorted(d.glob("*/MANIFEST.txt"))
+    """Manifests of the analysis directories: <d>/*/MANIFEST.txt, <d>/results/MANIFEST.txt and <d>/results/*/MANIFEST.txt."""
+    return sorted({*d.glob("*/MANIFEST.txt"), *d.glob("results/MANIFEST.txt"), *d.glob("results/*/MANIFEST.txt")})
 
 
 def file_manifests(output: Path) -> str:
     """Section for manifests of loose files directly in output/ (MANIFEST_NAME=<file>.MANIFEST.txt)."""
-    mans = sorted(output.glob("*.MANIFEST.txt"))
+    mans = sorted({*output.glob("*.MANIFEST.txt"), *output.glob("*/*.MANIFEST.txt"), *output.glob("*/results/*.MANIFEST.txt")})
     if not mans:
         return ""
     rows = "".join(
@@ -98,7 +99,7 @@ def section(d: Path, out_dir: Path) -> str:
     if man.exists():
         meta = manifest_table(man) + "".join(f"<h3>{html.escape(e.stem.removeprefix('MANIFEST_'))}</h3>{manifest_table(e)}" for e in extra)
     elif sub_manifests(d):
-        meta = "".join(f"<h3>{html.escape(s.parent.name)}</h3>{manifest_table(s)}" for s in sub_manifests(d))
+        meta = "".join(f"<h3>{html.escape(str(s.parent.relative_to(d)))}</h3>{manifest_table(s)}" for s in sub_manifests(d))
     else:
         meta = "<p class=warn>No MANIFEST.txt: produced before manifests were introduced, or the run has not finished.</p>"
     last = time.strftime("%Y-%m-%d", time.localtime(newest)) if newest else "-"
@@ -125,7 +126,7 @@ def main() -> None:
     dirs = sorted(d for d in (root / "output").iterdir() if d.is_dir() and not d.name.endswith("-old"))
     with_m = [d for d in dirs if (d / "MANIFEST.txt").exists() or sub_manifests(d)]
     body = "".join(section(d, out.parent) for d in dirs) + file_manifests(root / "output")
-    n_files = len(list((root / "output").glob("*.MANIFEST.txt")))
+    n_files = len(list((root / "output").glob("*.MANIFEST.txt"))) + len(list((root / "output").glob("*/*.MANIFEST.txt"))) + len(list((root / "output").glob("*/results/*.MANIFEST.txt")))
     page = f"""<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
 <title>kansasii output summary</title>
 <style>

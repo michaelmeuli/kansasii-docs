@@ -44,6 +44,8 @@ flowchart TD
   MLSA -.references.-> MS
 ```
 
+> **Ridom is the source of truth** for cgMLST/MST/clusters (2026-10-30, [RIDOM.md](RIDOM.md)). `kansasii-mst` and `kansasii-cgmlst` in the diagram are obsolete; only the Ridom input export and `sample_qc.tsv` are still used.
+
 ## Key files
 
 | File | Produced by | Consumed by |
@@ -60,6 +62,7 @@ flowchart TD
 | `runs/<run>/` and `output/<run>/` | `run_IMMENSE.sh` | results table, amr, mst, cgmlst (reads `runs/mkan329/assembly/results/` directly), hsp65/gyrA-refalign |
 | `output/hsp65-refalign/results/`, `output/gyrA-refalign/results/{project,public}/` | hsp65-refalign, gyrA-refalign `submit_*.sbatch` | `kansasii-docs/bin/make_atypical_table.py` |
 | `output/kansasii-docs/results/atypical_samples/` | `kansasii-docs/bin/make_atypical_table.py` | reports only (docs/ATYPICAL.md) |
+| `data/imm/ridom-clusters.csv`, `ridom-comparison-table-mkan329.csv` (+ further `ridom-*`, see RIDOM.md) | Ridom SeqSphere+ GUI export (manual) | `immensekansasii/scripts/06` (`ridom_*` columns); report |
 | `data/imm/ridom-kansasii-plasmids.csv` | NCBI Genome export (manual) | docs/PLASMIDS.md only |
 | `output/kansasii-cgmlst/ridom_assemblies.tar.gz`, `output/kansasii-cgmlst/ridom_assemblies.zip` | `kansasii-cgmlst/scripts/10_export_ridom.py` | Ridom SeqSphere+ (manual) |
 | `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of `output/immensekansasii/results/iTOL/mkan329_patients/` (tree, AST dots, species ring); copy in that directory | figure only, no script reads it |

@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-10-30 (Ridom)
+- Ridom SeqSphere+ is the source of truth for cgMLST, MST and clusters and for the final report. `kansasii-mst` and `kansasii-cgmlst` are marked obsolete (README/CLAUDE.md banners, `kansasii-docs/README.md`); outputs kept, nothing deleted. New `docs/RIDOM.md`: rules for GUI exports in `data/imm/ridom-*`, list of the 12 exports still needed, gaps (SNP distances have no Ridom equivalent), remaining dependencies (`excluded` still reads kansasii-cgmlst `sample_qc.tsv`). Found: `ridom-comparison-table-mkan329.csv` has 149 of 181 isolates (M067-M098 missing).
+
 ## 2026-10-30 (rename)
 - `output/arm` renamed to `output/amr` (the temporary compat symlink `output/arm -> amr` was removed the same day); `kansasii-amr-marker-screen` scripts renamed `submit_arm*.sbatch` -> `submit_amr*.sbatch`, `run_arm*.sh` -> `run_amr*.sh`, `ARM_DIR` -> `AMR_DIR`. `output/amr_bam/refs` symlink repointed. Entries below and old logs keep the old name; column `arm_mut` of `screening_map_results.csv` is now `amr_mut` (header renamed in `data/imm`, `output/` and `output/imm` copies; flag `--arm-calls` is now `--amr-calls`).
 

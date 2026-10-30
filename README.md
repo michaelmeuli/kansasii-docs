@@ -20,6 +20,8 @@ file. Repo-specific details live in each repo's own README.
 | `scratch/` | unexplained one-off files (`scratch/README.md`) | safe to delete |
 | `singularity_images_cache/` | container cache | regenerable |
 
+**Source of truth:** typing results (cgMLST, MST, clusters) and the final report come from Ridom SeqSphere+; GUI exports go to `data/imm/ridom-*` ([docs/RIDOM.md](docs/RIDOM.md) lists what is still to be exported). `kansasii-mst` and `kansasii-cgmlst` are obsolete.
+
 **Rule:** scripts read from `data/` and `runs/` only. `output/` receives copies and results.
 
 ## Repos
@@ -32,8 +34,8 @@ file. Repo-specific details live in each repo's own README.
 | `hsp65-refalign` | checks that hsp65 reference alignment of the Sanger reads gives the genome species; atypical hsp65 in project and public assemblies | `submit_validate/korean_check/public.sbatch` |
 | `gyrA-refalign` | gyrA from assemblies vs 72 public genomes: persicum-like/other species, project and public separate | `submit_gyrA.sbatch` |
 | `kansasii-amr-marker-screen` | literature AMR-marker screen on assemblies and reads | `submit_amr*.sbatch` |
-| `kansasii-mst` | core-SNP minimum spanning tree figures | `submit_all.sbatch` |
-| `kansasii-cgmlst` | chewBBACA cgMLST scheme and Ridom-style MST | `submit_all.sbatch` |
+| `kansasii-mst` | core-SNP minimum spanning tree figures. **OBSOLETE**, superseded by Ridom ([docs/RIDOM.md](docs/RIDOM.md)) | `submit_all.sbatch` |
+| `kansasii-cgmlst` | chewBBACA cgMLST scheme and Ridom-style MST. **OBSOLETE**, superseded by Ridom; only `10_export_ridom.py` (Ridom input) and `sample_qc.tsv` are still used | `submit_all.sbatch` |
 | `sanger-microsynth` | routine: fetch Microsynth Sanger results by mail, identify, report | `submit_fetch_analyse.sbatch` |
 | `kansasii-docs` | this index, data flow, provenance, shared constants (`templates/`), `bin/` helpers | `bin/check_sync.sh`, `bin/make_summary.py`, `bin/make_atypical_table.py` |
 
@@ -50,6 +52,7 @@ it after a fresh clone.
 
 - **Run order and every script's inputs/outputs:** `repos/immensekansasii/WORKFLOW.md`.
 - **Which file feeds which repo (with diagram):** [docs/DATAFLOW.md](docs/DATAFLOW.md).
+- **Ridom as source of truth, exports needed, what the obsolete repos still feed:** [docs/RIDOM.md](docs/RIDOM.md).
 - **Which samples are excluded, and why:** [docs/EXCLUSIONS.md](docs/EXCLUSIONS.md).
 - **Samples with an atypical gyrA or hsp65 (project and public):** [docs/ATYPICAL.md](docs/ATYPICAL.md); the table is
   `output/kansasii-docs/results/atypical_samples/atypical_samples.tsv`.

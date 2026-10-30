@@ -64,7 +64,7 @@ flowchart TD
 | `output/kansasii-docs/results/atypical_samples/` | `kansasii-docs/bin/make_atypical_table.py` | reports only (docs/ATYPICAL.md) |
 | `data/imm/ridom-clusters.csv`, `ridom-comparison-table-mkan329.csv` (+ further `ridom-*`, see RIDOM.md) | Ridom SeqSphere+ GUI export (manual) | `immensekansasii/scripts/06` (`ridom_*` columns); report |
 | `data/imm/ridom-kansasii-plasmids.csv` | NCBI Genome export (manual) | docs/PLASMIDS.md only |
-| `output/kansasii-cgmlst/ridom_assemblies.tar.gz`, `output/kansasii-cgmlst/ridom_assemblies.zip` | `kansasii-cgmlst/scripts/10_export_ridom.py` | Ridom SeqSphere+ (manual) |
+| `output/kansasii-ridom/ridom_assemblies.tar.gz`, `output/kansasii-ridom/ridom_assemblies.zip` (182 incl. M055) | `kansasii-ridom/scripts/01_export_ridom.py` (replaces `kansasii-cgmlst/scripts/10_export_ridom.py`, 181) | Ridom SeqSphere+ (manual) |
 | `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of `output/immensekansasii/results/iTOL/mkan329_patients/` (tree, AST dots, species ring); copy in that directory | figure only, no script reads it |
 | `output/kansasii-amr-marker-screen/results/assembly/`, `output/kansasii-amr-marker-screen/results/bam/` | `kansasii-amr-marker-screen/submit_amr*.sbatch` | reports only |
 

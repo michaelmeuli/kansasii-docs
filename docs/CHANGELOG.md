@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-10-30 (Ridom archive with M055)
+- `kansasii-ridom/scripts/01_export_ridom.py` (`sbatch submit_export.sbatch`) writes `output/kansasii-ridom/ridom_assemblies.{tar.gz,zip}`: the earlier Ridom input of `kansasii-cgmlst` (181) plus Mkan329-055 = 182 genomes, so Ridom can give a good-target value for M055 (needed to switch `excluded` to Ridom). References are taken unstripped from `GTDB_REPRESENTATIVES` (Ridom removes plasmids). `kansasii-cgmlst` step 10 and its archive are superseded.
+
 ## 2026-10-30 (kansasii-ridom)
 - New repo `kansasii-ridom` (reads the Ridom exports, `scripts/00_check_exports.py` checks them against the 12 expected exports). New shared constant `OUT_RIDOM` in `templates/kansasii_paths.{py,sh}` (vendored copies synced in every repo). First check: `ridom-comparison-table-mkan329.csv` lacks 33 of 175 pool isolates (M055, M067-M098), `ridom-clusters.csv` is complete (181), the other 27 expected files are missing. Conda env `env_ridom` (environment.yml) is not built yet.
 

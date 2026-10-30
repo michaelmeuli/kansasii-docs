@@ -10,9 +10,11 @@ are decided.
 - Ridom is operated in the GUI. Every export goes to `data/imm/` as `ridom-<content>-mkan329[-<subset>].<ext>` (CSV, `;`-separated as
   SeqSphere writes it; figures as SVG/PDF). Do not edit exported files; derived tables belong in `output/`.
 - `data/imm/` files have no MANIFEST. Record each export in the table below (date, SeqSphere+ version, project, who) when you add it.
-- The input to Ridom is `output/kansasii-cgmlst/ridom_assemblies.{tar.gz,zip}` (made by `kansasii-cgmlst/scripts/10_export_ridom.py`,
-  isolates `M001` ..., controls by `LABEL`, references by accession; `ridom/metadata.tsv` for the isolate-data import). That script is
-  the only part of `kansasii-cgmlst` still needed, until the export is moved or frozen.
+- The input to Ridom is `output/kansasii-ridom/ridom_assemblies.{tar.gz,zip}` (made by `kansasii-ridom/scripts/01_export_ridom.py`, `sbatch submit_export.sbatch`;
+  isolates `M001` ..., controls by `LABEL`, references by accession; `ridom/metadata.tsv` for the isolate-data import). It holds the pool of 175 complex
+  isolates (incl. M055, `excluded` by chewBBACA coverage only, so Ridom can give its good-target value) + 7 references = 182. Plasmids are removed by Ridom.
+  The earlier archive of `kansasii-cgmlst` (181, without M055) is superseded; the 181 genomes are the same files, except that the ATCC 12478 reference
+  now keeps its plasmid contig.
 - Sample ids in Ridom exports: `Mkan329-081` is `M081`, controls use `LABEL` (`M_kansasii_ATCC_12478`, ...); `ridom_id()` in
   `immensekansasii/scripts/06_screening_map_results.py` converts.
 
@@ -33,7 +35,7 @@ Needed to replace the two repos. Each row names what it replaces.
 
 | # | Export (SeqSphere+) | File name | Replaces |
 |---|---|---|---|
-| 1 | Complete comparison table (allele profiles) of all 181 genomes, **plus M055** (`excluded` at 81.5 % with chewBBACA; needs a Ridom good-target value) | `ridom-comparison-table-mkan329.csv` (replace the 149-row file) | `cgmlst/t0.95` allele table, `shared_loci_*.csv` |
+| 1 | Complete comparison table (allele profiles) of all 182 genomes (pool + references, **incl. M055**; import the new archive first) (`excluded` at 81.5 % with chewBBACA; needs a Ridom good-target value) | `ridom-comparison-table-mkan329.csv` (replace the 149-row file) | `cgmlst/t0.95` allele table, `shared_loci_*.csv` |
 | 2 | Pairwise allele-distance matrix per subset: complex, kansasii, pseudokansasii, persicum (+ attenuatum, ostraviense, innocens, gastri); state the missing-value handling (pairwise ignore vs. columns ignored) | `ridom-distance-<subset>-mkan329.csv` | `allele_distance_*.csv` |
 | 3 | MST per subset as graph data: node membership (which isolates share a node), edge distances, the layout is not needed | `ridom-mst-nodes-<subset>-mkan329.csv` | `mst_nodes_*.tsv`, node merging of `kansasii-mst` |
 | 4 | MST figures per subset (SVG or PDF, with the colouring used in the report) | `ridom-mst-<subset>-mkan329.{svg,pdf}` | `mst_cgmlst_*.{png,pdf}`, `mst_*.{png,pdf}` of the SNP MST |
@@ -62,7 +64,7 @@ distances only. Until decided, `kansasii-mst` is obsolete for the main report bu
 | Dependency | Where | Action |
 |---|---|---|
 | `cgmlst_called_pct` and `excluded` (< 90 % called) | `immensekansasii/scripts/06_screening_map_results.py` reads `output/kansasii-cgmlst/results/sample_qc.tsv` | switch to `ridom_perc_good_targets` once export 7 covers all complex isolates (incl. M055); keep the 90 % threshold |
-| `run_downstream.sh` runs both repos | `immensekansasii/scripts/run_downstream.sh` | drop `kansasii-mst` and steps 08-09 of `kansasii-cgmlst` after the switch; keep step 10 |
+| `run_downstream.sh` runs both repos | `immensekansasii/scripts/run_downstream.sh` | drop `kansasii-mst` and steps 08-10 of `kansasii-cgmlst` after the switch, add `kansasii-ridom` `submit_export.sbatch` |
 | `excluded` read by `kansasii-amr-marker-screen`, `kansasii-mst`, `kansasii-cgmlst` | `screening_map_results.csv` | unchanged |
 
 ## Where the Ridom results go

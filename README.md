@@ -35,7 +35,7 @@ file. Repo-specific details live in each repo's own README.
 | `gyrA-refalign` | gyrA from assemblies vs 72 public genomes: persicum-like/other species, project and public separate | `submit_gyrA.sbatch` |
 | `kansasii-amr-marker-screen` | literature AMR-marker screen on assemblies and reads | `submit_amr*.sbatch` |
 | `kansasii-mst` | core-SNP minimum spanning tree figures. **OBSOLETE**, superseded by Ridom ([docs/RIDOM.md](docs/RIDOM.md)) | `submit_all.sbatch` |
-| `kansasii-cgmlst` | chewBBACA cgMLST scheme and Ridom-style MST. **OBSOLETE**, superseded by Ridom; only `10_export_ridom.py` (Ridom input) and `sample_qc.tsv` are still used | `submit_all.sbatch` |
+| `kansasii-cgmlst` | chewBBACA cgMLST scheme and Ridom-style MST. **OBSOLETE**, superseded by Ridom; only `sample_qc.tsv` is still used (the Ridom input is now made by `kansasii-ridom/scripts/01_export_ridom.py`) | `submit_all.sbatch` |
 | `kansasii-ridom` | reads the Ridom SeqSphere+ exports (`data/imm/ridom-*`): export check, then tables and figures of the final report | `submit_all.sbatch` |
 | `sanger-microsynth` | routine: fetch Microsynth Sanger results by mail, identify, report | `submit_fetch_analyse.sbatch` |
 | `kansasii-docs` | this index, data flow, provenance, shared constants (`templates/`), `bin/` helpers | `bin/check_sync.sh`, `bin/make_summary.py`, `bin/make_atypical_table.py` |

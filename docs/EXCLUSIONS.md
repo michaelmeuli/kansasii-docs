@@ -63,7 +63,12 @@ A matching hsp65 variant exists (`submit_hsp65_iupac_excluded.sbatch`).
 `NGS_USED` in `screening_map_results.csv` says which sequencing run is used per isolate (`NGS_MM` if present, else `NGS_JC`); the resequencing run `mkan329_jc` is otherwise not used (`DATAFLOW.md`).
 Mkan329-056 was suspected contaminated, resequenced as `Mkan329-056-jc`; `contamination_flag` does not exclude it (`immensekansasii/WORKFLOW.md`).
 
-## 7. Ridom export (`output/kansasii-cgmlst/ridom_assemblies.tar.gz`, `.zip`)
+## 7. Ridom export (`output/kansasii-ridom/ridom_assemblies.tar.gz`, `.zip`)
+
+**Since 2026-10-30 the archive is made by `kansasii-ridom/scripts/01_export_ridom.py` and covers the pool, not `keep`:** 175 cohort assemblies (the 174
+below plus Mkan329-055, excluded only for low chewBBACA coverage, so Ridom can give its own good-target value) + the 7 public references = 182. Otherwise
+unchanged (names, metadata columns); the ATCC 12478 reference keeps its plasmid contig, which Ridom removes. Not exported: 11 of the 186 rows (the table
+below without Mkan329-055). The rest of this section describes the earlier 181-genome export of `kansasii-cgmlst`.
 
 Rerun on 2026-10-24 (cgMLST step 10, job 7543102, 17.5 min) after `excluded` was extended to NR 184. The result is unchanged: the same 181
 FASTA files plus `ridom/metadata.tsv`, identical content hashes (the tarball differs only in embedded timestamps). The export contains

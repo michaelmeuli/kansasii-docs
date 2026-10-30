@@ -22,6 +22,7 @@ Change a shared constant in the template and run `bash repos/check_sync.sh --fix
 | `sanger_io.py` (AB1 parsing, Mott trimming, locus from file name) | `mlsa-kansasii/mlsa/sanger_io.py` | `hsp65-refalign/hsp65_refalign/sanger_io.py`, `sanger-microsynth/sanger_ms/sanger_io.py` | sanger_ms keeps only AB1 parsing and trimming (no locus classification) |
 | in-silico hsp65 PCR (`in_silico_pcr`, TB-11/TB-12(w)) | `mlsa-kansasii/mlsa/loci.py` + `protocols.py` | `hsp65-refalign/hsp65_refalign/insilico.py` | primers are constants there; mlsa reads them from the lab protocol `.docx` |
 | `ridom_id()` (`Mkan329-081` -> `M081`, controls by `LABEL`) | `immensekansasii/scripts/06_screening_map_results.py` | `kansasii-cgmlst/scripts/10_export_ridom.py`, `kansasii-ridom/scripts/common.py` | same rule; change all three together |
+| `REFERENCES` (7 GTDB accessions -> species) | `kansasii-cgmlst/scripts/common.py` | `kansasii-ridom/scripts/common.py` | same list; cgmlst is obsolete, the ridom copy is the one to change |
 | `common.load_samples` (QC exclusion rules) | `kansasii-mst/scripts/common.py` | `kansasii-cgmlst/scripts/common.py` | cgmlst keeps complex control strains (NR 128/132/133) and has the `in_pool` column on purpose |
 
 When the alignment or trimming logic changes in `mlsa-kansasii`, apply it to the three copies and rerun their checks

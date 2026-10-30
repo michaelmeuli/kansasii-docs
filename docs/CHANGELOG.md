@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-10-30 (kansasii-ridom)
+- New repo `kansasii-ridom` (reads the Ridom exports, `scripts/00_check_exports.py` checks them against the 12 expected exports). New shared constant `OUT_RIDOM` in `templates/kansasii_paths.{py,sh}` (vendored copies synced in every repo). First check: `ridom-comparison-table-mkan329.csv` lacks 33 of 175 pool isolates (M055, M067-M098), `ridom-clusters.csv` is complete (181), the other 27 expected files are missing. Conda env `env_ridom` (environment.yml) is not built yet.
+
 ## 2026-10-30 (Ridom)
 - Ridom SeqSphere+ is the source of truth for cgMLST, MST and clusters and for the final report. `kansasii-mst` and `kansasii-cgmlst` are marked obsolete (README/CLAUDE.md banners, `kansasii-docs/README.md`); outputs kept, nothing deleted. New `docs/RIDOM.md`: rules for GUI exports in `data/imm/ridom-*`, list of the 12 exports still needed, gaps (SNP distances have no Ridom equivalent), remaining dependencies (`excluded` still reads kansasii-cgmlst `sample_qc.tsv`). Found: `ridom-comparison-table-mkan329.csv` has 149 of 181 isolates (M067-M098 missing).
 

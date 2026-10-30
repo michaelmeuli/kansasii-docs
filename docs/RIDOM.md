@@ -67,9 +67,10 @@ distances only. Until decided, `kansasii-mst` is obsolete for the main report bu
 
 ## Where the Ridom results go
 
-There is no code that reads the Ridom exports beyond `06_screening_map_results.py` (the `ridom_*` columns). Tables and figures for
-the report from exports 1-12 need a consumer; open decision: a small repo (`kansasii-ridom`, ingest, summary tables, report figures)
-or `kansasii-docs/bin/`. Do not extend the obsolete repos.
+`kansasii-ridom` (created 2026-10-30) reads the exports. `scripts/00_check_exports.py` compares `data/imm/ridom-*` with the list above
+(`config/expected_exports.tsv`) and writes `output/kansasii-ridom/results/export_status.tsv`; run it after every new export. Tables and
+figures for the report are added there as numbered scripts once an export format has been seen. `immensekansasii/scripts/06` still
+joins `ridom-clusters.csv` into `screening_map_results.csv` (`ridom_*` columns). Do not extend the obsolete repos.
 
 ## Export log
 

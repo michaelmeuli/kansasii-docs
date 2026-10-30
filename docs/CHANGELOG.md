@@ -3,7 +3,7 @@
 Notable changes to data tables and outputs, newest first.
 
 ## 2026-10-30 (rename)
-- `output/arm` renamed to `output/amr` (compat symlink `output/arm -> amr`, remove once nothing uses it); `kansasii-amr-marker-screen` scripts renamed `submit_arm*.sbatch` -> `submit_amr*.sbatch`, `run_arm*.sh` -> `run_amr*.sh`, `ARM_DIR` -> `AMR_DIR`. `output/amr_bam/refs` symlink repointed. Entries below and old logs keep the old name; the `arm_mut` column of `screening_map_results.csv` is unchanged.
+- `output/arm` renamed to `output/amr` (compat symlink `output/arm -> amr`, remove once nothing uses it); `kansasii-amr-marker-screen` scripts renamed `submit_arm*.sbatch` -> `submit_amr*.sbatch`, `run_arm*.sh` -> `run_amr*.sh`, `ARM_DIR` -> `AMR_DIR`. `output/amr_bam/refs` symlink repointed. Entries below and old logs keep the old name; column `arm_mut` of `screening_map_results.csv` is now `amr_mut` (header renamed in `data/imm`, `output/` and `output/imm` copies; flag `--arm-calls` is now `--amr-calls`).
 
 ## 2026-10-30
 - `screening_map_results.csv` gains 4 columns at the end from `data/imm/ridom-clusters.csv`: `ridom_perc_good_targets`, `ridom_genome_size_mb`, `ridom_species`, `ridom_mst_cluster` (empty = no MST cluster). Joined in `immensekansasii/scripts/06_screening_map_results.py` on the Ridom sample name (Mkan329-NNN -> MNNN, controls by safe label); 174/186 isolates matched, the 7 GCF reference genomes of the Ridom file are not in the table.

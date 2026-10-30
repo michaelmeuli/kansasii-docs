@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-10-30
+- `screening_map_results.csv` gains 4 columns at the end from `data/imm/ridom-clusters.csv`: `ridom_perc_good_targets`, `ridom_genome_size_mb`, `ridom_species`, `ridom_mst_cluster` (empty = no MST cluster). Joined in `immensekansasii/scripts/06_screening_map_results.py` on the Ridom sample name (Mkan329-NNN -> MNNN, controls by safe label); 174/186 isolates matched, the 7 GCF reference genomes of the Ridom file are not in the table.
+
 ## 2026-10-29
 - New `docs/REFERENCES.md` and `docs/references.bib` (23 papers): sequence references (accessions, lengths, sequence checksums) and the literature behind each marker of `kansasii-amr-marker-screen`; 7 marker rows still have no source. New `kansasii-amr-marker-screen/scripts/verify_refs.sh` re-fetches the 9 numbering references from NCBI and checks the target coordinates against the GFF (all pass); table in `config/seq_refs.tsv`. `config/markers.tsv` gains a `citekey` column (BibTeX key; `proposed:` = candidate source, abstract read only); 9 more papers added to the bib for the unsourced rows.
 - New figure `data/imm/midpoint-rooted-tree.{pdf,svg}` (copy in `output/iTOL/mkan329_patients/`): iTOL export of the midpoint-rooted patient tree with AST dots and species ring; made by hand, documented in `DATAFLOW.md` and `immensekansasii/WORKFLOW.md`.

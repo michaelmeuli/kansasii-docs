@@ -92,7 +92,7 @@ IMMENSE layout (`main.nf`, `modules/`, `bin/`) next to its project `scripts/`. `
 - **One name per path.** `templates/kansasii_paths.py` (Python) and `templates/kansasii_paths.sh` (shell) define every shared path and
   list once, with the same names: `ROOT`, `DATA`, `RUNS`, `OUTPUT_ROOT`, `GTDB_DIR`, `GTDB_REPRESENTATIVES`, `GTDB_COMPLEX_GENOMES`,
   `HSP65_AMPLICONS`, `GYRA_REFERENCES`, `ATCC12478_FASTA`, `SCREENING_MAP_LINK`, `SCREENING_MAP_RESULTS`, `SANGER_LINK_DIR`,
-  `ASSEMBLIES`, `public_assemblies(project)`, `PUBLIC_PROJECTS`, `SPECIES`, `SPECIES_COLORS`, `COMPLEX`, `REFERENCE_STRAINS`,
+  `ASSEMBLIES`, `public_assemblies(project)`, `PUBLIC_PROJECTS`, `SPECIES`, `SPECIES_COLORS`, `COMPLEX`, `COHORT_SPECIES`, `REFERENCE_STRAINS`,
   `TNR_COLUMNS`, ... Each repo vendors the Python file unchanged next to its code; shell scripts and sbatch files `source` the shell file from
   kansasii-docs. A repo's own result directory is `OUTPUT = OUTPUT_ROOT / "<name>"`. Edit the template, never a copy
   (`bash repos/check_sync.sh --fix` restores the copies).

@@ -87,8 +87,9 @@ region is related to the persicum-derived segment found in the project cohort by
 investigated further**; treat it as a lead.
 
 Six public samples are too fragmented for gyrA (`gyrA_low_coverage`): SRR27048690 (PRJNA1048499), SRR12599239 and SRR12599307 (PRJNA323639), SRR19543410, -452, -482 (PRJNA845115).
-Further, 77 public samples have a gyrA haplotype that matches none of the 72 genomes while the species call agrees (`gyrA_novel_haplotype`; 36 of them are kansasii:
-880 samples, 31 haplotypes, 844 exact matches). They are listed in the table, not discussed here.
+Further, 77 public samples have a gyrA haplotype that matches none of the 72 genomes while the species call agrees (`gyrA_novel_haplotype`; 31 of them are kansasii:
+of the 880 GTDB-kansasii samples, 5 are too fragmented, 844 of the 875 callable ones match a reference exactly and 31 are novel; the 875 carry 30 haplotypes).
+A 78th callable sample has a novel haplotype too, but its gyrA call disagrees with GTDB (SRR28038314, listed above). They are listed in the table, not discussed here.
 
 ## What this means in practice
 

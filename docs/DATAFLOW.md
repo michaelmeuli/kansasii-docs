@@ -40,6 +40,12 @@ flowchart TD
   PIPE --> MST[kansasii-mst]
   PIPE --> CG[kansasii-cgmlst]
   RT --> ITOL[iTOL labels, SAMPLES.md]
+  PIPE --> TREE[kansasii_phylo.nf: snippy per sample, snippy-core over the db, IQ-TREE]
+  TREE --> TT[(kansasii_complex_tree.treefile)]
+  TT --> ITOL
+  TT --> AST[12 generate_itol_ast.py: prune to patients, midpoint root, AST dots, species ring]
+  RT --> AST
+  AST --> FIG[iTOL web export by hand: midpoint-rooted-tree.pdf/svg]
   SANG --> MS[sanger-microsynth routine]
   MLSA -.references.-> MS
 ```
@@ -65,7 +71,10 @@ flowchart TD
 | `data/imm/ridom-clusters.csv`, `ridom-comparison-table.csv` (+ further `ridom-*`, see RIDOM.md) | Ridom SeqSphere+ GUI export (manual) | `immensekansasii/scripts/06` (`ridom_*` columns); report |
 | `data/imm/ridom-kansasii-plasmids.csv` | NCBI Genome export (manual) | docs/PLASMIDS.md only |
 | `output/kansasii-ridom/ridom_assemblies.tar.gz`, `output/kansasii-ridom/ridom_assemblies.zip` (182 incl. M055) | `kansasii-ridom/scripts/01_export_ridom.py` (replaces `kansasii-cgmlst/scripts/10_export_ridom.py`, 181) | Ridom SeqSphere+ (manual) |
-| `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of `output/immensekansasii/results/iTOL/mkan329_patients/` (tree, AST dots, species ring); copy in that directory | figure only, no script reads it |
+| snippy db `IMMense_dependencies/databases/kansasii_complex/<db>/<sample_id>/` (`/shares/sander.imm.uzh/software/pipelines/IMMense/`; `mkan329` has 186 samples) | `kansasii_snippy` (`immensekansasii/modules/kansasii_phylo.nf`), filled per sample; passed with `--kansasii_snippy_db` | `kansasii_snippy_core` (globs the whole db: the tree contains whatever is in the dir) |
+| `runs/<run>/<run>_transfer_result/kansasii_phylogeny/kansasii_complex_{core.aln,tree.treefile,tree.iqtree}` (`runs/mkan329`: 187 tips = 186 samples + `Reference`) | `kansasii_snippy_core` + `kansasii_tree` (core-SNP alignment, IQ-TREE GTR+G; unrooted, no support values), see `immensekansasii/WORKFLOW.md` 2d | `07_generate_itol_species_labels.sh` (copy + labels in `output/immensekansasii/results/iTOL/<run>/`), `12_generate_itol_ast.py` |
+| `output/immensekansasii/results/iTOL/mkan329_patients/{kansasii_patients_midpoint.nwk,itol_*.txt}` | `immensekansasii/scripts/12_generate_itol_ast.py` (prunes `mkan329` tree to the 171 patients, midpoint root, AST dots, species ring; input also `screening_map_results.csv`) | iTOL web (manual upload) |
+| `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of the `mkan329_patients/` files above; copy in that directory | figure only, no script reads it |
 | `output/kansasii-amr-marker-screen/results/assembly/`, `output/kansasii-amr-marker-screen/results/bam/` | `kansasii-amr-marker-screen/submit_amr*.sbatch` | reports only |
 
 `screening_map_results.csv` has `NGS_USED` (after `NGS_MM`): the sequencing data used per isolate.

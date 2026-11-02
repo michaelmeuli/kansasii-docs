@@ -4,6 +4,7 @@ Notable changes to data tables and outputs, newest first.
 
 ## 2026-11-02 (rrs labels)
 - `kansasii-amr-marker-screen/config/markers.tsv`: rrs rows relabelled after reading Wang 2019, Shrestha 2020 and Finken 1993 (`data/papers/`): "530 loop (positions 903-906)" is now "912 region (positions 903-906)"; "1401/1402 cluster II" is now "positions 1401/1402 (streptomycin link unverified)". Citekeys for the two rrs streptomycin rows are now verified. Details in `docs/REFERENCES.md`.
+- `output/kansasii-amr-marker-screen/results/{assembly,bam}/work/report/` regenerated with `submit_amr_reannot.sbatch` (job 7970915, commit `1e664bf`, `MANIFEST.txt` in `results/assembly/`). Compared with the previous run: same row counts and same unplaced markers; only the two renamed `marker` labels differ (`marker_calls.tsv` 184 / 186 rows each in assembly / bam; `marker_calls.pass.tsv` 149 / 174). The `mut_with_mic.tsv` before/after was not compared. Neither renamed marker has a MUT call, so no downstream MIC table changed.
 
 ## 2026-11-02 (rename)
 - `data/imm/ridom-comparison-table-mkan329.csv` renamed to `ridom-comparison-table.csv` (content unchanged). References updated in `kansasii-ridom/scripts/03_scheme.py`, `04_qc.py` and in `kansasii-docs/docs/{DATAFLOW,PLASMIDS,RIDOM}.md`. Older changelog entries and the RIDOM.md export history keep the old name, as it was current then.

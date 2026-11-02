@@ -93,10 +93,10 @@ Generated from `config/markers.tsv` (`citekey` is derived from the DOI column, o
 | whiB7 | loss/gain of function; 5' uORF variants | M. abscessus,M. tuberculosis | VALIDATED_OTHER_SPECIES | `poulton2024beyond` |
 | rpsL | K43R | M. tuberculosis | VALIDATED_OTHER_SPECIES | `shafipour2022mutations` |
 | rpsL | K88R | M. tuberculosis | VALIDATED_OTHER_SPECIES | **none** |
-| rrs | 530 loop (positions 903-906) | M. tuberculosis | VALIDATED_OTHER_SPECIES | **none** |
+| rrs | 912 region (positions 903-906) | M. tuberculosis | VALIDATED_OTHER_SPECIES | `wang2019roles`, `shrestha2020molecular` |
 | rrs | A514C | M. tuberculosis | VALIDATED_OTHER_SPECIES | `wang2019roles` |
-| rrs | positions 512,513,516 | M. tuberculosis | VALIDATED_OTHER_SPECIES | **none** |
-| rrs | 1401/1402 cluster II | M. tuberculosis | VALIDATED_OTHER_SPECIES | **none** |
+| rrs | positions 512,513,516 | M. tuberculosis | VALIDATED_OTHER_SPECIES | `finken1993molecular`, `wang2019roles`, `shrestha2020molecular` |
+| rrs | positions 1401/1402 (streptomycin link unverified) | M. tuberculosis | VALIDATED_OTHER_SPECIES | **none** |
 | rrs | A128G (study coords) | M. kansasii | SUGGESTIVE_N1 | `bakula2018drug` |
 | gid | any frameshift / nonsense / truncation | M. tuberculosis | VALIDATED_OTHER_SPECIES | `shafipour2022mutations` |
 | gid | E92D | M. tuberculosis | VALIDATED_OTHER_SPECIES | `shafipour2022mutations` |
@@ -127,26 +127,29 @@ Generated from `config/markers.tsv` (`citekey` is derived from the DOI column, o
 Rows with no literature source in `markers.tsv`:
 
 - rpsL: K88R (streptomycin)
-- rrs: 530 loop (positions 903-906) (streptomycin)
-- rrs: positions 512,513,516 (streptomycin)
-- rrs: 1401/1402 cluster II (streptomycin)
+- rrs: positions 1401/1402 (streptomycin link unverified) (streptomycin)
 - gid: A205A (synonymous) (streptomycin)
 - NA: NO VALIDATED MARKER (doxycycline)
 - NA: NO VALIDATED MARKER (sulfamethoxazole-trimethoprim)
 
 ### Proposed sources for the unsourced rows (in the `citekey` column of `markers.tsv` with a `proposed:` prefix)
 
-Found by PubMed search 2026-10-29; abstracts read, full texts not. All but the last two rows are *M. tuberculosis*.
+Found by PubMed search 2026-10-29; abstracts read, full texts not. The rrs rows moved out of this table after the full-text check below.
 
 | Row | Proposed citekey | What the abstract supports |
 |---|---|---|
 | rpsL K88R | `hlaing2017mutations`, `khosravi2017frequency` | Lys88Arg (and Lys88Thr) in STR-R isolates; 3 of 32 in the Iranian series |
 | gid A205A | `sun2016characterization`, `jagielski2014screening`, `wang2019roles` | E92D (a276c) + A205A (a615g) co-occur and mark the Beijing lineage |
-| rrs 512-516 / 903-906 (530 loop and 912 region) | `finken1993molecular`, `cooksey1996characterization`, `shrestha2020molecular` | STR resistance from rrs changes in the 530 pseudoknot and 912 loop; exact positions are not in the abstracts, check the full texts |
 | doxycycline GAP | `li2023vitro` | poor in vitro activity of six tetracyclines incl. doxycycline against *M. kansasii*, MIC90 >= 8; supports the 96% resistance, no mechanism |
 | SXT GAP | `liu2015role` | folP1/folP2 expression changes SMX/TMP MIC in *M. smegmatis*/Mtb; mechanism only, no *M. kansasii* marker |
 
-No source found for rrs 1401/1402 as a streptomycin marker. Positions 1401/1402 are the usual aminoglycoside/capreomycin positions in *M. tuberculosis* (to be confirmed), so the row label may need rechecking. Likewise 903-906 sits in the 912 region, not the 530 loop that the row name says.
+### rrs positions, checked against full texts (2026-11-02; PDFs in `data/papers/`)
+
+Read: `wang2019roles`, `shrestha2020molecular`, `finken1993molecular`. `cooksey1996characterization` and the rest were abstract only.
+
+- **530 loop:** 513 and 516 (Finken 1993), 514 and 517 (Wang 2019, Shrestha 2020; A514C, C517T). Position 512 is not reported in any of the three.
+- **912 region:** 906 (Wang 2019, A906G); A906G, A907C, A908C, A912C (Shrestha 2020); A904G (Meier et al., cited by Shrestha 2020, not read). 903 and 905 are not reported. The row used to be named "530 loop (positions 903-906)"; it is now "912 region (positions 903-906)".
+- **1401/1402:** not mentioned in any of the three papers, and no streptomycin source was found. The row used to be named "1401/1402 cluster II"; it is now "positions 1401/1402 (streptomycin link unverified)". Its evidence level (`VALIDATED_OTHER_SPECIES`) is unchanged and probably too high.
 
 No marker rows at all (genes extracted but not screened): tap, folP (2 copies), folC, dfrA, thyA. Their only link to resistance is the drug name in `config/targets.tsv`.
 

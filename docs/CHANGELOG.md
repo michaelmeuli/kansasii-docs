@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-02 (rrs labels)
+- `kansasii-amr-marker-screen/config/markers.tsv`: rrs rows relabelled after reading Wang 2019, Shrestha 2020 and Finken 1993 (`data/papers/`): "530 loop (positions 903-906)" is now "912 region (positions 903-906)"; "1401/1402 cluster II" is now "positions 1401/1402 (streptomycin link unverified)". Citekeys for the two rrs streptomycin rows are now verified. Details in `docs/REFERENCES.md`.
+
 ## 2026-11-02 (rename)
 - `data/imm/ridom-comparison-table-mkan329.csv` renamed to `ridom-comparison-table.csv` (content unchanged). References updated in `kansasii-ridom/scripts/03_scheme.py`, `04_qc.py` and in `kansasii-docs/docs/{DATAFLOW,PLASMIDS,RIDOM}.md`. Older changelog entries and the RIDOM.md export history keep the old name, as it was current then.
 

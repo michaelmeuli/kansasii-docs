@@ -24,7 +24,7 @@ are decided.
 |---|---|---|---|
 | `ridom-clusters.csv` | good targets %, genome size, sample id, species, MST cluster (`-Group-`) | 181 | complete cohort; `-Group-` set for 63 of 181 (the rest are not in a cluster) |
 | `ridom-comparison-table-mkan329.csv` | allele table: missing-value count, good targets, size, id, species, 1,408 `MKAN_RS*` loci | 182 | complete: pool incl. M055 + the 7 references |
-| `ridom-distance-complex-mkan329.meg` | pairwise allele distances (MEGA, lower triangle), whole complex | 181 taxa | complete: `keep` cohort + references, without M055; missing-value handling to be confirmed (export log) |
+| `ridom-distance-matrix.meg` | pairwise allele distances (MEGA, lower triangle), whole complex | 181 taxa | complete: `keep` cohort + references, without M055; missing-value handling to be confirmed (export log) |
 | `ridom-scheme-mkan329.tasktemplate` | gzip XML: 1,407 core targets and the full Target Definer report (settings, filters, accessory / discarded lists) | 1,407 targets | complete; read by `03_scheme.py` |
 | `ridom-kansasii-plasmids.csv` | NCBI plasmid list that the Target Definer excluded | - | used in `PLASMIDS.md` only |
 
@@ -55,7 +55,7 @@ requested that a script can derive). `config/expected_exports.tsv` lists them; `
 | Export (SeqSphere+) | File | Status |
 |---|---|---|
 | Comparison table (allele profiles), pool + references | `ridom-comparison-table-mkan329.csv` | have |
-| Pairwise allele distances, whole complex, pairwise ignore | `ridom-distance-complex-mkan329.meg` | have |
+| Pairwise allele distances, whole complex, pairwise ignore | `ridom-distance-matrix.meg` | have |
 | Cluster table (`-Group-`) | `ridom-clusters.csv` | have |
 | Scheme as task template (holds the targets **and** the Target Definer report) | `ridom-scheme-mkan329.tasktemplate` | have |
 | MST figures per subset (SVG or PDF, as drawn for the report) | `ridom-mst-<subset>-mkan329.{svg,pdf}` for complex, kansasii, pseudokansasii, persicum, minor | **missing**: layout and colours are not reproducible in code |
@@ -113,5 +113,5 @@ joins `ridom-clusters.csv` into `screening_map_results.csv` (`ridom_*` columns).
 |---|---|---|---|
 | (earlier, undated) | `ridom-clusters.csv`, `ridom-comparison-table-mkan329.csv` | not recorded | version and scheme to be filled in |
 | 2026-11-02 (file date) | `ridom-comparison-table-mkan329.csv` (export 1, replaces the 149-row file) | not recorded | 182 isolates incl. M055 and the 7 references, 1,408 loci; checked by `00_check_exports.py` (OK) |
-| 2026-11-02 (file date) | `ridom-distance-complex-mkan329.meg` (export 2) | not recorded | MEGA (`DataType=distance DataFormat=LowerLeft`), 181 taxa (`keep` cohort + references, without M055); **missing-value handling not recorded in the file: pairwise ignore intended, to be confirmed**; subsets are sliced by `kansasii-ridom/scripts/02_distance_matrices.py` |
+| 2026-11-02 (file date) | `ridom-distance-matrix.meg` (export 2) | not recorded | MEGA (`DataType=distance DataFormat=LowerLeft`), 181 taxa (`keep` cohort + references, without M055); **missing-value handling not recorded in the file: pairwise ignore intended, to be confirmed**; subsets are sliced by `kansasii-ridom/scripts/02_distance_matrices.py` |
 | 2026-11-02 | `ridom-scheme-mkan329.tasktemplate` (export 6) | Ridom Typer 12.0.7 (2026-09), cgMLST Target Definer 1.5, run 2026-10-29 | scheme `... cgMLST 1407 targets ATCC 12478`; 1,407 core, 3,854 accessory, 503 discarded; replaces the csv + parameters exports; `03_scheme.py` |

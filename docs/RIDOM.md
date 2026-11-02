@@ -25,7 +25,7 @@ are decided.
 | `ridom-clusters.csv` | good targets %, genome size, sample id, species, MST cluster (`-Group-`) | 181 | complete cohort; `-Group-` set for 63 of 181 (the rest are not in a cluster) |
 | `ridom-comparison-table.csv` | allele table: missing-value count, good targets, size, id, species, 1,408 `MKAN_RS*` loci | 182 | complete: pool incl. M055 + the 7 references |
 | `ridom-distance-matrix.meg` | pairwise allele distances (MEGA, lower triangle), whole complex | 181 taxa | complete: `keep` cohort + references, without M055; missing-value handling to be confirmed (export log) |
-| `ridom-scheme-mkan329.tasktemplate` | gzip XML: 1,407 core targets and the full Target Definer report (settings, filters, accessory / discarded lists) | 1,407 targets | complete; read by `03_scheme.py` |
+| `ridom-scheme.tasktemplate` | gzip XML: 1,407 core targets and the full Target Definer report (settings, filters, accessory / discarded lists) | 1,407 targets | complete; read by `03_scheme.py` |
 | `ridom-kansasii-plasmids.csv` | NCBI plasmid list that the Target Definer excluded | - | used in `PLASMIDS.md` only |
 
 Allele distances of the Ridom scheme per subset (`kansasii-ridom/scripts/02_distance_matrices.py`, `output/kansasii-ridom/results/distance_summary.tsv`;
@@ -57,7 +57,7 @@ requested that a script can derive). `config/expected_exports.tsv` lists them; `
 | Comparison table (allele profiles), pool + references | `ridom-comparison-table.csv` | have |
 | Pairwise allele distances, whole complex, pairwise ignore | `ridom-distance-matrix.meg` | have |
 | Cluster table (`-Group-`) | `ridom-clusters.csv` | have |
-| Scheme as task template (holds the targets **and** the Target Definer report) | `ridom-scheme-mkan329.tasktemplate` | have |
+| Scheme as task template (holds the targets **and** the Target Definer report) | `ridom-scheme.tasktemplate` | have |
 | MST figures per subset (SVG or PDF, as drawn for the report) | `ridom-mst-<subset>-mkan329.{svg,pdf}` for complex, kansasii, pseudokansasii, persicum, minor | **missing**: layout and colours are not reproducible in code |
 
 Derived tables (`output/kansasii-ridom/results/`, run `sbatch submit_all.sbatch`):

@@ -17,7 +17,7 @@ Plasmid replicons are kept out of the core-genome target sets. State as of 2026-
 | NZ_CP089232.1 | FDAARGOS_1616 | Chromosome | GCA_021183865.1 | 6.62 | 2 |
 
 Check (2026-10-29): the 305 locus tags on NC_022654.1 in the ATCC 12478 `genomic.gff` have **no overlap** with the 1,406 `MKAN_RS` target
-columns of `data/imm/ridom-comparison-table-mkan329.csv`. The four FDAARGOS plasmids have no local sequence, so they were not checked.
+columns of `data/imm/ridom-comparison-table.csv`. The four FDAARGOS plasmids have no local sequence, so they were not checked.
 
 ## kansasii-cgmlst (chewBBACA)
 

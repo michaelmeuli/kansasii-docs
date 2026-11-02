@@ -23,7 +23,7 @@ are decided.
 | File | Content | Rows | Status |
 |---|---|---|---|
 | `ridom-clusters.csv` | good targets %, genome size, sample id, species, MST cluster (`-Group-`) | 181 | complete cohort; `-Group-` set for 63 of 181 (the rest are not in a cluster) |
-| `ridom-comparison-table-mkan329.csv` | allele table: missing-value count, good targets, size, id, species, 1,408 `MKAN_RS*` loci | 182 | complete: pool incl. M055 + the 7 references |
+| `ridom-comparison-table.csv` | allele table: missing-value count, good targets, size, id, species, 1,408 `MKAN_RS*` loci | 182 | complete: pool incl. M055 + the 7 references |
 | `ridom-distance-matrix.meg` | pairwise allele distances (MEGA, lower triangle), whole complex | 181 taxa | complete: `keep` cohort + references, without M055; missing-value handling to be confirmed (export log) |
 | `ridom-scheme-mkan329.tasktemplate` | gzip XML: 1,407 core targets and the full Target Definer report (settings, filters, accessory / discarded lists) | 1,407 targets | complete; read by `03_scheme.py` |
 | `ridom-kansasii-plasmids.csv` | NCBI plasmid list that the Target Definer excluded | - | used in `PLASMIDS.md` only |
@@ -54,7 +54,7 @@ requested that a script can derive). `config/expected_exports.tsv` lists them; `
 
 | Export (SeqSphere+) | File | Status |
 |---|---|---|
-| Comparison table (allele profiles), pool + references | `ridom-comparison-table-mkan329.csv` | have |
+| Comparison table (allele profiles), pool + references | `ridom-comparison-table.csv` | have |
 | Pairwise allele distances, whole complex, pairwise ignore | `ridom-distance-matrix.meg` | have |
 | Cluster table (`-Group-`) | `ridom-clusters.csv` | have |
 | Scheme as task template (holds the targets **and** the Target Definer report) | `ridom-scheme-mkan329.tasktemplate` | have |

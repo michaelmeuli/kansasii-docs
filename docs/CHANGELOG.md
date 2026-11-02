@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-02 (rename)
+- `data/imm/ridom-comparison-table-mkan329.csv` renamed to `ridom-comparison-table.csv` (content unchanged). References updated in `kansasii-ridom/scripts/03_scheme.py`, `04_qc.py` and in `kansasii-docs/docs/{DATAFLOW,PLASMIDS,RIDOM}.md`. Older changelog entries and the RIDOM.md export history keep the old name, as it was current then.
+
 ## 2026-10-30 (Ridom archive with M055)
 - `kansasii-ridom/scripts/01_export_ridom.py` (`sbatch submit_export.sbatch`) writes `output/kansasii-ridom/ridom_assemblies.{tar.gz,zip}`: the earlier Ridom input of `kansasii-cgmlst` (181) plus Mkan329-055 = 182 genomes, so Ridom can give a good-target value for M055 (needed to switch `excluded` to Ridom). References are taken unstripped from `GTDB_REPRESENTATIVES` (Ridom removes plasmids). `kansasii-cgmlst` step 10 and its archive are superseded.
 

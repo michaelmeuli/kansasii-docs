@@ -118,6 +118,8 @@ Generated from `config/markers.tsv` (`citekey` is derived from the DOI column, o
 | rplD | R126H | M. tuberculosis | VALIDATED_OTHER_SPECIES | `zong2018vitro` |
 | rrl | domain V | M. tuberculosis | VALIDATED_OTHER_SPECIES | `mcneil2017vitro` |
 | rplC | no correlation in RGM | rapidly growing mycobacteria | NEGATIVE_FINDING | `wen2021vitro` |
+| katG | S315T | M. tuberculosis | VALIDATED_OTHER_SPECIES | `zhang1992catalase` |
+| inhA | S94A | M. tuberculosis | VALIDATED_OTHER_SPECIES | `morlock2003etha` (isoniazid and ethionamide rows) |
 | doxycycline | NO VALIDATED MARKER | M. kansasii | GAP | **none** |
 | sulfamethoxazole-trimethoprim | NO VALIDATED MARKER | M. kansasii | GAP | **none** |
 | nucS | loss of function | M. abscessus | HYPERMUTATOR | `fressatticardoso2022noncanonical` |
@@ -140,7 +142,7 @@ Found by PubMed search 2026-10-29; abstracts read, full texts not. The rrs rows 
 |---|---|---|
 | rpsL K88R | `hlaing2017mutations`, `khosravi2017frequency` | Lys88Arg (and Lys88Thr) in STR-R isolates; 3 of 32 in the Iranian series |
 | gid A205A | `sun2016characterization`, `jagielski2014screening`, `wang2019roles` | E92D (a276c) + A205A (a615g) co-occur and mark the Beijing lineage |
-| doxycycline GAP | `li2023vitro` | poor in vitro activity of six tetracyclines incl. doxycycline against *M. kansasii*, MIC90 >= 8; supports the 96% resistance, no mechanism |
+| doxycycline GAP | `li2023vitro` | poor in vitro activity of six tetracyclines incl. doxycycline against *M. kansasii*, MIC >= 8 (no resistance rate in the abstract; the earlier "96 %" figure has no source here); no mechanism |
 | SXT GAP | `liu2015role` | folP1/folP2 expression changes SMX/TMP MIC in *M. smegmatis*/Mtb; mechanism only, no *M. kansasii* marker |
 
 ### rrs positions, checked against full texts (2026-11-02; PDFs in `data/papers/`)

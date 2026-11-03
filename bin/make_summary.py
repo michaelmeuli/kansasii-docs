@@ -103,7 +103,9 @@ def section(d: Path, out_dir: Path) -> str:
     else:
         meta = "<p class=warn>No MANIFEST.txt: produced before manifests were introduced, or the run has not finished.</p>"
     last = time.strftime("%Y-%m-%d", time.localtime(newest)) if newest else "-"
-    rel = lambda p: html.escape(os.path.relpath(p, out_dir))  # noqa: E731
+    def rel(p: Path) -> str:
+        return html.escape(os.path.relpath(p, out_dir))
+
     thumbs = "".join(
         f'<a href="{rel(f)}"><img loading=lazy src="{rel(f)}" alt="{html.escape(f.name)}" title="{html.escape(str(f.relative_to(d)))}"></a>'
         for f in figs[:MAX_FIGS]

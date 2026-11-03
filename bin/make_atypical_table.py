@@ -44,6 +44,11 @@ def read(path: Path, **kw: object) -> pd.DataFrame:
     return pd.read_csv(path, sep=kw.pop("sep", "\t"), dtype=str, keep_default_na=False, **kw)  # type: ignore[call-overload,no-any-return]
 
 
+def cell(df: pd.DataFrame, row: object, col: str) -> str:
+    """One table cell as str (every column is read with dtype=str; DataFrame.at is typed as a wide union)."""
+    return str(df.at[row, col])
+
+
 def project_rows(hsp: Path, gyra: Path, results: Path) -> list[dict[str, str]]:
     res = read(results, sep=",").set_index("PROBENNUMMER")
     g = read(gyra / "project" / "isolates.tsv").set_index("probennummer")
@@ -53,30 +58,30 @@ def project_rows(hsp: Path, gyra: Path, results: Path) -> list[dict[str, str]]:
     for pn in sorted(set(g.index) | set(h.index) | set(k.index)):
         if pn in REFERENCE_STRAINS:
             continue
-        sp = res.at[pn, "species"] if pn in res.index else ""
+        sp = cell(res, pn, "species") if pn in res.index else ""
         cat: list[str] = []
         detail: list[str] = []
-        gc = g.at[pn, "closest_species"] if pn in g.index else ""
-        gs = g.at[pn, "status"] if pn in g.index else ""
-        hc = h.at[pn, "called_species"] if pn in h.index else ""
-        hv = h.at[pn, "verdict"] if pn in h.index else ""
-        contaminated = pn in res.index and res.at[pn, "contamination_flag"] != ""
+        gc = cell(g, pn, "closest_species") if pn in g.index else ""
+        gs = cell(g, pn, "status") if pn in g.index else ""
+        hc = cell(h, pn, "called_species") if pn in h.index else ""
+        hv = cell(h, pn, "verdict") if pn in h.index else ""
+        contaminated = pn in res.index and cell(res, pn, "contamination_flag") != ""
         if gs in ("ok", "ambiguous") and gc != sp and sp:
             cat.append("gyrA_other_species")
-            detail.append(f"gyrA identity {float(g.at[pn, 'identity']):.4f} to {g.at[pn, 'closest_accession']}")
+            detail.append(f"gyrA identity {float(cell(g, pn, 'identity')):.4f} to {cell(g, pn, 'closest_accession')}")
         if gs == "divergent":
             cat.append("gyrA_divergent")
-            detail.append(f"gyrA identity {g.at[pn, 'identity']}")
+            detail.append(f"gyrA identity {cell(g, pn, 'identity')}")
         if gs == "low_coverage":
             cat.append("gyrA_low_coverage")
-            detail.append(f"gyrA coverage {g.at[pn, 'gyrA_coverage']}")
-        if gs == "ok" and g.at[pn, "exact_match"] == "" and g.at[pn, "gyrA_matches_wgs"] == "True":
+            detail.append(f"gyrA coverage {cell(g, pn, 'gyrA_coverage')}")
+        if gs == "ok" and cell(g, pn, "exact_match") == "" and cell(g, pn, "gyrA_matches_wgs") == "True":
             cat.append("gyrA_novel_haplotype")
-            detail.append(f"gyrA haplotype {g.at[pn, 'haplotype']}, {g.at[pn, 'diffs']} difference(s) to {g.at[pn, 'closest_accession']}")
+            detail.append(f"gyrA haplotype {cell(g, pn, 'haplotype')}, {cell(g, pn, 'diffs')} difference(s) to {cell(g, pn, 'closest_accession')}")
         if hc and hc != sp and sp:
             cat.append("hsp65_other_species")
             detail.append(f"Sanger hsp65 reads call {hc}")
-        if pn in k.index and k.at[pn, "korean_type"] == "True":
+        if pn in k.index and cell(k, pn, "korean_type") == "True":
             cat.append("hsp65_persicum_like")
             detail.append("assembly hsp65 closer to the Korean-type amplicon than to ATCC 12478")
         if hv == "no call: read does not match own genome":
@@ -84,13 +89,13 @@ def project_rows(hsp: Path, gyra: Path, results: Path) -> list[dict[str, str]]:
             detail.append("Sanger hsp65 read matches the isolate's genome at < 90 % (Rothia mucilaginosa co-amplification)")
         if contaminated and cat and set(cat) & MAJOR:
             cat.append("mixed_culture")
-            detail.append(f"CheckM contamination {res.at[pn, 'checkm_contamination']} %")
+            detail.append(f"CheckM contamination {cell(res, pn, 'checkm_contamination')} %")
         if not cat:
             continue
         rows.append({"source": "project", "sample": pn, "bioproject": "", "genome_species": sp, "hsp65_closest": hc,
                      "hsp65_status": hv, "gyrA_closest": gc, "gyrA_status": gs, "categories": ",".join(cat),
                      "detail": "; ".join(detail),
-                     "strain_or_NR": f"NR {res.at[pn, 'NR']}" if pn in res.index else "", "country": "", "biosample": ""})
+                     "strain_or_NR": f"NR {cell(res, pn, 'NR')}" if pn in res.index else "", "country": "", "biosample": ""})
     return rows
 
 
@@ -104,38 +109,38 @@ def public_rows(hsp: Path, gyra: Path) -> list[dict[str, str]]:
     for sid in sorted(set(g.index) | set(h.index)):
         cat: list[str] = []
         detail: list[str] = []
-        sp = species_short(g.at[sid, "gtdb_species"] if sid in g.index else h.at[sid, "gtdb_species"])
-        gc = g.at[sid, "closest_species"] if sid in g.index else ""
-        gs = g.at[sid, "status"] if sid in g.index else ""
-        hc = h.at[sid, "closest_species"] if sid in h.index else ""
-        hs = h.at[sid, "status"] if sid in h.index else ""
-        if sid in h.index and h.at[sid, "atypical"] == "True":
+        sp = species_short(cell(g, sid, "gtdb_species") if sid in g.index else cell(h, sid, "gtdb_species"))
+        gc = cell(g, sid, "closest_species") if sid in g.index else ""
+        gs = cell(g, sid, "status") if sid in g.index else ""
+        hc = cell(h, sid, "closest_species") if sid in h.index else ""
+        hs = cell(h, sid, "status") if sid in h.index else ""
+        if sid in h.index and cell(h, sid, "atypical") == "True":
             hc = "persicum-like (Korean-type genome)"  # the closest reference is one of the 3 atypical-hsp65 kansasii genomes
         if sid in g.index:
             if gs in ("ok", "ambiguous") and gc != sp:
                 cat.append("gyrA_other_species")
-                detail.append(f"gyrA identical to {g.at[sid, 'closest_accession']} ({gc}), margin {g.at[sid, 'margin']}")
+                detail.append(f"gyrA identical to {cell(g, sid, 'closest_accession')} ({gc}), margin {cell(g, sid, 'margin')}")
             if gs == "divergent":
                 cat.append("gyrA_divergent")
             if gs == "low_coverage":
                 cat.append("gyrA_low_coverage")
-                detail.append(f"gyrA coverage {g.at[sid, 'gyrA_coverage']}")
-            if gs == "ok" and g.at[sid, "exact_match"] == "" and gc == sp:
+                detail.append(f"gyrA coverage {cell(g, sid, 'gyrA_coverage')}")
+            if gs == "ok" and cell(g, sid, "exact_match") == "" and gc == sp:
                 cat.append("gyrA_novel_haplotype")
-                detail.append(f"gyrA haplotype {g.at[sid, 'haplotype']}, {g.at[sid, 'diffs']} difference(s) to {g.at[sid, 'closest_accession']}")
+                detail.append(f"gyrA haplotype {cell(g, sid, 'haplotype')}, {cell(g, sid, 'diffs')} difference(s) to {cell(g, sid, 'closest_accession')}")
         if sid in h.index:
-            if h.at[sid, "atypical"] == "True" and sp == "persicum":
+            if cell(h, sid, "atypical") == "True" and sp == "persicum":
                 pass  # a persicum genome is expected to sit next to the persicum-like (Korean-type) kansasii genomes
-            elif h.at[sid, "atypical"] == "True" and sp == "kansasii":
+            elif cell(h, sid, "atypical") == "True" and sp == "kansasii":
                 cat.append("hsp65_persicum_like")
-                detail.append(f"hsp65 closest to {h.at[sid, 'closest_accession']} (Korean-type), runner-up {h.at[sid, 'second_species']}, margin {h.at[sid, 'margin']}")
-            elif hc and hc != sp and h.at[sid, "atypical"] != "True":
+                detail.append(f"hsp65 closest to {cell(h, sid, 'closest_accession')} (Korean-type), runner-up {cell(h, sid, 'second_species')}, margin {cell(h, sid, 'margin')}")
+            elif hc and hc != sp and cell(h, sid, "atypical") != "True":
                 cat.append("hsp65_other_species")
-                detail.append(f"hsp65 identical to {h.at[sid, 'closest_accession']} ({hc})")
+                detail.append(f"hsp65 identical to {cell(h, sid, 'closest_accession')} ({hc})")
         if not cat:
             continue
         m = meta.loc[sid] if sid in meta.index else None
-        bp = (g.at[sid, "bioproject"] if sid in g.index else h.at[sid, "bioproject"])
+        bp = (cell(g, sid, "bioproject") if sid in g.index else cell(h, sid, "bioproject"))
         rows.append({"source": "public", "sample": sid, "bioproject": bp, "genome_species": sp, "hsp65_closest": hc,
                      "hsp65_status": hs, "gyrA_closest": gc, "gyrA_status": gs, "categories": ",".join(cat),
                      "detail": "; ".join(detail),
@@ -150,13 +155,13 @@ def reference_rows(gyra: Path) -> list[dict[str, str]]:
     for acc in ATYPICAL_HSP65_GENOMES:
         rows.append({"source": "reference genome", "sample": acc, "bioproject": "", "genome_species": "kansasii",
                      "hsp65_closest": "persicum", "hsp65_status": "11 SNPs from other kansasii (441 bp amplicon)",
-                     "gyrA_closest": ref.at[acc, "closest_species"] if acc in ref.index else "", "gyrA_status": ref.at[acc, "status"] if acc in ref.index else "",
+                     "gyrA_closest": cell(ref, acc, "closest_species") if acc in ref.index else "", "gyrA_status": cell(ref, acc, "status") if acc in ref.index else "",
                      "categories": "hsp65_persicum_like", "detail": "Korean isolates K4/K14/K19 (Samsung Medical Center, submitted by Borstel); "
                      "kansasii by ANI and at gyrA/gyrB/rpoB/recA/tuf/secA/16S/ITS (mlsa-kansasii/LIT.md)",
                      "strain_or_NR": "", "country": "Korea", "biosample": ""})
     wrong = ref[(ref["loo_correct"] == "False")]
-    for acc, r in wrong.iterrows():
-        rows.append({"source": "reference genome", "sample": str(acc), "bioproject": "", "genome_species": r["gtdb_species"],
+    for wacc, r in wrong.iterrows():
+        rows.append({"source": "reference genome", "sample": str(wacc), "bioproject": "", "genome_species": r["gtdb_species"],
                      "hsp65_closest": "", "hsp65_status": "", "gyrA_closest": r["closest_species"], "gyrA_status": r["status"],
                      "categories": "gyrA_other_species", "detail": "leave-one-out gyrA call differs from the GTDB species",
                      "strain_or_NR": "", "country": "", "biosample": ""})
@@ -173,12 +178,13 @@ Table = tuple[str, list[str], list[list[str]]]  # (heading or "", header, rows)
 
 def tables(df: pd.DataFrame) -> list[Table]:
     counts = df.assign(cat=df["categories"].str.split(",")).explode("cat").groupby(["source", "cat"]).size()
-    out: list[Table] = [("", ["source", "category", "samples"], [[s, c, str(n)] for (s, c), n in counts.items()])]
+    out: list[Table] = [("", ["source", "category", "samples"], counts.reset_index(name="n").astype(str).values.tolist())]
     for sev, title in (("major", "Species-level discordance (major)"), ("minor", "Other findings (minor)")):
         d = df[df["severity"] == sev]
         out.append((f"{title}: {len(d)} samples", DETAIL_HEADER,
-                    [[r.source, r.sample, r.bioproject, r.genome_species, f"{r.hsp65_closest} {r.hsp65_status}",
-                      f"{r.gyrA_closest} {r.gyrA_status}", r.categories, r.detail] for r in d.itertuples()]))
+                    [[str(r.source), str(r.sample), str(r.bioproject), str(r.genome_species),
+                      f"{r.hsp65_closest} {r.hsp65_status}", f"{r.gyrA_closest} {r.gyrA_status}",
+                      str(r.categories), str(r.detail)] for r in d.itertuples()]))
     return out
 
 

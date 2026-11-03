@@ -1,0 +1,12 @@
+# Type-checking config only (scripts in bin/, not a package).
+# Run: mypy   (from the repo root, in env_typecheck)
+[tool.mypy]
+strict = true
+python_version = "3.11"
+files = ["bin"]
+mypy_path = "templates"
+untyped_calls_exclude = ["Bio"]
+
+[[tool.mypy.overrides]]
+module = ["docx", "docx.*"]
+ignore_missing_imports = true

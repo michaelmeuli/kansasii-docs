@@ -52,6 +52,7 @@ it after a fresh clone.
 ## Where to read next
 
 - **Run order and every script's inputs/outputs:** `repos/immensekansasii/WORKFLOW.md`.
+- **Commands to reproduce the whole project, in order:** [docs/REPRODUCE.md](docs/REPRODUCE.md).
 - **Which file feeds which repo (with diagram):** [docs/DATAFLOW.md](docs/DATAFLOW.md).
 - **Ridom as source of truth, exports needed, what the obsolete repos still feed:** [docs/RIDOM.md](docs/RIDOM.md).
 - **Which samples are excluded, and why:** [docs/EXCLUSIONS.md](docs/EXCLUSIONS.md).

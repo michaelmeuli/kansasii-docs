@@ -3,7 +3,8 @@
 # Reports: uncommitted changes, unpushed/unpulled commits per local branch,
 # and branches without an upstream. Exit code 1 if anything is out of sync.
 # Also checks that .gitattributes, .vscode/settings.json and the vendored kansasii_paths.py
-# match kansasii-docs/templates/{gitattributes,vscode-settings.json,kansasii_paths.py}, that
+# match kansasii-docs/templates/{gitattributes,vscode-settings.json,kansasii_paths.py}, that any vendored
+# kansasii_cutoffs.py matches its template, that
 # .gitignore holds every line of templates/gitignore, that no tracked file has CRLF and the
 # shared repo layout (README.md, CLAUDE.md, environment.yml, pyproject.toml; sbatch files only
 # at the root, named submit_*.sbatch; no literal project root in code); --fix copies the
@@ -25,6 +26,7 @@ canon="$root/kansasii-docs/templates/gitattributes"
 canon_vscode="$root/kansasii-docs/templates/vscode-settings.json"
 
 canon_paths="$root/kansasii-docs/templates/kansasii_paths.py"
+canon_cutoffs="$root/kansasii-docs/templates/kansasii_cutoffs.py"
 canon_ignore="$root/kansasii-docs/templates/gitignore"
 ROOT_LITERAL='/shares/sander.imm.uzh/MM/kansasii'
 
@@ -68,6 +70,20 @@ for gitdir in "$root"/*/.git; do
                     echo "fixed $c in $name (staged, not committed)"
                 else
                     problems+=("$c differs from kansasii-docs/templates/kansasii_paths.py")
+                fi
+            fi
+        done
+    fi
+    # vendored copies of kansasii_cutoffs.py (only in the repos that use the cutoffs; no copy is required)
+    if [ -f "$canon_cutoffs" ] && [ "$name" != "kansasii-docs" ]; then
+        mapfile -t cutoff_copies < <(git -C "$repo" ls-files '*kansasii_cutoffs.py')
+        for c in "${cutoff_copies[@]}"; do
+            if ! cmp -s "$canon_cutoffs" "$repo/$c"; then
+                if [ "$fix" = 1 ]; then
+                    cp "$canon_cutoffs" "$repo/$c"; git -C "$repo" add "$c"
+                    echo "fixed $c in $name (staged, not committed)"
+                else
+                    problems+=("$c differs from kansasii-docs/templates/kansasii_cutoffs.py")
                 fi
             fi
         done

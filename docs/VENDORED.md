@@ -7,6 +7,7 @@ The repos are independent (each has its own git history and can be cloned alone)
 | File in kansasii-docs | Copy in every repo | `--fix` |
 |---|---|---|
 | `templates/kansasii_paths.py` | `<package>/kansasii_paths.py` or `scripts/kansasii_paths.py` | yes |
+| `templates/kansasii_cutoffs.py` (CLSI breakpoints, non-CLSI thresholds, drug codes) | `kansasii-mic/src/kansasii_mic/kansasii_cutoffs.py`, `immensekansasii/scripts/kansasii_cutoffs.py` (only repos that use cutoffs) | yes |
 | `templates/gitattributes` | `.gitattributes` | yes |
 | `templates/vscode-settings.json` | `.vscode/settings.json` | yes |
 | `templates/gitignore` | lines of `.gitignore` (the repo may add more) | yes |

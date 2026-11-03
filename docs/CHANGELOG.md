@@ -2,6 +2,11 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-03 (docs review)
+- Documentation check of all `.md` files: fixed stale script names (`LIT.md`, hsp65 article), added `env_ridom` to the env list, corrected the Ridom export count (5, not 12) and the status of the MST figures in `RIDOM.md` / `kansasii-ridom/README.md`.
+- Public samples with CheckM contamination above 5 % are now left out of gyrA-refalign (all gyrA results) and hsp65-refalign step 05 (`excluded_contaminated.tsv` in each); 29 public samples without a CheckM result are kept. Counts are in the two READMEs.
+- New `docs/REPRODUCE.md`: ordered commands to reproduce the whole project.
+
 ## 2026-11-03 (shared cutoffs)
 - New `kansasii-docs/templates/kansasii_cutoffs.py`: CLSI *M. kansasii* breakpoints, non-CLSI thresholds (EMB 8, INH 8, ETO 0.6, STR 16, CFZ 2 mg/L) and drug codes in one place. Vendored unchanged into `kansasii-mic/src/kansasii_mic/` and `immensekansasii/scripts/`; `repos/check_sync.sh` flags drift and `--fix` restores it. `kansasii_mic.breakpoints` and `12_generate_itol_ast.py` import it instead of keeping their own tables. The tree script's output is unchanged (it still has no clofazimine ring). kansasii-mic now also classifies Ethionamid (0.6 mg/L) and Streptomycin (16 mg/L) against these non-CLSI thresholds (they were left out before), so its MHK/MGIT overview tables gain those two drugs on the next run; `output/kansasii-mic/results/` has not been rerun.
 

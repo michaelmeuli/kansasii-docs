@@ -82,7 +82,7 @@ tests/            pytest (kansasii-mic, kansasii-cgmlst, immensekansasii)
 ```
 
 Conda environments are `env_<short name>`: `env_immense`, `env_mic`, `env_mlsa` (also hsp65-refalign, gyrA-refalign, kansasii-docs
-bin scripts), `env_amr`, `env_cgmlst`, `env_mst`, `env_sanger_ms`; `env_typecheck` holds mypy. `immensekansasii` keeps the upstream
+bin scripts), `env_amr`, `env_cgmlst`, `env_mst`, `env_ridom`, `env_sanger_ms`; `env_typecheck` holds mypy. `immensekansasii` keeps the upstream
 IMMENSE layout (`main.nf`, `modules/`, `bin/`) next to its project `scripts/`. `kansasii-docs` has `bin/`, `docs/`, `templates/`.
 
 ## Conventions

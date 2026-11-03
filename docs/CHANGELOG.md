@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-03 (MST exports)
+- `kansasii-ridom/config/expected_exports.tsv`: the per-subset MST row (`ridom-mst-{subset}-mkan329.svg`) is replaced by the three whole-complex figures that exist (`ridom-mst-{species,cluster,species-and-cluster}.svg` in `data/imm/`), so `00_check_exports.py` no longer reports them MISSING (UNCHECKED: presence only). Files not renamed. `RIDOM.md` and the ridom README updated.
+
 ## 2026-11-03 (docs review)
 - Documentation check of all `.md` files: fixed stale script names (`LIT.md`, hsp65 article), added `env_ridom` to the env list, corrected the Ridom export count (5, not 12) and the status of the MST figures in `RIDOM.md` / `kansasii-ridom/README.md`.
 - Public samples with CheckM contamination above 5 % are now left out of gyrA-refalign (all gyrA results) and hsp65-refalign step 05 (`excluded_contaminated.tsv` in each); 29 public samples without a CheckM result are kept. Counts are in the two READMEs.

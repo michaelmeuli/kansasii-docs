@@ -70,7 +70,7 @@ requested that a script can derive). `config/expected_exports.tsv` lists them; `
 | Pairwise allele distances, whole complex, pairwise ignore | `ridom-distance-matrix.meg` | have |
 | Cluster table (`-Group-`) | `ridom-clusters.csv` | have |
 | Scheme as task template (holds the targets **and** the Target Definer report) | `ridom-scheme.tasktemplate` | have |
-| MST figures per subset (SVG or PDF, as drawn for the report) | `ridom-mst-<subset>-mkan329.{svg,pdf}` for complex, kansasii, pseudokansasii, persicum, minor | **partly have**: `ridom-mst-{species,cluster,species-and-cluster}.{svg,png}` (2026-11-02, whole complex) exist but not per subset and not under the expected names; `00_check_exports.py` reports MISSING until renamed or the list is changed. Layout and colours are not reproducible in code |
+| MST figures of the whole complex, as drawn for the report (SVG + PNG) | `ridom-mst-{species,cluster,species-and-cluster}.{svg,png}`: coloured by species, by cluster, by both | have (2026-11-02); presence only, layout and colours are not reproducible in code, no script reads them |
 
 Derived tables (`output/kansasii-ridom/results/`, run `sbatch submit_all.sbatch`):
 

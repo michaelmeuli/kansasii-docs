@@ -5,49 +5,49 @@ disagree with this file, they win; update this file.
 
 ```mermaid
 flowchart TD
-  subgraph inputs [data/]
-    SM[imm/screening_map_*.csv]
-    MICIN[imm/mic.csv]
-    READS[illumina reads]
-    SANG[sanger .ab1]
-    GTDB[GTDB genomes]
+  subgraph inputs ["data/"]
+    SM["imm/screening_map_*.csv"]
+    MICIN["imm/mic.csv"]
+    READS["illumina reads"]
+    SANG["sanger .ab1"]
+    GTDB["GTDB genomes"]
   end
-  SM --> LINK[02 screening_map_link.py]
-  LINK --> LT[(screening_map_link.csv)]
-  READS --> PIPE[IMMENSE pipeline, runs/]
-  LT --> MIC[kansasii-mic]
+  SM --> LINK["02 screening_map_link.py"]
+  LINK --> LT[("screening_map_link.csv")]
+  READS --> PIPE["IMMENSE pipeline, runs/"]
+  LT --> MIC["kansasii-mic"]
   MICIN --> MIC
-  GTDB --> MLSA[mlsa-kansasii (locus_discovery, sanger_mlsa, sanger_refalign), genome_identity_check]
-  MLSA --> AMP[(HSP65_AMPLICONS)]
+  GTDB --> MLSA["mlsa-kansasii (locus_discovery, sanger_mlsa, sanger_refalign), genome_identity_check"]
+  MLSA --> AMP[("HSP65_AMPLICONS")]
   SANG --> MLSA
   LT --> MLSA
-  MLSA --> M4[sanger_vs_wgs]
-  AMP --> HSPR[hsp65-refalign]
+  MLSA --> M4["sanger_vs_wgs"]
+  AMP --> HSPR["hsp65-refalign"]
   RT --> HSPR
   PIPE --> HSPR
-  GTDB --> GYR[gyrA-refalign]
+  GTDB --> GYR["gyrA-refalign"]
   RT --> GYR
   PIPE --> GYR
-  HSPR --> ATY[atypical gyrA/hsp65 table]
+  HSPR --> ATY["atypical gyrA/hsp65 table"]
   GYR --> ATY
-  MIC --> RES[06 screening_map_results.py]
+  MIC --> RES["06 screening_map_results.py"]
   MLSA --> RES
   PIPE --> RES
-  RES --> RT[(screening_map_results.csv)]
-  RT --> AMR[kansasii-amr-marker-screen]
+  RES --> RT[("screening_map_results.csv")]
+  RT --> AMR["kansasii-amr-marker-screen"]
   MIC --> AMR
   PIPE --> AMR
-  PIPE --> MST[kansasii-mst]
-  PIPE --> CG[kansasii-cgmlst]
-  RT --> ITOL[iTOL labels, SAMPLES.md]
-  PIPE --> TREE[kansasii_phylo.nf: snippy per sample, snippy-core over the db, IQ-TREE]
-  TREE --> TT[(kansasii_complex_tree.treefile)]
+  PIPE --> MST["kansasii-mst"]
+  PIPE --> CG["kansasii-cgmlst"]
+  RT --> ITOL["iTOL labels, SAMPLES.md"]
+  PIPE --> TREE["kansasii_phylo.nf: snippy per sample, snippy-core over the db, IQ-TREE"]
+  TREE --> TT[("kansasii_complex_tree.treefile")]
   TT --> ITOL
-  TT --> AST[12 generate_itol_ast.py: prune to patients, midpoint root, AST dots, species ring]
+  TT --> AST["12 generate_itol_ast.py: prune to patients, midpoint root, AST dots, species ring"]
   RT --> AST
-  AST --> FIG[iTOL web export by hand: midpoint-rooted-tree.pdf/svg]
-  SANG --> MS[sanger-microsynth routine]
-  MLSA -.references.-> MS
+  AST --> FIG["iTOL web export by hand: midpoint-rooted-tree.pdf/svg"]
+  SANG --> MS["sanger-microsynth routine"]
+  MLSA -. references .-> MS
 ```
 
 > **Ridom is the source of truth** for cgMLST/MST/clusters (2026-10-30, [RIDOM.md](RIDOM.md)). `kansasii-mst` and `kansasii-cgmlst` in the diagram are obsolete; only the Ridom input export and `sample_qc.tsv` are still used.
@@ -72,7 +72,7 @@ flowchart TD
 | `data/imm/ridom-kansasii-plasmids.csv` | NCBI Genome export (manual) | docs/PLASMIDS.md only |
 | `output/kansasii-ridom/ridom_assemblies.tar.gz`, `output/kansasii-ridom/ridom_assemblies.zip` (182 incl. M055) | `kansasii-ridom/scripts/01_export_ridom.py` (replaces `kansasii-cgmlst/scripts/10_export_ridom.py`, 181) | Ridom SeqSphere+ (manual) |
 | snippy db `IMMense_dependencies/databases/kansasii_complex/<db>/<sample_id>/` (`/shares/sander.imm.uzh/software/pipelines/IMMense/`; `mkan329` has 186 samples) | `kansasii_snippy` (`immensekansasii/modules/kansasii_phylo.nf`), filled per sample; passed with `--kansasii_snippy_db` | `kansasii_snippy_core` (globs the whole db: the tree contains whatever is in the dir) |
-| `runs/<run>/<run>_transfer_result/kansasii_phylogeny/kansasii_complex_{core.aln,tree.treefile,tree.iqtree}` (`runs/mkan329`: 187 tips = 186 samples + `Reference`) | `kansasii_snippy_core` + `kansasii_tree` (core-SNP alignment, IQ-TREE GTR+G; unrooted, no support values), see `immensekansasii/WORKFLOW.md` 2d | `07_generate_itol_species_labels.sh` (copy + labels in `output/immensekansasii/results/iTOL/<run>/`), `12_generate_itol_ast.py` |
+| `runs/<run>/<run>_transfer_result/kansasii_phylogeny/kansasii_complex_{core.aln,tree.treefile,tree.iqtree}` (`runs/mkan329`: 187 tips = 186 samples + `Reference`) | `kansasii_snippy_core` + `kansasii_tree` (core-SNP alignment, IQ-TREE GTR+G; unrooted, no support values), see `WORKFLOW.md` 2d | `07_generate_itol_species_labels.sh` (copy + labels in `output/immensekansasii/results/iTOL/<run>/`), `12_generate_itol_ast.py` |
 | `output/immensekansasii/results/iTOL/mkan329_patients/{kansasii_patients_midpoint.nwk,itol_*.txt}` | `immensekansasii/scripts/12_generate_itol_ast.py` (prunes `mkan329` tree to the 171 patients, midpoint root, AST dots, species ring; input also `screening_map_results.csv`) | iTOL web (manual upload) |
 | `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of the `mkan329_patients/` files above; copy in that directory | figure only, no script reads it |
 | `output/kansasii-amr-marker-screen/results/assembly/`, `output/kansasii-amr-marker-screen/results/bam/` | `kansasii-amr-marker-screen/submit_amr*.sbatch` | reports only |

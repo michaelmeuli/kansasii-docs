@@ -37,7 +37,7 @@ GCF_002705785.1, GCF_002705825.1, GCF_002705865.1 (isolates K4, K14, K19, Samsun
 They are *M. kansasii* sensu stricto: skani ANI 98.5-99.3 % to other kansasii and <= 93.95 % to every other species, identical to the type strain
 at gyrA, gyrB, rpoB, recA, tuf, secA, 16S and ITS. Only hsp65 is atypical (11 SNPs in the 441 bp amplicon, persicum-like; Jagielski et al. 2019
 call them hsp65 types Ib/IIb with WGS subtype I). The three are near-clonal (ANI 99.9-100), so effectively one lineage. Details:
-`mlsa-kansasii/LIT.md`. They are kept in all reference sets, which is why a persicum read has a margin of only 2-3 to "kansasii"; the
+`LIT.md`. They are kept in all reference sets, which is why a persicum read has a margin of only 2-3 to "kansasii"; the
 `*_excluded` runs of mlsa-kansasii (`--exclude-atypical`) drop them as a sensitivity analysis. gyrA of all three is kansasii (leave-one-out
 72/72 correct).
 
@@ -53,7 +53,7 @@ persicum-like gyrA calls are genome-persicum. Exceptions and notes:
 
 | Isolate | Genome | Finding | Reading |
 |---|---|---|---|
-| Mkan329-035 | kansasii | gyrA ostraviense, Sanger hsp65 ostraviense, assembly hsp65 closer to the Korean amplicon than to ATCC 12478 | **mixed culture** kansasii + ostraviense (CheckM contamination 113 %, `mlsa-kansasii/Mkan329-035_contamination.md`); excluded from analyses; not an atypical kansasii |
+| Mkan329-035 | kansasii | gyrA ostraviense, Sanger hsp65 ostraviense, assembly hsp65 closer to the Korean amplicon than to ATCC 12478 | **mixed culture** kansasii + ostraviense (CheckM contamination 113 %, `Mkan329-035_contamination.md`); excluded from analyses; not an atypical kansasii |
 | Mkan329-184 | *M. avium* | gyrA divergent (89 % to persicum) | non-complex clinical sample, expected |
 | Mkan329-010, -021, -113, -055 | persicum / kansasii | gyrA not callable (low coverage) | fragmented or contaminated assemblies (010, 021, 113 contaminated; 055 low cgMLST coverage) |
 | 8 isolates with a gyrA haplotype that matches none of the 72 genomes | kansasii 050, 095, 161 (1 difference to GCA_002003585.1); persicum 009, 052, 058, 148; attenuatum 073 | `gyrA_novel_haplotype` | 1-7 differences to the closest genome, species call unchanged. Persicum and attenuatum have few reference genomes, so new haplotypes are expected |
@@ -61,7 +61,7 @@ persicum-like gyrA calls are genome-persicum. Exceptions and notes:
 ## 3. Public data (four BioProjects, 1012 GTDB-complex samples after leaving out 27 contaminated ones)
 
 **hsp65 (857 GTDB-kansasii assemblies, in silico; 23 contaminated ones left out).** 854 are closest to a typical kansasii reference with 0 differences. Three are not
-(also in `immensekansasii/SPECIES.md`):
+(also in `SPECIES.md`):
 
 | Sample | BioProject | Origin | hsp65 | gyrA | Reading |
 |---|---|---|---|---|---|

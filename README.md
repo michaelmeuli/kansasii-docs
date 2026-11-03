@@ -51,7 +51,7 @@ it after a fresh clone.
 
 ## Where to read next
 
-- **Run order and every script's inputs/outputs:** `repos/immensekansasii/WORKFLOW.md`.
+- **Run order and every script's inputs/outputs:** `repos/kansasii-docs/docs/WORKFLOW.md`.
 - **Commands to reproduce the whole project, in order:** [docs/REPRODUCE.md](docs/REPRODUCE.md).
 - **Which file feeds which repo (with diagram):** [docs/DATAFLOW.md](docs/DATAFLOW.md).
 - **Ridom as source of truth, exports needed, what the obsolete repos still feed:** [docs/RIDOM.md](docs/RIDOM.md).
@@ -66,7 +66,7 @@ it after a fresh clone.
   mlsa-kansasii draft was merged into it).
 - **Overview of all results:** `python3 repos/kansasii-docs/bin/make_summary.py` writes
   `output/SUMMARY.html` (manifests, figure index).
-- **Git conventions:** `immensekansasii/GIT.md`.
+- **Git conventions:** `kansasii-docs/docs/GIT.md`.
 
 ## Repo layout
 

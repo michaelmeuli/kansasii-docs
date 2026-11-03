@@ -1,7 +1,7 @@
 # Reproducing the whole project
 
 The commands to run, in order, to rebuild every result from the raw inputs on the s3it cluster. This file is
-only the order and the commands; the reasons, options and checks are in `repos/immensekansasii/WORKFLOW.md`
+only the order and the commands; the reasons, options and checks are in `WORKFLOW.md`
 (run order, the source of truth if the two disagree) and [DATAFLOW.md](DATAFLOW.md) (which file feeds which repo).
 Code blocks use the full path and can be pasted as they are; only `<placeholders>` need filling in.
 

@@ -157,7 +157,7 @@ def reference_rows(gyra: Path) -> list[dict[str, str]]:
                      "hsp65_closest": "persicum", "hsp65_status": "11 SNPs from other kansasii (441 bp amplicon)",
                      "gyrA_closest": cell(ref, acc, "closest_species") if acc in ref.index else "", "gyrA_status": cell(ref, acc, "status") if acc in ref.index else "",
                      "categories": "hsp65_persicum_like", "detail": "Korean isolates K4/K14/K19 (Samsung Medical Center, submitted by Borstel); "
-                     "kansasii by ANI and at gyrA/gyrB/rpoB/recA/tuf/secA/16S/ITS (mlsa-kansasii/LIT.md)",
+                     "kansasii by ANI and at gyrA/gyrB/rpoB/recA/tuf/secA/16S/ITS (kansasii-docs/docs/LIT.md)",
                      "strain_or_NR": "", "country": "Korea", "biosample": ""})
     wrong = ref[(ref["loo_correct"] == "False")]
     for wacc, r in wrong.iterrows():

@@ -115,8 +115,8 @@ What this means in practice:
 - Other tools use their own numbering. MetaPhlAn4 reports species-level genome bins (SGBs, `mpa_vJan25_CHOCOPhlAnSGB`) and its
   own species names. GTDB-Tk, MetaPhlAn, hsp65 and 16S can each give a different species for one sample. Example: Mkan329-035
   is GTDB-Tk *kansasii* (ANI 99.66 to GCF_000157895.3), MetaPhlAn *ostraviense* and hsp65 *ostraviense*, because it is a mixed
-  culture (see `immensekansasii/SPECIES.md`). Each tool reports one of the two species present.
-- 16S cannot separate kansasii, ostraviense and gastri (identical sequences, see `mlsa-kansasii/LIT.md`), so a 16S "match" gives
+  culture (see `SPECIES.md`). Each tool reports one of the two species present.
+- 16S cannot separate kansasii, ostraviense and gastri (identical sequences, see `LIT.md`), so a 16S "match" gives
   no information about which of the species is present.
 
 ## 5. The lab's numbers vs the public ones (using *M. ostraviense*)
@@ -192,7 +192,7 @@ Other numbering used in the project:
 
 - `NR 128` / `132` / `133`: lab control strains (ATCC 12478, DSM 104278, DSM 107152) sequenced with the cohort.
 - Sanger: `<TNR> hsp65_Tb-11.ab1`, one trace per primer and sample, `_wdh` / `_12w` = repeat or re-run (see
-  `sanger-microsynth/species_panel.md`). A Sanger trace is not an NGS run, and one isolate can have several traces.
+  `species_panel.md`). A Sanger trace is not an NGS run, and one isolate can have several traces.
 - Ridom/cgMLST tables use `GCF_…` for public genomes and `M<number>` for lab isolates in the same column.
 
 ## 7. Same or not? Quick reference

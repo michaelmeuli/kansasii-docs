@@ -14,13 +14,13 @@ outside the complex (since 2026-10-24). Seven isolates:
 |---|---|---|---|---|
 | 10 | Mkan329-010 | persicum | contaminated | CheckM 7.67 % |
 | 21 | Mkan329-021 | kansasii | contaminated | CheckM 7.76 % |
-| 35 | Mkan329-035 | kansasii | contaminated | CheckM 113.37 % (diagnosis: `mlsa-kansasii/Mkan329-035_contamination.md`) |
+| 35 | Mkan329-035 | kansasii | contaminated | CheckM 113.37 % (diagnosis: `Mkan329-035_contamination.md`) |
 | 55 | Mkan329-055 | persicum | low cgMLST coverage | 81.52 % of loci called (CheckM 2.47 %, not contaminated) |
 | 106 | Mkan329-106 | kansasii | contaminated | CheckM 20.44 % |
 | 113 | Mkan329-113 | persicum | contaminated | CheckM 61.40 % |
 | 184 | Mkan329-184 | avium | not in the *M. kansasii* complex | clinical sample, `LABEL` empty |
 
-Contaminated isolates are mixed cultures (see `immensekansasii/SPECIES.md`). CheckM is the criterion, not a species call.
+Contaminated isolates are mixed cultures (see `SPECIES.md`). CheckM is the criterion, not a species call.
 The 5 % threshold was documented as 10 % until 2026-10-21; NR 10 and 21 sit between the two (CHANGELOG 2026-10-21).
 
 ## 2. Which analysis uses which rule
@@ -44,24 +44,24 @@ Control strains (`LABEL` set) are not marked `excluded` even when non-complex; c
 
 - Controls (`LABEL` set), NR 126-133: H37Rv, M. avium ATCC 19421, M. kansasii ATCC 12478, M. abscessus, M. xenopi, M. ulcerans (GTDB: marinum), M. persicum DSM 104278, M. pseudokansasii DSM 107152. MST drops all of them; cgMLST keeps the complex ones (128, 132, 133).
 - Non-complex clinical sample: NR 184 (avium), now `excluded` = true (section 1).
-- `immensekansasii/SPECIES.md` lists the non-complex species as avium 2, tuberculosis, abscessus, xenopi, marinum.
+- `SPECIES.md` lists the non-complex species as avium 2, tuberculosis, abscessus, xenopi, marinum.
 
 ## 4. Reference genomes left out (mlsa-kansasii)
 
 `*_excluded` variants of `locus_discovery` and `sanger_mlsa` (output: `output/mlsa-kansasii/results/locus_discovery_excluded`, `output/mlsa-kansasii/results/sanger_mlsa_excluded`)
 drop three atypical Korean *M. kansasii* GTDB genomes: **GCF_002705785.1, GCF_002705825.1, GCF_002705865.1**.
-This is a sensitivity check, not a correction: `mlsa-kansasii/LIT.md` explains why they are real *M. kansasii*.
+This is a sensitivity check, not a correction: `LIT.md` explains why they are real *M. kansasii*.
 A matching hsp65 variant exists (`submit_hsp65_iupac_excluded.sbatch`).
 
 ## 5. Per-analysis no-calls (not exclusions)
 
 - hsp65 vs WGS: of 132 analysed isolates 108 get a call (all correct) and 24 do not: 13 Rothia mucilaginosa contaminant reads (genomes are clean), 10 unusable traces, 1 poor reads (Mkan329-102). These isolates stay in all genome analyses. Details in `hsp65-refalign/README.md`.
-- 67 of 177 complex isolates have no MLSA call, probably missing Sanger reads (`immensekansasii/SPECIES.md`).
+- 67 of 177 complex isolates have no MLSA call, probably missing Sanger reads (`SPECIES.md`).
 
 ## 6. Resequenced duplicates
 
 `NGS_USED` in `screening_map_results.csv` says which sequencing run is used per isolate (`NGS_MM` if present, else `NGS_JC`); the resequencing run `mkan329_jc` is otherwise not used (`DATAFLOW.md`).
-Mkan329-056 was suspected contaminated, resequenced as `Mkan329-056-jc`; `contamination_flag` does not exclude it (`immensekansasii/WORKFLOW.md`).
+Mkan329-056 was suspected contaminated, resequenced as `Mkan329-056-jc`; `contamination_flag` does not exclude it (`WORKFLOW.md`).
 
 ## 7. Ridom export (`output/kansasii-ridom/ridom_assemblies.tar.gz`, `.zip`)
 

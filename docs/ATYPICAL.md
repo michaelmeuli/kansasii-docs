@@ -69,22 +69,19 @@ persicum-like gyrA calls are genome-persicum. Exceptions and notes:
 
 For the 80 GTDB-persicum samples hsp65 was run separately (`output/hsp65-refalign/results/public_persicum/`, needed to judge the gyrA cases below): all 80 have a persicum-like hsp65
 (69 closest to a persicum genome, 11 to the Korean-type kansasii genomes with persicum as runner-up), including the five whose gyrA is kansasii-like. So in those five
-the two markers disagree: hsp65 persicum, gyrA kansasii.
+the two markers disagree: hsp65 persicum-like (ambiguous with the 72 references), gyrA kansasii. The read-level check below confirms both.
 
 **gyrA (1033 callable samples).** 1026 agree with the GTDB species. Seven disagree, **all in PRJNA1078897** (the Taiwan phylogeography study,
 Emerg Infect Dis 2024, doi 10.3201/eid3008.240021):
 
 | Sample | GTDB species | gyrA | Genome checks | Reading |
 |---|---|---|---|---|
-| SRR28038252 | persicum | kansasii | CheckM contamination 100 %, assembly 10.5 Mb; hsp65 persicum-like | **mixed culture** (persicum + kansasii), explains the gyrA |
-| SRR28038242 | persicum | kansasii | CheckM 0.45 %, MetaPhlAn persicum 99.8 %, ANI 99.5 % to persicum, ST 418; hsp65 persicum-like | clean persicum genome with kansasii gyrA |
-| SRR28038316, -317, -318 | persicum | kansasii | CheckM 0.45 %, purity ~100 %, ANI 99.5 % to persicum, ST 418; hsp65 persicum-like | clean persicum genomes with kansasii gyrA: three samples of one batch carry the same pattern |
-| SRR28038314, SRR28038483 | kansasii | persicum | CheckM 0.15 %, ANI 99.2 / 98.9 % to ATCC 12478 | clean kansasii genomes with a persicum gyrA; their hsp65 is kansasii (the 3-base persicum vs kansasii difference decides) |
+| SRR28038252 | persicum | kansasii | CheckM contamination 100 %, assembly 10.5 Mb; hsp65 persicum-like | contaminated assembly; read level (2026-11-03): gyrA pure kansasii (99.98 %), same haplotype as 316/318, minor alleles 1-3 % at rpoB/recA/tuf, so **no persicum + kansasii mixture explains the gyrA** (the contaminant is not identified) |
+| SRR28038242 | persicum | kansasii | CheckM 0.45 %, MetaPhlAn persicum 99.8 %, ANI 99.5 % to persicum, ST 418; hsp65 persicum-like | clean persicum genome with kansasii gyrA; read level: confirmed, one species at every locus |
+| SRR28038316, -317, -318 | persicum | kansasii | CheckM 0.45 %, purity ~100 %, ANI 99.5 % to persicum, ST 418; hsp65 persicum-like | clean persicum genomes with kansasii gyrA: three samples of one batch carry the same pattern; read level: confirmed |
+| SRR28038314, SRR28038483 | kansasii | persicum | CheckM 0.15 %, ANI 99.2 / 98.9 % to ATCC 12478 | clean kansasii genomes with a persicum gyrA; their hsp65 is kansasii (the 3-base persicum vs kansasii difference decides); read level: confirmed, hsp65 typical kansasii (margin 8) |
 
-The six clean ones (242, 316, 317, 318 persicum; 314, 483 kansasii) are **interspecies mosaics or recombinants** if the assemblies are right. CheckM and
-MetaPhlAn argue against a mixed culture, but there was no read-level check (no mapping of the reads to both gyrA alleles) and no check whether the
-region is related to the persicum-derived segment found in the project cohort by the GWAS work (`NC_022663.1:1,929,793-1,994,501`). This is **not
-investigated further**; treat it as a lead.
+**Read-level check (`gyrA-refalign` scripts 04 and 05, `output/gyrA-refalign/results/public_reads/`).** The raw reads of all seven, with one concordant kansasii and one concordant persicum control (SRR28038241, SRR28038325), were mapped to gyrA, rpoB, recA and tuf and the hsp65 amplicon. In all seven the reads carry the other species' gyrA (99.6-99.98 % of bases at the 182 sites fixed between kansasii and persicum; reads carrying both alleles are at control noise level; no breakpoint in the gene), while rpoB, recA and tuf carry the GTDB species. They are **interspecies gyrA mosaics**, not mixed cultures or assembly artefacts. The five persicum samples fall into two gyrA haplotypes (252/316/318 and 242/317), so about two events. SRR28038252 has a contaminated assembly (CheckM 100 %, 10.5 Mb) but no second complex species in its reads at these loci, so its contamination does not explain its gyrA. hsp65 (read consensus, 441 bp): the five persicum samples are identical to the Korean-type amplicon (1 difference to persicum, 10 to typical kansasii), hence persicum with the 7 representative genomes and `ambiguous` with the 72; the two kansasii samples are typical kansasii (margin 8). So hsp65 gives the genome species, or flags ambiguity, in all seven. Limits: short reads only (no long-read proof of recombination); whether the gyrA region is related to the persicum-derived segment found by the GWAS work (`NC_022663.1:1,929,793-1,994,501`) was not checked.
 
 Six public samples are too fragmented for gyrA (`gyrA_low_coverage`): SRR27048690 (PRJNA1048499), SRR12599239 and SRR12599307 (PRJNA323639), SRR19543410, -452, -482 (PRJNA845115).
 Further, 77 public samples have a gyrA haplotype that matches none of the 72 genomes while the species call agrees (`gyrA_novel_haplotype`; 31 of them are kansasii:
@@ -94,7 +91,7 @@ A 78th callable sample has a novel haplotype too, but its gyrA call disagrees wi
 ## What this means in practice
 
 - A Sanger hsp65 call of persicum or kansasii is a 3-base decision and a Korean-type kansasii would be called persicum. Confirm those with **gyrA**
-  (this is also what `sanger-microsynth` reports as "confirm with gyrA" when the closest reference is the atypical genome).
+  (this is also what `sanger-microsynth` reports as "confirm with gyrA" when the closest reference is the atypical genome). gyrA is itself discordant with the genome in 7 of 1033 public samples (interspecies mosaics, see above), so a persicum/kansasii call that matters is best backed by both loci.
 - In our cohort no isolate would have been misidentified by hsp65 because of an atypical lineage; the only discordant project sample is a mixed culture.
 - In public data, discordance between gyrA/hsp65 and the genome species is rare (7 of 1033 for gyrA, 3 of 880 for hsp65 among kansasii) and concentrated in one
   BioProject, so use the genome (GTDB) species, not a marker, when assigning species to public data.

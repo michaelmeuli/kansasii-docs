@@ -25,7 +25,7 @@ columns of `data/imm/ridom-comparison-table.csv`. The four FDAARGOS plasmids hav
   on the **7 GTDB reference genomes only**. In practice that removes pMK12478 (NC_022654.1); it is the only labelled plasmid among them.
 - The 175 cohort assemblies are linked as they are, **without** plasmid stripping.
 - The 117 kb contig `NZ_UPHU01000002.1` of the pseudokansasii reference MK142 (GCF_900566075.1) is unlabelled and kept on purpose.
-- Check (2026-10-29): none of the 3,646 loci in `output/kansasii-cgmlst/results/cgmlst/t0.95/cgMLSTschema95.txt` lies on `NZ_UPHU01000002.1` (106 CDS in the
+- Check (2026-10-29): none of the 3,646 loci (2026-10-25 build; the 2026-11-03 rebuild has 3,647, not rechecked) in `output/kansasii-cgmlst/results/cgmlst/t0.95/cgMLSTschema95.txt` lies on `NZ_UPHU01000002.1` (106 CDS in the
   schema coordinates) or on NC_022654.1. Core loci come from 7 references: 2,134 from ATCC 12478, the rest from the other six.
 - The FDAARGOS plasmids in the CSV are not part of the cgMLST inputs (only ATCC 12478, as reference GCF_000157895.3, is in
   `output/kansasii-cgmlst/results/samples.tsv`; the four FDAARGOS assemblies are not).

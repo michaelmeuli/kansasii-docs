@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-04 (kansasii-mic: Mkan329-186 excluded)
+- kansasii-mic drops Mkan329-186 (TNR 2020500010) via `MANUAL_EXCLUSIONS`: 'nicht rein' in `kansasii_list_JC.xlsx`, although CheckM is clean (0.68 %). Reran `output/kansasii-mic/results/`: MHK 78 -> 77 isolates (1,013 -> 1,000 rows), MGIT 66 -> 65 (1,218 -> 1,206 rows), isolates tested by both 18 -> 17. Other repos (cgMLST, MST, AMR screen) still include it. The same file also marks 2022500349 and 2022335425 'nicht rein'; not excluded.
+
 ## 2026-11-03 (MST exports)
 - `kansasii-ridom/config/expected_exports.tsv`: the per-subset MST row (`ridom-mst-{subset}-mkan329.svg`) is replaced by the three whole-complex figures that exist (`ridom-mst-{species,cluster,species-and-cluster}.svg` in `data/imm/`), so `00_check_exports.py` no longer reports them MISSING (UNCHECKED: presence only). Files not renamed. `RIDOM.md` and the ridom README updated.
 

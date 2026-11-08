@@ -43,16 +43,18 @@ are decided.
 Allele distances of the Ridom scheme per subset (`kansasii-ridom/scripts/02_distance_matrices.py`, `output/kansasii-ridom/results/distance_summary.tsv`;
 subsets are submatrices of the complex export, references included in the subset of their species; pairs = within the subset):
 
-| Subset | n | Median distance | Max | Identical pairs |
-|---|---|---|---|---|
-| complex | 181 | 1132 | 1356 | 6 |
-| kansasii | 123 | 170 | 910 | 1 |
-| pseudokansasii | 21 | 7 | 475 | 5 |
-| persicum | 29 | 535.5 | 730 | 0 |
-| attenuatum | 3 | 783 | 803 | 0 |
-| ostraviense | 2 | 258 | 258 | 0 |
-| innocens | 2 | 543 | 543 | 0 |
-| gastri | 1 | - | - | - |
+| Subset | n (all genomes) | Median | Max | Identical pairs | n (study isolates) | Median (study) | Max (study) | Identical pairs (study) |
+|---|---|---|---|---|---|---|---|---|
+| complex | 181 | 1132 | 1356 | 6 | 171 | 329 | 1352 | 6 |
+| kansasii | 123 | 170 | 910 | 1 | 121 | 172 | 910 | 1 |
+| pseudokansasii | 21 | 7 | 475 | 5 | 19 | 6 | 27 | 5 |
+| persicum | 29 | 535.5 | 730 | 0 | 27 | 540 | 730 | 0 |
+| attenuatum | 3 | 783 | 803 | 0 | 2 | 733 | 733 | 0 |
+| ostraviense | 2 | 258 | 258 | 0 | 1 | - | - | 0 |
+| innocens | 2 | 543 | 543 | 0 | 1 | - | - | 0 |
+| gastri | 1 | - | - | - | 0 | - | - | 0 |
+
+"Study isolates" (`study_*` columns of `distance_summary.tsv`) leave out the `GCF_*` references **and** the control / type strains (strains with a `LABEL`, e.g. `M_kansasii_ATCC_12478`). The report and `08_paper_numbers.py` use these (kansasii 172, persicum 540, pseudokansasii 6). The `iso_*` columns leave out only the references (171 / 539 / 6) and are not cited.
 
 The attenuatum, ostraviense, innocens and gastri rows are the species of the combined `minor` subset of `SUBSETS` (n = 8, median 1253, max 1279, 0 identical pairs); the script writes both the combined `minor` matrix and one matrix per species. gastri is a single isolate, so it has no pair. With 2-3 isolates the medians are single distances, not distributions.
 

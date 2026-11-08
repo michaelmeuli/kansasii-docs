@@ -56,7 +56,7 @@ subsets are submatrices of the complex export, references included in the subset
 
 "Study isolates" (`study_*` columns of `distance_summary.tsv`) leave out the `GCF_*` references **and** the control / type strains (strains with a `LABEL`, e.g. `M_kansasii_ATCC_12478`). The report and `08_paper_numbers.py` use these (kansasii 172, persicum 540, pseudokansasii 6). The `iso_*` columns leave out only the references (171 / 539 / 6) and are not cited.
 
-The attenuatum, ostraviense, innocens and gastri rows are the species of the combined `minor` subset of `SUBSETS` (n = 8, median 1253, max 1279, 0 identical pairs); the script writes both the combined `minor` matrix and one matrix per species. gastri is a single isolate, so it has no pair. With 2-3 isolates the medians are single distances, not distributions.
+The attenuatum, ostraviense, innocens and gastri rows are the species of the combined `minor` subset of `SUBSETS` (all genomes: n = 8, median 1253, max 1279, 0 identical pairs; study isolates: n = 4, median 1242, max 1261, 0 identical pairs); the script writes both the combined `minor` matrix and one matrix per species. gastri is a single isolate, so it has no pair. With 2-3 isolates the medians are single distances, not distributions.
 
 Note: Ridom's scheme (about 1,400 loci named after ATCC 12478 `MKAN_RS*` locus tags) is a different scheme from the chewBBACA one
 (3,647 cgMLST95 loci). Distances and cluster numbers from the two are not comparable, and the Ridom ones win.

@@ -410,7 +410,9 @@ Three processes run in series:
   `GTR+F+G4`. Because of the 875 columns it resolves little within a species: 2,539 of the 14,535
   pairs of clinical isolates are identical in it, against 11 pairs in the 287,242-column core of the
   171 clinical isolates (for example Mkan329-040 and -005: 0 against 14,890 differences). The
-  171-isolate alignment and tree of the check are in `scratch/phylo_review_20261109/patients171/`.
+  171-isolate alignment and tree of the check are in `scratch/phylo_review_20261109/patients171/`
+  (IQ-TREE GTR+G, seed 1, 43 min on 8 CPUs), with ready iTOL inputs from `12_generate_itol_ast.py` in
+  its `iTOL/` subdirectory (171 tips; 45 terminal branches of zero length against 161 in the current tree).
   The figure `midpoint-rooted-tree.{pdf,svg}` was drawn from the 875-column tree.
 
 Limits of the tree, to keep in mind when reading it:

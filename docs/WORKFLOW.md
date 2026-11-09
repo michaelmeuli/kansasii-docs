@@ -200,7 +200,9 @@ batches, a small test batch first.
    and fails with "container creation failed ... mount" if it does not exist yet.
    Per-sample results (`assembly/results/<NR>/`) and the snippy db accumulate across batches.
    The tree (`snippy-core` over the whole db) therefore covers every isolate run so far: the
-   tree written by the last batch is the cumulative one. The run-level tables
+   tree written by the last batch is the cumulative one (each invocation removes the previous
+   `kansasii_phylogeny/` first; the `mkan329` db also holds the non-complex controls, see 2d for
+   what that does to the core alignment and for `--kansasii_min_aligned_fraction`). The run-level tables
    (`mkan329_transfer_result/mkan329_quality.tsv`, `_quality_QC.csv`, resistance table,
    multiqc) only cover the samples of *that* invocation, so each batch overwrites the
    previous batch's tables; for a table over all isolates use `SAMPLES.md`
@@ -346,44 +348,70 @@ Getting the files into iTOL (the script only writes them on the server):
 
 ### 2d. Core-SNP phylogeny (`modules/kansasii_phylo.nf`, branch `kansasii`)
 
-The only tree in the project. It is part of the pipeline (called in `main.nf` after GTDB-Tk,
-skipped with `--skip_kansasii_phylo true`), not a script of this repo. GTDB-Tk gives the species;
-this gives strain-level relatedness. Three processes run in series:
+The only tree in the project. It is part of the pipeline (called in `main.nf`, skipped with
+`--skip_kansasii_phylo true`; it does not use the GTDB-Tk result and also runs with `--skip_gtdb`),
+not a script of this repo. GTDB-Tk gives the species; this gives strain-level relatedness.
+Three processes run in series:
 
 | process | runs | what it does | container |
 |---|---|---|---|
-| `kansasii_snippy` | once per sample | `snippy --ctgs <Unicycler assembly> --ref <ref>`, then copies the whole `snippy_out/` into `<kansasii_snippy_db>/<sample_id>/` (an existing dir of that name is deleted first) | `snippy:4.6.0` |
-| `kansasii_snippy_core` | once per invocation, `maxForks 1` | `snippy-core --ref <ref> --prefix kansasii_complex_core <kansasii_snippy_db>/*/` over **every** sample dir in the db, not only this invocation's | `snippy:4.6.0` |
-| `kansasii_tree` | once, `maxForks 1` | `iqtree -s kansasii_complex_core.aln -m GTR+G -pre kansasii_complex_tree` (IQ-TREE 3.1.3) | `iqtree:3.1.3` |
+| `kansasii_snippy` | once per sample | `snippy --ctgs <Unicycler assembly> --ref <ref>`, then copies the whole `snippy_out/` into `<kansasii_snippy_db>/<sample_id>/` (copied to a hidden temporary dir and renamed, so the db never holds a half-written sample; an existing dir of that name is replaced) | `snippy:4.6.0` |
+| `kansasii_snippy_core` | once per invocation, `maxForks 1` | `snippy-core --ref <ref> --prefix kansasii_complex_core <usable sample dirs of the db>` over the samples of **every** run in the db, not only this invocation's. A sample dir is left out if its snippy result is incomplete, if no base is aligned, or if less than `--kansasii_min_aligned_fraction` of the reference is aligned | `snippy:4.6.0` |
+| `kansasii_tree` | once, `maxForks 1` | `iqtree -s kansasii_complex_core.aln -m GTR+G -seed 1 -pre kansasii_complex_tree` (IQ-TREE 3.1.3) | `iqtree:3.1.3` |
 
 - **Reference:** `GCF_000157895.3_ASM15789v2_genomic.fna` (*M. kansasii* ATCC 12478, NCBI), in
   `kansasii_ref_dir` (`conf/profiles/s3it.config`: `data/gtdb_genomes/Mycobacteriaceae/ncbi_dataset/data/GCF_000157895.3/`).
   All samples are mapped to this one genome whatever their GTDB species, so the whole complex
-  shares one coordinate system. `snippy-core` keeps only positions covered in all samples, so
-  a distant or poorly covered sample can shrink the core alignment for the whole tree (not
-  checked for `mkan329`; the per-sample core fractions are in the unpublished `.txt` of `snippy-core`).
+  shares one coordinate system.
+- **One distant sample shrinks the core for everybody.** `snippy-core` keeps only positions aligned in
+  all samples. Checked for `mkan329` on 2026-11-09 (`scratch/phylo_review_20261109/`): members of the
+  complex align 56-97 % of the reference, the six non-complex samples in the db align 0.3-5 %
+  (controls Mkan329-126 *M. tuberculosis*, -127 *M. avium*, -129 *M. abscessus*, -130 *M. xenopi*,
+  -131 *M. ulcerans*, and the clinical *M. avium* isolate -184). With them the core is 875 columns;
+  the 171 clinical complex isolates alone give 287,242 columns. An empty assembly removes the core
+  altogether (`public_PRJNA1078897`: SRR28038343 has 0 aligned bases, `snp-sites` reported
+  "No SNPs were detected" and no tree was written).
+- **`--kansasii_min_aligned_fraction`** (default 0, set in `main.nf`) is the guard against this. With
+  0 only empty or incomplete sample dirs are left out, so a tree across genera
+  (`relevant_species_tree_run`) still works. Pass `-x "--kansasii_min_aligned_fraction 0.3"` to keep
+  a run to the complex (the gap is wide: 5 % against 56 %). The samples left out and the aligned
+  fraction of every sample are in `kansasii_complex_core.samples.tsv`.
 - **Input is the assembly, not the reads.** Snippy runs with `--ctgs` on the Unicycler assembly, so
-  SNPs are called from contigs and read depth plays no role.
+  SNPs are called from contigs and read depth plays no role. There is no masking (`snippy-core`
+  runs without `--mask`).
 - **The snippy db** (`--kansasii_snippy_db`) is not a reference database. It is a plain directory
   that `kansasii_snippy` fills, one subdirectory per sample with the full snippy output
   (`snps.vcf`, `snps.aligned.fa`, `snps.tab`, `ref.fa`, ...). Existing ones are under
   `/shares/sander.imm.uzh/software/pipelines/IMMense/IMMense_dependencies/databases/kansasii_complex/`
   (`mkan329`, `mkan329_jc`, `mkan329_test`, `kansasii_complex_gtdb_representatives`, `public_PRJNA*`).
-  Because `snippy-core` globs `*/`, **the tree contains exactly what is in the db dir when it runs**:
+  Because `snippy-core` takes every sample dir, **the tree contains what is in the db dir when it runs**:
   stale or foreign sample dirs end up in the tree, so one db per run set and never copy
-  unrelated samples into it. To drop a sample, delete its subdirectory and rerun `snippy-core`
-  and the tree (a rerun of the same `-r` run id with `-resume`).
-- **Outputs** in `<run>/kansasii_phylogeny/` (copied to `<run>_transfer_result/kansasii_phylogeny/`):
+  unrelated samples into it. To drop a sample, delete its subdirectory and rerun the same `-r`
+  run id (`-resume` is always on): `main.nf` passes the names and modification times of the sample
+  dirs to `kansasii_snippy_core` as its cache key, so `snippy-core` and the tree rerun exactly when
+  the db changed and are taken from the cache when it did not.
+- **Outputs** in `<run>_transfer_result/kansasii_phylogeny/`:
   `kansasii_complex_core.aln` (core SNPs only, `Reference` is one of the tips),
+  `kansasii_complex_core.txt` (`snippy-core`: aligned, unaligned and variant bases per sample),
+  `kansasii_complex_core.samples.tsv` (sample, aligned fraction, `included` or the reason it was left out),
   `kansasii_complex_tree.treefile` (Newick, this is what goes to iTOL, see 2c),
   `kansasii_complex_tree.iqtree` (log, model, parameters), `kansasii_tree_version.txt`.
-  The other `snippy-core` outputs (`.full.aln`, `.tab`, `.txt` with per-sample core fractions)
-  stay in the Nextflow `work/` dir of `kansasii_snippy_core` and are not published.
-- **Resources** (`s3it.config`): snippy 4 CPU / 4 GB, snippy-core 4 CPU / 8 GB, IQ-TREE 4 CPU /
-  4 GB, 30 min x attempt each. `kansasii_ref_dir` and the db are bind-mounted into the
-  containers, so both dirs must exist before the run.
-- **Current `mkan329` tree:** 187 tips (186 samples in the db + `Reference`), 875 alignment
-  columns, 511 parsimony-informative, IQ-TREE reports model `GTR+F+G4`.
+  The other `snippy-core` outputs (`.full.aln`, `.tab`, `.vcf`) stay in the Nextflow `work/` dir.
+  `main.nf` empties this directory when a run starts, so the tree in it always belongs to the last
+  invocation. Before 2026-11-09 a failed `snippy-core` or IQ-TREE task was ignored (the profile's
+  `errorStrategy`) and the tree of an earlier invocation stayed in place:
+  `runs/public_PRJNA1078897` still has such a tree (50 tips from 2026-10-20, the db has 243 samples).
+- **Resources** (`s3it.config`): snippy 4 CPU / 4 GB, snippy-core 4 CPU / 8 GB, 30 min x attempt each;
+  IQ-TREE 4 CPU / 4 GB, 2 h x attempt (was 30 min: the 342-tip tree of `public_PRJNA1048499` needs 64 min,
+  so it only finished on the third attempt, and on 2026-10-21 all three attempts ran out of time). `kansasii_ref_dir` and the db are
+  bind-mounted into the containers, so both dirs must exist before the run.
+- **Current `mkan329` tree** (made 2026-10-14 with the old module, not rebuilt): 187 tips (186 samples
+  in the db + `Reference`), 875 alignment columns, 511 parsimony-informative, IQ-TREE reports model
+  `GTR+F+G4`. Because of the 875 columns it resolves little within a species: 2,539 of the 14,535
+  pairs of clinical isolates are identical in it, against 11 pairs in the 287,242-column core of the
+  171 clinical isolates (for example Mkan329-040 and -005: 0 against 14,890 differences). The
+  171-isolate alignment and tree of the check are in `scratch/phylo_review_20261109/patients171/`.
+  The figure `midpoint-rooted-tree.{pdf,svg}` was drawn from the 875-column tree.
 
 Limits of the tree, to keep in mind when reading it:
 - **No branch support.** IQ-TREE runs without `-bb`/`-alrt`, so there are no bootstrap or SH-aLRT values.
@@ -392,6 +420,8 @@ Limits of the tree, to keep in mind when reading it:
   topology; for distances use the SNP counts of `snippy-core` or Ridom, not branch lengths.
 - **Cumulative.** The tree written by the last invocation covers everything in the db (see 2b step 2);
   the run-level tables of that invocation do not.
+- **Core size depends on the most distant sample** (see above): check `kansasii_complex_core.samples.tsv`
+  and the number of alignment columns in the `.iqtree` file before reading short branches as identity.
 - **Midpoint rooting is done later**, in `scripts/12_generate_itol_ast.py`, not here: the
   treefile is unrooted.
 

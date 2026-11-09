@@ -91,7 +91,7 @@ Writes `data/imm/screening_map_link.csv`. Everything below that reads isolates r
 
 `run_IMMENSE.sh` only submits a controller job and returns. Submit the next batch only after the previous one has finished
 (`squeue -u $USER` shows no more `job_mkan329_*` / `nf-*` jobs): they share one run dir and one snippy db.
-Each run has its own `runs/<run>/` and `--kansasii_snippy_db`; the db dir must exist (`mkdir -p`). After a run, copy the
+Each run has its own `runs/<run>/` and `--kansasii_snippy_db`; the db dir must exist (`mkdir -p`). The commands below build the tree as it was built for the current results (all samples of the db; for `mkan329` that is an 875-column core alignment because of the six non-complex samples). Add `--kansasii_min_aligned_fraction 0.3` inside `-x "..."` to leave non-complex samples out of the tree (WORKFLOW.md 2d). After a run, copy the
 end results without `work/` to `output/<run>/` and delete `work/`.
 
 ```bash

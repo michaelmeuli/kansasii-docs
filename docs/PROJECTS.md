@@ -82,4 +82,7 @@ On 2026-10-20 (mostly 09:00-13:59) Slurm worker jobs on node `u24-cva0000-305` d
 Nextflow retried once and then ignored the failed sample, so 124 samples (41 PRJNA1078897, 53 PRJNA1048499, 30 PRJNA323639) ended with trimming
 and FastQC only and an all-`null` summary row; the batches still reported "Execution status: OK". Rerun with `-resume` on 2026-10-24
 (`batches/rerun` per project). Check for such samples with: results dir without `1_unicycler`.
-`kansasii_tree` on 342 samples needed 63 min (limit is 30 min x attempt); raise it for larger runs.
+`kansasii_tree` on 342 samples needed 64 min (the limit was 30 min x attempt; 2 h x attempt since 2026-11-09).
+`runs/public_PRJNA1078897/.../kansasii_phylogeny/` holds a stale tree (50 tips, 2026-10-20; the db has 243 samples): the last
+`snippy-core` failed because SRR28038343 has no aligned base, the failure was ignored and the old tree stayed. Not rebuilt; the
+public trees are not used downstream. See `WORKFLOW.md` 2d.

@@ -2,6 +2,10 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-10 (tree figure redrawn)
+- `data/imm/midpoint-rooted-tree.{pdf,svg}` replaced by the iTOL export of the 171-isolate tree (copy in `output/immensekansasii/results/iTOL/mkan329_patients171/`); the older render of the 875-column tree stays in `mkan329_patients/`. The svg shows the whole tree. The pdf was exported zoomed in and is cut off below the middle of the tree: export it again.
+- Manuscript: Figure 1 replaced, sections 2.1 and 3.2, the caption, the limitation and the F6 path now describe the 171-isolate tree.
+
 ## 2026-11-10 (171-isolate tree in output)
 - New `output/immensekansasii/results/iTOL/mkan329_patients171/`: core-SNP tree of the 171 clinical isolates alone (287,242 columns) with midpoint-rooted Newick and iTOL files, copied from the review's scratch dir; `README.md` and `make_tree.sbatch` in the dir. `mkan329_patients/` and `data/imm/midpoint-rooted-tree.{pdf,svg}` (875-column tree) are unchanged; the figure still has to be exported from iTOL by hand.
 

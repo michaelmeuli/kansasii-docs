@@ -333,7 +333,8 @@ roots it at the midpoint, rotates the branches so species sit together (topology
 `scripts/kansasii_cutoffs.py`, the vendored copy of `kansasii-docs/templates/kansasii_cutoffs.py` that kansasii-mic uses too. Tests: `tests/test_itol_ast.py`.
 
 The figure `data/imm/midpoint-rooted-tree.{pdf,svg}` is the iTOL render of these files (tree, `itol_1_ast_dots`,
-`itol_2_species_ring`, leaf labels), exported by hand from itol.embl.de (copy in `output/immensekansasii/results/iTOL/mkan329_patients/`). No script writes or reads it; re-export it
+`itol_2_species_ring`, leaf labels), exported by hand from itol.embl.de. Since 2026-11-10 it is drawn from the 171-isolate tree in `output/immensekansasii/results/iTOL/mkan329_patients171/` (section 2d; copy of the figure there), not from the files of this
+section; the copy in `mkan329_patients/` is the older render of the 875-column tree. No script writes or reads the figure; re-export it
 after the tree or the script is re-run.
 
 Getting the files into iTOL (the script only writes them on the server):
@@ -414,7 +415,8 @@ Three processes run in series:
   `12_generate_itol_ast.py` are in `output/immensekansasii/results/iTOL/mkan329_patients171/` (171 tips; 45
   terminal branches of zero length against 161 in the 875-column tree; `README.md` there says how it was
   made). **This is the tree to draw**; the alignment itself stays in `scratch/phylo_review_20261109/patients171/`.
-  The figure `midpoint-rooted-tree.{pdf,svg}` was drawn from the 875-column tree.
+  The figure `data/imm/midpoint-rooted-tree.{pdf,svg}` was redrawn from it on 2026-11-10 (copy in that directory); in it
+  every species with more than one isolate is a single clade, which was not so in the 875-column figure.
 
 Limits of the tree, to keep in mind when reading it:
 - **No branch support.** IQ-TREE runs without `-bb`/`-alrt`, so there are no bootstrap or SH-aLRT values.

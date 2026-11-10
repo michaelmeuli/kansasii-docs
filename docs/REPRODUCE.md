@@ -210,7 +210,7 @@ sbatch $KANSASII_ROOT/repos/kansasii-ridom/submit_all.sbatch                    
 
 ## 7. Tree figure (manual)
 
-`12_generate_itol_ast.py` (row 8 of the table in step 5) writes `output/immensekansasii/results/iTOL/mkan329_patients/` (pruned from the 875-column `mkan329` tree; for the figure use `mkan329_patients171/` instead, see its `README.md`). Copy it to a laptop, upload
+`12_generate_itol_ast.py` (row 8 of the table in step 5) writes `output/immensekansasii/results/iTOL/mkan329_patients/` (pruned from the 875-column `mkan329` tree). The figure is drawn from `mkan329_patients171/` instead (see its `README.md`). Copy that directory to a laptop, upload
 `kansasii_patients_midpoint.nwk` at <https://itol.embl.de>, drag in `itol_1_ast_dots.txt`, `itol_leaf_labels.txt` and last
 `itol_2_species_ring.txt`, and export `data/imm/midpoint-rooted-tree.{pdf,svg}` by hand. Commands: WORKFLOW.md section 2c.
 

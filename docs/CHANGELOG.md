@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-10 (171-isolate tree in output)
+- New `output/immensekansasii/results/iTOL/mkan329_patients171/`: core-SNP tree of the 171 clinical isolates alone (287,242 columns) with midpoint-rooted Newick and iTOL files, copied from the review's scratch dir; `README.md` and `make_tree.sbatch` in the dir. `mkan329_patients/` and `data/imm/midpoint-rooted-tree.{pdf,svg}` (875-column tree) are unchanged; the figure still has to be exported from iTOL by hand.
+
 ## 2026-11-09 (code review, core-SNP tree)
 - Review of all repos: `mypy --strict` clean in all 11, `pytest` green (kansasii-mic 50, kansasii-cgmlst 10, kansasii-ridom 21, immensekansasii 12), every shell file parses, vendored `kansasii_paths` in sync. Changes only in `immensekansasii` (`modules/kansasii_phylo.nf`, `main.nf`, the two profiles) and in the docs. No result table was regenerated.
 - **Finding: the `mkan329` tree (Figure "midpoint-rooted tree") rests on 875 SNP columns.** The snippy db holds six non-complex samples (controls Mkan329-126, -127, -129, -130, -131 and the *M. avium* isolate -184) that align 0.3-5 % of the ATCC 12478 reference, and `snippy-core` keeps only positions aligned in every sample. Rerun on the same db for the 171 clinical complex isolates only: 287,242 columns. In the 875-column core 2,539 of 14,535 isolate pairs are identical, in the 287,242-column core 11 (Mkan329-040 vs -005: 0 against 14,890 differences). Short or zero branches of the current figure are therefore not evidence of identity. Check outputs: `scratch/phylo_review_20261109/` (`all186/`, `patients171/`; iTOL inputs for a redrawn figure in `patients171/iTOL/`). The figure in `output/` and `data/imm/` was not replaced.

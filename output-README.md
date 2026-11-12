@@ -14,7 +14,7 @@ directory, a `MANIFEST.txt`. The path constants are `OUT_*` in `kansasii_paths` 
 | `hsp65-refalign` | `public/`, `public_persicum/`, `public_ctl/`: public assemblies; `MANIFEST_korean_type_check.txt` next to `MANIFEST.txt` |
 | `gyrA-refalign` | `project/`, `public/` (kept separate) |
 | `kansasii-amr-marker-screen` | `assembly/` (was `amr`), `bam/` (was `amr_bam`; its `refs` links to `../assembly/refs`) |
-| `kansasii-mst`, `kansasii-cgmlst` | MST and cgMLST results. `kansasii-cgmlst/` also holds `ridom_assemblies.{tar.gz,zip}` (+ `ridom_assemblies.MANIFEST.txt`, `ridom_mst_cluster_summary.docx`) from `10_export_ridom.py`: the `keep` cohort as real files renamed M001 ..., plus 7 reference genomes |
+| `kansasii-mst`, `kansasii-cgmlst` | MST and cgMLST results. `kansasii-cgmlst/` held (deleted 2026-11-12 as superseded by `kansasii-ridom/`; step 10 writes them again) `ridom_assemblies.{tar.gz,zip}` (+ `ridom_assemblies.MANIFEST.txt`, `ridom_mst_cluster_summary.docx`) from `10_export_ridom.py`: the `keep` cohort as real files renamed M001 ..., plus 7 reference genomes |
 | `kansasii-ridom` | `ridom_assemblies.{tar.gz,zip}` (+ `.MANIFEST.txt`) from `01_export_ridom.py`: the 175 pool isolates incl. M055 + 7 references for Ridom SeqSphere+; `results/export_status.tsv` (check of the `data/imm/ridom-*` exports, `docs/RIDOM.md`) |
 | `kansasii-docs` | `atypical_samples/` from `bin/make_atypical_table.py` (`docs/ATYPICAL.md`) |
 | `immensekansasii` | `gtdb/` (GTDB look-ups); `results/{iTOL,screening_map_*,*_Mkan329-035}` (pipeline results, iTOL files, one-off contamination diagnostics for isolate Mkan329-035). The reference-tree run itself stays in `runs/kansasii_complex_gtdb_representatives` |

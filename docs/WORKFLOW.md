@@ -324,9 +324,9 @@ Current outputs: `output/immensekansasii/results/iTOL/kansasii_complex_gtdb_repr
 
 #### Patient isolates: midpoint-rooted tree, AST dots, species ring
 
-`12_generate_itol_ast.py` (conda env `biopython`, needs Bio.Phylo) prunes the `mkan329` tree to the 171 patient
+`12_generate_itol_ast.py` (conda env `biopython`, needs Bio.Phylo) prunes a tree (default since 2026-11-12: `kansasii_patients171_tree.treefile` in `mkan329_patients171/`, section 2d; before: the `mkan329` tree) to the 171 patient
 isolates of the complex (no `Reference` tip, no control / type strains with a `LABEL`, no `excluded` isolates),
-roots it at the midpoint, rotates the branches so species sit together (topology unchanged) and writes to `output/immensekansasii/results/iTOL/mkan329_patients/`: `kansasii_patients_midpoint.nwk`,
+roots it at the midpoint, rotates the branches so species sit together (topology unchanged) and writes to `output/immensekansasii/results/iTOL/mkan329_patients171/` (default `--out-dir`): `kansasii_patients_midpoint.nwk`,
 `itol_1_ast_dots.txt` (13 circle rings, filled = resistant, hollow = susceptible or intermediate, none = no MIC),
 `itol_2_species_ring.txt` (outermost ring, load it last) and `itol_leaf_labels.txt`. Resistance is the CLSI category
 (`<DRUG>_clsi_category`); EMB, INH, ETO and STR have no CLSI breakpoint, so `NON_CLSI_THRESHOLDS_MG_L` (8, 8, 0.6, 16 mg/L; resistant if MIC is above) decides. The values are defined in

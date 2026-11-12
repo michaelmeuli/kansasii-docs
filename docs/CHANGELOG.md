@@ -7,7 +7,8 @@ Notable changes to data tables and outputs, newest first.
 - `output/hsp65-refalign/results/figures/hsp65_identity_margin.{png,pdf}` redrawn with `03_figure.py` from the `reads.tsv` of 11-03: png byte-identical to the one of 11-01.
 - `output/SUMMARY.html` regenerated (was from 11-03).
 - **Not refreshed:** `output/hsp65-refalign/results/blast/` (10-16, older than `nonmatching_reads.fa` of 11-03; sends reads to NCBI), `output/immensekansasii/results/iTOL/mkan329_patients/` (superseded by `mkan329_patients171/`).
-- Deleted `output/immensekansasii/results/iTOL/mkan329_patients/` (875-column tree, AST dots still with Mkan329-186, figure render of 10-29; superseded by `mkan329_patients171/`). `12_generate_itol_ast.py` still has it as default `--out-dir`, so a default run or `run_downstream.sh` writes it again.
+- Deleted `output/immensekansasii/results/iTOL/mkan329_patients/` (875-column tree, AST dots still with Mkan329-186, figure render of 10-29; superseded by `mkan329_patients171/`). `12_generate_itol_ast.py` still has it as default `--out-dir`, so a default run wrote it again; changed the same day, see next line.
+- `immensekansasii/scripts/12_generate_itol_ast.py`: defaults are now `--tree .../iTOL/mkan329_patients171/kansasii_patients171_tree.treefile` and `--out-dir .../iTOL/mkan329_patients171/` (were the 875-column `mkan329` tree and `mkan329_patients/`). A default run reproduces the four iTOL files of that directory byte for byte. The 171-isolate tree itself is still a one-off of `make_tree.sbatch`, not a pipeline output.
 - Deleted `output/immensekansasii/results/imm/`: legacy copy of `data/imm` written by no script (11 files identical to `data/imm`, plus the results table of 11-02).
 
 ## 2026-11-12 (results table rebuilt: no MIC values for Mkan329-186)

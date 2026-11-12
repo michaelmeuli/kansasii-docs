@@ -2,6 +2,10 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-12 (results table rebuilt: no MIC values for Mkan329-186)
+- `screening_map_results.csv` (`data/imm/` and `output/immensekansasii/results/`) rebuilt with `06_screening_map_results.py`. The table dated from 2026-11-03, one day before kansasii-mic dropped Mkan329-186, and still carried its 13 MIC values. Now: the 39 MIC cells of 186 (`*_mic`, `*_modified_z`, `*_clsi_category`) are empty, 77 isolates with MIC data (was 78). The `*_modified_z` values of the other 76 isolates changed, as they are computed without 186. No other cell changed; `excluded` of 186 stays false (genome clean).
+- `output/immensekansasii/results/iTOL/mkan329_patients171/itol_1_ast_dots.txt` regenerated (`12_generate_itol_ast.py`, env `biopython`): Mkan329-186 has no dots; tree, species ring and labels are identical. Resistant isolates per drug: CIP 13 -> 12, DOX 21 -> 20, ETO 2 -> 1, INH 1 -> 0, RIF 2 -> 1. **Not redone:** `midpoint-rooted-tree.{pdf,svg}` (there and in `data/imm/`, exported by hand 2026-11-10) still show the dots of 186; `mkan329_patients/` (875-column tree) was not regenerated.
+
 ## 2026-11-12 (docs: MIC exclusion rule, MLSA no-call count)
 - `SPECIES.md`, `WORKFLOW.md`: the MIC exclusion rule is `excluded` = true plus `MANUAL_EXCLUSIONS` (Mkan329-186), as in `EXCLUSIONS.md`, not `contamination_flag` alone. "Only 035 has MIC data" was wrong: 7 of the 8 isolates had MIC data (010, 021, 035, 055, 106, 184, 186; `output/kansasii-mic/results/excluded_isolates.csv`); 113 has none.
 - `SPECIES.md`, `EXCLUSIONS.md`: complex isolates without an MLSA call corrected from 67 of 177 to 68 of 175 (5 contaminated isolates left out, not 3). The species table was recounted and is unchanged. Docs only, nothing rerun.

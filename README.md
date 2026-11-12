@@ -60,6 +60,7 @@ it after a fresh clone.
   `output/kansasii-docs/results/atypical_samples/atypical_samples.tsv`.
 - **Sequence and literature references of the AMR marker screen (accessions, checksums, BibTeX):** [docs/REFERENCES.md](docs/REFERENCES.md), [docs/references.bib](docs/references.bib).
 - **Code copied between repos (refalign, sanger_io, kansasii_paths):** [docs/VENDORED.md](docs/VENDORED.md).
+- **Primers used for the Sanger reads vs. the lab protocols (sequences, read counts):** [docs/PRIMERS.md](docs/PRIMERS.md).
 - **Run everything after the pipeline:** `bash repos/immensekansasii/scripts/run_downstream.sh --dry-run`.
 - **Samples, species, public data:** `immensekansasii/{SAMPLES,SPECIES,PROJECTS}.md`.
 - **Draft article:** `hsp65-refalign/article/hsp65_differentiates_kansasii_complex.md` (the earlier

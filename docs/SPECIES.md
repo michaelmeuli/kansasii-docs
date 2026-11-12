@@ -22,8 +22,10 @@ printed as a warning on each run). Isolates flagged in the mkan329 run:
 Only 035 shows a species disagreement; 010, 021, 106 and 113 are flagged but GTDB and
 MetaPhlAn4 agree. hsp65: 021 and 106 are called kansasii (correct), 113 has no usable read, 010 has no hsp65 read.
 
-MIC values of flagged isolates are excluded from the final conclusions (CheckM `contamination_flag` is the
-criterion; only 035 has MIC data).
+MIC values are excluded for every isolate with `excluded` = true in `screening_map_results.csv` (contaminated, < 90 % cgMLST
+loci called, or a clinical sample outside the complex; `EXCLUSIONS.md`), plus Mkan329-186 (`MANUAL_EXCLUSIONS` in kansasii-mic,
+'nicht rein'). kansasii-mic drops them before QC. Of these 8 isolates, 7 had MIC data (010, 021, 035, 055, 106, 184, 186;
+`output/kansasii-mic/results/excluded_isolates.csv`, run 2026-11-04); 113 has none.
 
 ## Case: Mkan329-035 (GTDB kansasii vs hsp65 ostraviense)
 
@@ -46,8 +48,8 @@ single colonies. Until then, treat the species of 035 as undetermined (mixed).
 
 `excluded` (same file) = contaminated or < 90 % of the cgMLST loci called; it additionally removes Mkan329-055 (81.5 %, persicum) from the genome-based analyses. The counts below only use `contamination_flag`.
 
-Counts per species in `screening_map_results.csv` for the mkan329 run, excluding the 3
-isolates with `contamination_flag == contaminated` (035, 106, 113, and since 2026-10-20 also 010, 021 at CheckM 7.7 %); n = 181.
+Counts per species in `screening_map_results.csv` for the mkan329 run, excluding the 5
+isolates with `contamination_flag == contaminated` (010, 021, 035, 106, 113); n = 181.
 
 | Species | GTDB `species` | hsp65 MLSA (`species_sanger_mlsa`) |
 |---|---|---|
@@ -61,7 +63,7 @@ isolates with `contamination_flag == contaminated` (035, 106, 113, and since 202
 | non-complex (avium 2, tuberculosis, abscessus, xenopi, marinum) | 6 | 0 |
 
 - *M. gastri* is the only species of the complex without an isolate.
-- 67 of the 177 complex isolates have no MLSA call. This is probably because no Sanger
+- 68 of the 175 complex isolates have no MLSA call. This is probably because no Sanger
   (hsp65) read exists for them; not yet checked against the Sanger sample list.
 - Where both calls exist, GTDB and MLSA agree for all 107 uncontaminated isolates.
 

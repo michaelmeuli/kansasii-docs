@@ -56,7 +56,7 @@ A matching hsp65 variant exists (`submit_hsp65_iupac_excluded.sbatch`).
 ## 5. Per-analysis no-calls (not exclusions)
 
 - hsp65 vs WGS: of 132 analysed isolates 108 get a call (all correct) and 24 do not: 13 Rothia mucilaginosa contaminant reads (genomes are clean), 10 unusable traces, 1 poor reads (Mkan329-102). These isolates stay in all genome analyses. Details in `hsp65-refalign/README.md`.
-- 67 of 177 complex isolates have no MLSA call, probably missing Sanger reads (`SPECIES.md`).
+- 68 of 175 complex isolates have no MLSA call, probably missing Sanger reads (`SPECIES.md`).
 
 ## 6. Resequenced duplicates
 

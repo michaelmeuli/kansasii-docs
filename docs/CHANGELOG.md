@@ -2,6 +2,10 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-12 (docs: MIC exclusion rule, MLSA no-call count)
+- `SPECIES.md`, `WORKFLOW.md`: the MIC exclusion rule is `excluded` = true plus `MANUAL_EXCLUSIONS` (Mkan329-186), as in `EXCLUSIONS.md`, not `contamination_flag` alone. "Only 035 has MIC data" was wrong: 7 of the 8 isolates had MIC data (010, 021, 035, 055, 106, 184, 186; `output/kansasii-mic/results/excluded_isolates.csv`); 113 has none.
+- `SPECIES.md`, `EXCLUSIONS.md`: complex isolates without an MLSA call corrected from 67 of 177 to 68 of 175 (5 contaminated isolates left out, not 3). The species table was recounted and is unchanged. Docs only, nothing rerun.
+
 ## 2026-11-10 (tree figure redrawn)
 - `data/imm/midpoint-rooted-tree.{pdf,svg}` replaced by the iTOL export of the 171-isolate tree (copy in `output/immensekansasii/results/iTOL/mkan329_patients171/`); the older render of the 875-column tree stays in `mkan329_patients/`. The svg shows the whole tree. The pdf was exported zoomed in and is cut off below the middle of the tree: export it again.
 - Manuscript: Figure 1 replaced, sections 2.1 and 3.2, the caption, the limitation and the F6 path now describe the 171-isolate tree.

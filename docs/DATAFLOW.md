@@ -82,7 +82,7 @@ flowchart TD
 If `NGS_MM` was done it is used, not `NGS_JC`; `NGS_JC` only if there is no `NGS_MM` (Mkan329-001..133
 = `NGS_MM`, 134..186 = `NGS_JC`). Mkan329-009 and -056 have both and use `NGS_MM`; their `-jc`
 resequencing (run `mkan329_jc`) is not used. The canonical files are in `data/imm/` (`SCREENING_MAP_LINK`, `SCREENING_MAP_RESULTS`); scripts read only these. `output/` gets a copy
-with a `<file>.MANIFEST.txt` from 02 and 06; `output/immensekansasii/results/imm/` and `output/immensekansasii/results/iTOL/mkan329/` hold older copies kept by hand (not read by any script).
+with a `<file>.MANIFEST.txt` from 02 and 06; `output/immensekansasii/results/iTOL/mkan329/` holds the copy that `07_generate_itol_species_labels.sh` makes for iTOL (not read by any script).
 
 `bash immensekansasii/scripts/run_downstream.sh` runs every row above except the pipeline and sanger-microsynth; the order of
 its dependency chain is the order of this table.

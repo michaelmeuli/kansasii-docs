@@ -334,7 +334,7 @@ roots it at the midpoint, rotates the branches so species sit together (topology
 
 The figure `data/imm/midpoint-rooted-tree.{pdf,svg}` is the iTOL render of these files (tree, `itol_1_ast_dots`,
 `itol_2_species_ring`, leaf labels), exported by hand from itol.embl.de. Since 2026-11-10 it is drawn from the 171-isolate tree in `output/immensekansasii/results/iTOL/mkan329_patients171/` (section 2d; copy of the figure there), not from the files of this
-section; the copy in `mkan329_patients/` is the older render of the 875-column tree. No script writes or reads the figure; re-export it
+section; the older render of the 875-column tree in `mkan329_patients/` was deleted 2026-11-12. No script writes or reads the figure; re-export it
 after the tree or the script is re-run.
 
 Getting the files into iTOL (the script only writes them on the server):

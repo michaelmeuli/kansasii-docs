@@ -320,7 +320,7 @@ via `06_screening_map_results.py`); (3) run the script with `-n <run>` (plus `-m
 Re-run after the tree is rebuilt, because the files are only valid for the tree they were made with.
 
 Current outputs: `output/immensekansasii/results/iTOL/kansasii_complex_gtdb_representatives/` (8 tips),
-`output/immensekansasii/results/iTOL/relevant_species_tree_run/` (21 tips), `output/immensekansasii/results/iTOL/mkan329/` (132 tips).
+`output/immensekansasii/results/iTOL/relevant_species_tree_run/` (21 tips; deleted 2026-11-12, the command above writes it again), `output/immensekansasii/results/iTOL/mkan329/` (132 tips).
 
 #### Patient isolates: midpoint-rooted tree, AST dots, species ring
 

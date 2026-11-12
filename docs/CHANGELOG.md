@@ -2,6 +2,12 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-12 (stale-output check)
+- All `MANIFEST*.txt` under `output/` compared with repo HEADs and input dates. Rerun, content unchanged (only the manifests are new): `output/kansasii-ridom/results/` (`submit_all.sbatch`, all 36 files byte-identical; the manifest named a commit older than the 11-08 distance tables), `output/gyrA-refalign/results/public_reads/hsp65_*` (`submit_hsp65_reads.sbatch`; the old manifest was from a dirty tree and older than its inputs), `output/immensekansasii/results/iTOL/mkan329/` (`07_generate_itol_species_labels.sh -m samples -p mkan329_`; labels and colour strip identical, the copied `screening_map_results.csv` is now the 11-12 table).
+- `output/hsp65-refalign/results/figures/hsp65_identity_margin.{png,pdf}` redrawn with `03_figure.py` from the `reads.tsv` of 11-03: png byte-identical to the one of 11-01.
+- `output/SUMMARY.html` regenerated (was from 11-03).
+- **Not refreshed:** `output/hsp65-refalign/results/blast/` (10-16, older than `nonmatching_reads.fa` of 11-03; sends reads to NCBI), `output/immensekansasii/results/imm/` (legacy copy of `data/imm` with the old results table, written by no script), `output/immensekansasii/results/iTOL/mkan329_patients/` (superseded by `mkan329_patients171/`). Files before the rerun: `scratch/stale_refresh_before_20261112/`.
+
 ## 2026-11-12 (results table rebuilt: no MIC values for Mkan329-186)
 - `screening_map_results.csv` (`data/imm/` and `output/immensekansasii/results/`) rebuilt with `06_screening_map_results.py`. The table dated from 2026-11-03, one day before kansasii-mic dropped Mkan329-186, and still carried its 13 MIC values. Now: the 39 MIC cells of 186 (`*_mic`, `*_modified_z`, `*_clsi_category`) are empty, 77 isolates with MIC data (was 78). The `*_modified_z` values of the other 76 isolates changed, as they are computed without 186. No other cell changed; `excluded` of 186 stays false (genome clean).
 - `output/immensekansasii/results/iTOL/mkan329_patients171/itol_1_ast_dots.txt` regenerated (`12_generate_itol_ast.py`, env `biopython`): Mkan329-186 has no dots; tree, species ring and labels are identical. Resistant isolates per drug: CIP 13 -> 12, DOX 21 -> 20, ETO 2 -> 1, INH 1 -> 0, RIF 2 -> 1. `midpoint-rooted-tree.{pdf,svg}` were exported from iTOL again the same day (`data/imm/`, copied to that dir): 1,015 circles in the svg instead of 1,028 (13 dots of 186 gone, 5 of them filled). **Not redone:** `mkan329_patients/` (875-column tree).

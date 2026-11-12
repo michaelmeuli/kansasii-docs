@@ -187,7 +187,7 @@ What the chain runs, in dependency order (use this list to rerun a single step b
 | 10 | overview | `python kansasii-docs/bin/make_atypical_table.py; python kansasii-docs/bin/make_summary.py` (env_mlsa) |
 
 Not in the chain: the pipeline runs (step 4), `sanger-microsynth` (step 8), the NCBI BLAST of `hsp65-refalign/scripts/02_blast_reads.py`
-(sends sequences out). The obsolete `kansasii-mst` and `kansasii-cgmlst` steps 08-10 are still submitted by `run_downstream.sh`
+(sends sequences out). The obsolete `kansasii-mst` and `kansasii-cgmlst` steps 08-09 are still submitted by `run_downstream.sh` (step 10, the old Ridom archive, no longer since 2026-11-12)
 (jobs `mst` and `cg2`); nothing depends on them and their outputs are not used for the report.
 
 ## 6. Ridom SeqSphere+ (source of truth for cgMLST, MST and clusters)

@@ -33,7 +33,7 @@ from kansasii_paths import MANIFEST_SCRIPT, OUT_DOCS, PUBLIC_PROJECTS, REPOS, RO
 OWN_RUNS = ["mkan329", "mkan329_jc"]
 OK_STATUS = {"COMPLETED", "CACHED"}
 TRACE_COLS = 8  # task_id hash native_id name status exit submit duration
-MAX_ROWS = 12   # trace rows quoted per exception group
+MAX_ROWS = 45   # trace rows quoted per exception group
 
 
 @dataclass(frozen=True)
@@ -71,7 +71,9 @@ CONSEQUENCE = {
     ("public", "assembly"): "No assembly and no GTDB call: the sample is in no analysis.",
     ("public", "gtdb"): "No species call: hsp65-refalign and gyrA-refalign skip the sample.",
     ("public", "checkm"): "hsp65-refalign and gyrA-refalign keep the sample and count its contamination as not assessed "
-                          "(`checkm_contamination()` returns `None`); the 5 % filter cannot remove it.",
+                          "(`checkm_contamination()` returns `None`); the 5 % filter cannot remove it. The pipeline submits `checkm` only for "
+                          "samples that MetaPhlAn4 classifies as bacteria (`main.nf`, `samples_to_run_checkM_ch`), so it is missing when "
+                          "`metaphlan4` failed in every attempt or when its profile is 100 % `UNCLASSIFIED`.",
 }
 ANSI = re.compile(r"\x1b\[[0-9;?]*[A-Za-z]|\x1b\(B")
 NOISE = re.compile(r"^(\[|Plus \d+ more|executor >|Species/Project:|$)")
@@ -321,6 +323,9 @@ def run_section(run: Run) -> list[str]:
         how = (f"`{o.process}` was never submitted for them (no trace row)" if len(never) == len(hit) else
                f"`{o.process}` did not complete in any attempt" if not never else
                f"`{o.process}` was never submitted for {len(never)} of them (no trace row) and did not complete in any attempt for the other {len(hit) - len(never)}")
+        for up in o.upstream:
+            up_ok = [s for s in hit if any(r[4] in OK_STATUS for r, _ in run.rows(up, s))]
+            how += f"; `{up}` completed for {len(up_ok)} of them" + (f" ({', '.join(up_ok)})" if 0 < len(up_ok) < len(hit) else "")
         md += [f"**No {o.key} result: {len(hit)} sample{'s' if len(hit) > 1 else ''}.** {CONSEQUENCE.get((run.kind, o.key), '')}"
                + (f" Also missing as a consequence: {', '.join(also)}." if also else ""), "",
                ", ".join(f"{s} ({run.summary(s).get('gtdb_species', 'null')})" for s in hit) + " (GTDB species of the summary in brackets).", "",

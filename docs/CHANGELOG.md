@@ -2,6 +2,10 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-13 (tree job of the 171 isolates moved into immensekansasii)
+- `make_tree.sbatch` (was only in `output/immensekansasii/results/iTOL/mkan329_patients171/`, in no repo) is now `immensekansasii/scripts/13_patients171_tree.sbatch`. It uses the `kansasii_paths.sh` constants, writes the sample list `patients171.txt` itself (`12_generate_itol_ast.py --patient-list`, new flag: the rule script 12 prunes with), copies treefile, `.iqtree` and `core.txt` into the output directory and writes `MANIFEST_tree.txt`. Work dir `runs/phylo_patients171/` (no `patients171/` subdirectory any more). Dropped: the `all186` set and the `GTR+G+ASC` tree of the review. Not in `run_downstream.sh`.
+- **Not rerun:** the tree, `patients171.txt` and the iTOL files are unchanged (the new flag reproduces `patients171.txt`, a default run of script 12 the four iTOL files, byte for byte); `MANIFEST_tree.txt` appears with the next run of the job.
+
 ## 2026-11-13 (iTOL/mkan329 dropped, removed directories out of the docs)
 - Deleted `output/immensekansasii/results/iTOL/mkan329/` (tree copy, species labels and colour strip for the 187-tip pipeline tree with 875 columns; not drawn, the figure uses `mkan329_patients171/`). `run_downstream.sh` no longer writes it: the `itol` job runs `07_generate_itol_species_labels.sh` for the reference tree only. The script keeps its `-m samples` mode.
 - `scratch/`, `output-old/` and `singularity_images_cache/` no longer exist; the docs do not name them any more. The core alignment of the 171-isolate tree went with `scratch/`; `make_tree.sbatch` in `mkan329_patients171/` now works in `runs/phylo_patients171/` and rebuilds it (not rerun).

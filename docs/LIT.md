@@ -85,16 +85,16 @@ not affect the ANI conclusion.
 
 ### Consequences for the analyses
 
-- gyrA is unaffected and still separates all 7 species with or without the
+- gyrA is unaffected and separates all 7 species with or without the
   three genomes.
-- The excluded run (hsp65 alone: 110/127 isolates unambiguous, versus 8/127
-  with all genomes; 17 are NA, see "kansasii vs gastri at hsp65") is an
+- The excluded run (hsp65 alone: 110/128 isolates unambiguous, versus 8/128
+  with all genomes; 18 are NA, see "kansasii vs gastri at hsp65") is an
   over-estimate. The three genomes are the only ones
   that inflate kansasii's within-species tolerance at hsp65, so dropping them
   assumes atypical-hsp65 kansasii do not occur.
 - Treat the full-reference runs as primary and the `*_excluded` runs as a
   sensitivity analysis.
-- hsp65 calls 11 of the 127 isolates persicum, each with kansasii as the
+- hsp65 calls 11 of the 128 isolates persicum, each with kansasii as the
   second-closest species. With all genomes, all 11 are ambiguous: sanger_mlsa's
   tolerance is the larger of the two species' diversity, which here is
   kansasii's 0.025 from these three genomes. Some of the 11 could be
@@ -107,18 +107,18 @@ GCF_900565995.1 (strain MK7). Its 16S was not truncated. It came from a
 different organism. The assembly has 13 contigs below 55% GC (about 42 kb in
 a 66% GC genome), and NCBI annotated two extra 16S copies on them:
 NZ_UPHJ01000162.1 (37% GC, partial, 1,128 bp) and NZ_UPHJ01000138.1 (52% GC,
-1,810 bp). The old `extract_16s` took the first annotated copy, which was the
-37% GC contaminant, and the 161 bp ITS came from the same wrong operon. The
+1,810 bp). The first annotated copy is the
+37% GC contaminant, and the 161 bp ITS next to it belongs to the same wrong operon. The
 genome's own 16S (NZ_UPHJ01000094.1, 1,531 bp) is typical *M. kansasii*.
 persicum GCF_900566005.1 has the same contamination pattern (likely the same
-sequencing batch). It was unaffected only because its real copy is listed
+sequencing batch); there the real copy is listed
 first.
 
 Two more genomes only have partial 16S copies at contig edges:
-pseudokansasii GCF_019751035.1 (95 bp, which inflated the pseudokansasii 16S
+pseudokansasii GCF_019751035.1 (95 bp, which would inflate the pseudokansasii 16S
 tolerance to 0.41) and persicum GCF_902825395.1 (495 bp).
 
-`mlsa.loci.extract_16s`/`extract_its` now skip partial copies and keep the
+`mlsa.loci.extract_16s`/`extract_its` skip partial copies and keep the
 full-length copy sharing the most 8-mers with the type-strain 16S
 (GCF_000157895.3). A copy sharing under 50% is rejected. The real copies
 share 0.98 to 1.0, the contaminants 0.05. GCF_019751035.1 and GCF_902825395.1
@@ -232,14 +232,13 @@ even then 16S can at best confirm the broad two-group split.
 ## kansasii vs gastri at hsp65
 
 **Conclusion: no isolate is *M. gastri*.** The lab's hsp65 typing says the
-same thing. Three isolates (Mkan329-081, -097, -179) used to get
-`nearest_species = gastri`, but their hsp65 reads are 0.20-0.23 from every
-reference, while the complex spans at most 0.054 at hsp65. They are not
-kansasii-complex hsp65 (probably another organism's groEL or a mixed read),
-and gastri was only the least bad match, 0.003 ahead of kansasii. sanger_mlsa now
-reports such reads as NA (README, step 4). In the `_excluded` run, 081 and
-097 had even been marked `unambiguous`. Both 081 and 097 have a later
-re-extraction or repeat read inside the complex, which sanger_mlsa now picks
+same thing. Three isolates (Mkan329-081, -097, -179) have hsp65 reads that are
+0.20-0.23 from every
+reference, while the complex spans at most 0.054 at hsp65. These reads are not
+kansasii-complex hsp65 (probably another organism's groEL or a mixed read);
+gastri is only their least bad match, 0.003 ahead of kansasii. sanger_mlsa
+reports such reads as NA (README, step 4). Both 081 and 097 also have a
+re-extraction or repeat read inside the complex, which sanger_mlsa picks
 instead (README, step 1): 081 is pseudokansasii (0.005), 097 is kansasii
 (0.005). 179 has no good read and stays NA.
 
@@ -319,13 +318,13 @@ positions in `sanger_mlsa/alignments/hsp65.aligned.fasta`):
 ### Reads outside the complex
 
 With the NA rule, and with the longest read in the complex picked per
-isolate, 17 of 127 hsp65 reads, 1 of 65 16S reads and 8 of 42 hsp65+16S rows
+isolate, 18 of 128 hsp65 reads, 1 of 65 16S reads and 8 of 42 hsp65+16S rows
 are NA (the same counts in the `_excluded` run). If only the longest read is
 used, the counts are 22, 4 and 10. The reads picked instead are for
 Mkan329-020, -050, -081, -097 and -142 (hsp65) and one 16S isolate, all
 listed in `representative_reads.tsv` (`longest_rejected`). For 081, 097 and
 142 the filenames mark the good reads as a new extraction (`n.Extr`), a
-repeat (`wdh`) or new (`neu`), so the lab had already repeated them.
+repeat (`wdh`) or new (`neu`): the lab repeated them.
 
 Most of the remaining NA hsp65 reads are 0.15-0.44 from every reference in
 every read an isolate has (for example 006, 028, 076, 114, 145, 164, 170), so
@@ -337,8 +336,8 @@ references. Mkan329-025 passes the read screen (0.006 by local alignment)
 but is 0.12 in the MAFFT alignment, because the screen ignores badly
 matching read ends and the final alignment counts them.
 
-Unambiguous hsp65 calls: 8 of 127 (full references) and 110 of 127
-(`_excluded`), compared with 9 and 123 before the NA rule.
+Unambiguous hsp65 calls: 8 of 128 (full references) and 110 of 128
+(`_excluded`).
 
 ## Reproducing
 
@@ -363,8 +362,3 @@ It writes to `output/mlsa-kansasii/results/genome_identity_check/`:
 
 The sbatch file excludes node `u24-cva0000-129`, which has no
 `/etc/resolv.conf`, so Singularity fails there.
-
-The original run (job 6226012, 2026-09-21) is in
-`output-old/mlsa/genome_identity_check/`. The folder was moved there
-together with the rest of `output/`. The rerun on 2026-09-26 gives an
-identical `skani_long.tsv`.

@@ -1,6 +1,6 @@
 # Isolates tested by MGIT and by broth microdilution (BMD)
 
-Written 2026-11-04. Hand-written note, not a pipeline output.
+Hand-written note, not a pipeline output. Counts from the kansasii-mic run of 2026-11-13.
 
 ## Sources
 
@@ -17,7 +17,7 @@ Isolates were matched on TNR.
 
 - 65 isolates have MGIT results (65 distinct TNR / NR / PROBENNUMMER). None is flagged `excluded`; Mkan329-186 is dropped by kansasii-mic's `MANUAL_EXCLUSIONS`.
 - 77 isolates have BMD MICs.
-- 17 isolates have both. 48 have MGIT only. (Before Mkan329-186 was excluded from kansasii-mic on 2026-11-04: 66 / 48 / 18.)
+- 17 isolates have both. 48 have MGIT only.
 
 ## Where "49" comes from
 
@@ -50,4 +50,4 @@ The 65 MGIT isolates are 48 (this group) + 15 `JC_*` + 2 with `311` in the MHK. 
 | Mkan329-163 | 2021500032 | JC_23 | M. persicum |
 | Mkan329-182 | 2023500209 | 2023311119 | M. kansasii |
 
-None is flagged excluded. Mkan329-186 (TNR 2020500010, JC_38) was tested by both methods but is left out since 2026-11-04 ('nicht rein' in `kansasii_list_JC.xlsx`).
+None is flagged excluded. Mkan329-186 (TNR 2020500010, JC_38) was tested by both methods but is left out by `MANUAL_EXCLUSIONS` ('nicht rein' in `kansasii_list_JC.xlsx`).

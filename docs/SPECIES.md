@@ -16,16 +16,16 @@ printed as a warning on each run). Isolates flagged in the mkan329 run:
 | Mkan329-035 | 113.4 % | kansasii | mixed kansasii + ostraviense, see below |
 | Mkan329-113 | 61.4 % | persicum | 11.0 Mb assembly, MetaPhlAn4 persicum |
 | Mkan329-106 | 20.4 % | kansasii | 7.4 Mb assembly |
-| Mkan329-021 | 7.76 % | kansasii | flagged since 2026-10-20; GTDB and MetaPhlAn4 agree |
-| Mkan329-010 | 7.67 % | persicum | flagged since 2026-10-20; GTDB and MetaPhlAn4 agree |
+| Mkan329-021 | 7.76 % | kansasii | GTDB and MetaPhlAn4 agree |
+| Mkan329-010 | 7.67 % | persicum | GTDB and MetaPhlAn4 agree |
 
 Only 035 shows a species disagreement; 010, 021, 106 and 113 are flagged but GTDB and
 MetaPhlAn4 agree. hsp65: 021 and 106 are called kansasii (correct), 113 has no usable read, 010 has no hsp65 read.
 
 MIC values are excluded for every isolate with `excluded` = true in `screening_map_results.csv` (contaminated, < 90 % cgMLST
 loci called, or a clinical sample outside the complex; `EXCLUSIONS.md`), plus Mkan329-186 (`MANUAL_EXCLUSIONS` in kansasii-mic,
-'nicht rein'). kansasii-mic drops them before QC. Of these 8 isolates, 7 had MIC data (010, 021, 035, 055, 106, 184, 186;
-`output/kansasii-mic/results/excluded_isolates.csv`, run 2026-11-04); 113 has none.
+'nicht rein'). kansasii-mic drops them before QC. Of these 8 isolates, 7 have MIC data (010, 021, 035, 055, 106, 184, 186;
+`output/kansasii-mic/results/excluded_isolates.csv`, run 2026-11-13); 113 has none.
 
 ## Case: Mkan329-035 (GTDB kansasii vs hsp65 ostraviense)
 
@@ -46,7 +46,7 @@ single colonies. Until then, treat the species of 035 as undetermined (mixed).
 
 ## Species coverage (non-contaminated isolates)
 
-`excluded` (same file) = contaminated or < 90 % of the cgMLST loci called; it additionally removes Mkan329-055 (81.5 %, persicum) from the genome-based analyses. The counts below only use `contamination_flag`.
+`excluded` (same file) = contaminated, < 90 % of the cgMLST loci called, or a clinical sample outside the complex; it additionally removes Mkan329-055 (81.5 %, persicum) and Mkan329-184 (avium) from the genome-based analyses. The counts below only use `contamination_flag`.
 
 Counts per species in `screening_map_results.csv` for the mkan329 run, excluding the 5
 isolates with `contamination_flag == contaminated` (010, 021, 035, 106, 113); n = 181.
@@ -67,13 +67,13 @@ isolates with `contamination_flag == contaminated` (010, 021, 035, 106, 113); n 
   (hsp65) read exists for them; not yet checked against the Sanger sample list.
 - Where both calls exist, GTDB and MLSA agree for all 107 uncontaminated isolates.
 
-## Public reads: GTDB kansasii with a non-kansasii hsp65 (2026-10-24)
+## Public reads: GTDB kansasii with a non-kansasii hsp65
 
-Question: how many of the 857 GTDB-kansasii assemblies of the four public BioProjects (see `PROJECTS.md`; the 23 of the 880 with CheckM contamination above 5 % are left out, rerun 2026-11-03) would be misidentified by Sanger hsp65?
-`hsp65-refalign/scripts/05_call_public.py` (moved from `mlsa-kansasii/sanger_vs_wgs/run_insilico_public.py`, commit 5498d72; identical table on rerun 2026-10-25) cuts the 441 bp hsp65 amplicon (TB-11/TB-12(w) in silico PCR)
+Question: how many of the 857 GTDB-kansasii assemblies of the four public BioProjects (see `PROJECTS.md`; the 23 of the 880 with CheckM contamination above 5 % are left out; run 2026-11-03) would be misidentified by Sanger hsp65?
+`hsp65-refalign/scripts/05_call_public.py` cuts the 441 bp hsp65 amplicon (TB-11/TB-12(w) in silico PCR)
 out of each `1_unicycler/<id>.fasta` and classifies it against the 72 per-genome hsp65 amplicons of the GTDB complex genomes
-(sanger_refalign logic). Output: `output/hsp65-refalign/results/public/{insilico_public.tsv,SUMMARY.txt}` (the first run is kept in `output/mlsa-kansasii/results/sanger_vs_wgs_public/`).
-Positive control: 9 GTDB-persicum samples (contaminated ones left out) gave 6 persicum and 3 closest to the atypical kansasii genomes, as expected.
+(sanger_refalign logic). Output: `output/hsp65-refalign/results/public/{insilico_public.tsv,SUMMARY.txt}`.
+Positive control (`public_ctl/`): 9 GTDB-persicum samples (contaminated ones left out) give 6 persicum and 3 closest to the atypical kansasii genomes, as expected.
 
 Result: an amplicon was found in all 857; 854 are closest to a typical kansasii reference with 0 differences. Three are not:
 

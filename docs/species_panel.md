@@ -2,7 +2,7 @@
 
 Ten hsp65 Sanger traces of isolates with a known species (`data/imm/screening_map_results.csv`, column `species`),
 copied from `data/sanger/seq_kansasii/` into `data/sanger/microsynth_mail/20261016_species_panel/` as `<TNR> hsp65_Tb-11.ab1`.
-Analysed with `scripts/02_analyse_report.py --batch <dir> --no-send --no-blast` (first run with `--hsp65-amplicons`, i.e. the 72 genomes).
+Analysed with `scripts/02_analyse_report.py --batch <dir> --no-send --no-blast` (once with the default 7 genomes, once with `--hsp65-amplicons`, i.e. the 72 genomes).
 
 | Species | Isolate | Trace (TNR) | Closest of the 7 genomes (default) | Closest of the 72 genomes (`--hsp65-amplicons`) |
 |---|---|---|---|---|
@@ -19,10 +19,10 @@ Analysed with `scripts/02_analyse_report.py --batch <dir> --no-send --no-blast` 
 
 All ten reads get the expected species with status `ok` under both reference sets. The identities are lower with the 7
 representatives because the read is compared with one genome per species instead of the closest of several. The
-7-genome run (the routine default) was made on 2026-10-31; its report and alignment PDFs are in
-`output/sanger-microsynth/examples_7genomes/`. The 72-genome identities are from the first run (2026-10-16, reports
-`output/sanger-microsynth/report_*.pdf` and `20261016_species_panel/`).
+7-genome run (the routine default, 2026-10-31) has its report and alignment PDFs in
+`output/sanger-microsynth/examples_7genomes/`. The 72-genome run (2026-10-16) has them in
+`output/sanger-microsynth/report_*.pdf` and `20261016_species_panel/`.
 
 Notes:
 - Only two attenuatum isolates exist (Mkan329-073, Mkan329-030), and -030 has no hsp65 trace, so both attenuatum reads are from -073.
-- Other candidate isolates were dropped when their trace gave a short or divergent read (e.g. Mkan329-003, -004, -006, -007).
+- Isolates whose trace gives a short or divergent read are not in the panel (e.g. Mkan329-003, -004, -006, -007).

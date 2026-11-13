@@ -41,7 +41,7 @@ Run ids: `public_<BioProject>` (pilot: `public_<BioProject>_test`), one snippy d
 |---|---|---|---|---|
 | PRJNA1078897 | 243 | 0 | yes (87 GB) | pilot OK (3/3 *M. kansasii*, ST38); all 243 done (2026-10-22; 3 stall casualties rerun) |
 | PRJNA1048499 | 342 | 0 | yes (90 GB) | all 342 done (2026-10-22) |
-| PRJNA845115 | 237 | 0 | yes (174 GB) | all 237 done (2026-10-24; SRR19543452 rerun after the tbprofiler time-limit fix) |
+| PRJNA845115 | 237 | 0 | yes (174 GB) | all 237 done (2026-10-24) |
 | PRJNA323639 | 273 | 30 (single-end) | yes (92 GB, 243 samples) | all 243 done (2026-10-22) |
 
 Batches of one project run one after another in `runs/public_<BioProject>/` (Slurm `--dependency=afterany`);
@@ -50,8 +50,8 @@ call `sbatch --dependency=... bin/submit_to_cluster.sh <main_dir> fastq NO <run_
 Check `slurm-<jobid>.out` of every batch for "Execution status: OK"; the chain continues after a failed batch.
 
 Findings from the runs: the coordinator sometimes stalled with work left (no tasks, no workers) and held the chain until the 24 h limit,
-which also corrupts `.nextflow/cache` (moved aside, resume lost for that batch). `bin/nxf_watchdog.sh` now stops a stalled coordinator
-and `tbprofiler` has a 2 h x attempt time limit (the 10 min default killed it on large read sets). Stall casualties were rerun, not bad samples.
+which also corrupts `.nextflow/cache` (moved aside, resume lost for that batch). `bin/nxf_watchdog.sh` stops a stalled coordinator
+and `tbprofiler` has a 2 h x attempt time limit (10 min is too short for large read sets). Stall casualties were rerun, not bad samples.
 
 ### GTDB-Tk species (2026-10-24)
 
@@ -82,7 +82,7 @@ On 2026-10-20 (mostly 09:00-13:59) Slurm worker jobs on node `u24-cva0000-305` d
 Nextflow retried once and then ignored the failed sample, so 124 samples (41 PRJNA1078897, 53 PRJNA1048499, 30 PRJNA323639) ended with trimming
 and FastQC only and an all-`null` summary row; the batches still reported "Execution status: OK". Rerun with `-resume` on 2026-10-24
 (`batches/rerun` per project). Check for such samples with: results dir without `1_unicycler`.
-`kansasii_tree` on 342 samples needed 64 min (the limit was 30 min x attempt; 2 h x attempt since 2026-11-09).
-`runs/public_PRJNA1078897/.../kansasii_phylogeny/` holds a stale tree (50 tips, 2026-10-20; the db has 243 samples): the last
-`snippy-core` failed because SRR28038343 has no aligned base, the failure was ignored and the old tree stayed. Not rebuilt; the
+`kansasii_tree` on 342 samples needs 64 min (limit: 2 h x attempt).
+`runs/public_PRJNA1078897/.../kansasii_phylogeny/` holds a tree that does not match its db (50 tips, 2026-10-20; the db has 243 samples, and
+SRR28038343 has no aligned base). Not rebuilt; the
 public trees are not used downstream. See `WORKFLOW.md` 2d.

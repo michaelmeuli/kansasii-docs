@@ -1,20 +1,19 @@
 # Ridom SeqSphere+ as source of truth
 
-Decision of 2026-10-30: **Ridom SeqSphere+ is the source of truth for the typing results (cgMLST, MST, clusters) and for the final
-report.** `kansasii-mst` (core-SNP MST) and `kansasii-cgmlst` (chewBBACA scheme, Ridom-style MST) are **obsolete**: their outputs are
-kept for comparison and are not cited in the final report, except for the gaps listed under "Not replaceable by Ridom" until those
+**Ridom SeqSphere+ is the source of truth for the typing results (cgMLST, MST, clusters) and for the final
+report.** The outputs of `kansasii-mst` (core-SNP MST) and `kansasii-cgmlst` (chewBBACA scheme, Ridom-style MST) are
+kept for comparison and are not cited in the final report, except for the gaps listed under "Not available from Ridom" until those
 are decided.
 
 ## Rules
 
-- Ridom is operated in the GUI. Every export goes to `data/imm/` as `ridom-<content>-mkan329[-<subset>].<ext>` (CSV, `;`-separated as
+- Ridom is operated in the GUI. Every export goes to `data/imm/` as `ridom-<content>.<ext>` (CSV, `;`-separated as
   SeqSphere writes it; figures as SVG/PDF). Do not edit exported files; derived tables belong in `output/`.
 - `data/imm/` files have no MANIFEST. Record each export in the table below (date, SeqSphere+ version, project, who) when you add it.
 - The input to Ridom is `output/kansasii-ridom/ridom_assemblies.{tar.gz,zip}` (made by `kansasii-ridom/scripts/01_export_ridom.py`, `sbatch submit_export.sbatch`;
   isolates `M001` ..., controls by `LABEL`, references by accession; `ridom/metadata.tsv` for the isolate-data import). It holds the pool of 175 complex
-  isolates (incl. M055, `excluded` by chewBBACA coverage only, so Ridom can give its good-target value) + 7 references = 182. Plasmids are removed by Ridom.
-  The earlier archive of `kansasii-cgmlst` (181, without M055) is superseded; the 181 genomes are the same files, except that the ATCC 12478 reference
-  now keeps its plasmid contig.
+  isolates (incl. M055, `excluded` by chewBBACA coverage only, so Ridom can give its good-target value) + 7 references = 182. The assemblies are
+  unmodified (the ATCC 12478 reference keeps its plasmid contig); plasmids are removed by Ridom.
 - Why the pool is 175 (`load_cohort()` in `kansasii-ridom/scripts/common.py`: complex species and not `contaminated`; it does not filter on `excluded`):
 
   | Step | Count |
@@ -35,7 +34,7 @@ are decided.
 | File | Content | Rows | Status |
 |---|---|---|---|
 | `ridom-clusters.csv` | good targets %, genome size, sample id, species, MST cluster (`-Group-`) | 181 | complete cohort; `-Group-` set for 63 of 181 (the rest are not in a cluster) |
-| `ridom-comparison-table.csv` | allele table: missing-value count, good targets, size, id, species, 1,408 `MKAN_RS*` loci | 182 | complete: pool incl. M055 + the 7 references |
+| `ridom-comparison-table.csv` | allele table: missing-value count, good targets, size, id, species, 1,407 `MKAN_RS*` loci | 182 | complete: pool incl. M055 + the 7 references |
 | `ridom-distance-matrix.meg` | pairwise allele distances (MEGA, lower triangle), whole complex | 181 taxa | complete: `keep` cohort + references, without M055; missing-value handling to be confirmed (export log) |
 | `ridom-scheme.tasktemplate` | gzip XML: 1,407 core targets and the full Target Definer report (settings, filters, accessory / discarded lists) | 1,407 targets | complete; read by `03_scheme.py` |
 | `ridom-kansasii-plasmids.csv` | NCBI plasmid list that the Target Definer excluded | - | used in `PLASMIDS.md` only |
@@ -63,7 +62,7 @@ Note: Ridom's scheme (about 1,400 loci named after ATCC 12478 `MKAN_RS*` locus t
 
 ## What comes from Ridom and what is derived
 
-Only five GUI exports are needed (decision 2026-11-02: one export per source, everything else is computed from it by `kansasii-ridom`; no export is
+Only five GUI exports are needed (one export per source, everything else is computed from it by `kansasii-ridom`; no export is
 requested that a script can derive). `config/expected_exports.tsv` lists them; `00_check_exports.py` checks them.
 
 | Export (SeqSphere+) | File | Status |
@@ -76,17 +75,17 @@ requested that a script can derive). `config/expected_exports.tsv` lists them; `
 
 Derived tables (`output/kansasii-ridom/results/`, run `sbatch submit_all.sbatch`):
 
-| Need | Script | Output | Replaces |
-|---|---|---|---|
-| Distances per subset | `02_distance_matrices.py` | `distance_<subset>.tsv`, `distance_summary.tsv` | `allele_distance_*.csv` |
-| Scheme: targets, Target Definer settings, filters, funnel, genomes | `03_scheme.py` | `scheme_targets.tsv`, `scheme_loci_classes.tsv` (core / accessory / discarded), `scheme_filters.tsv`, `scheme_funnel.tsv`, `scheme_genomes.tsv`, `scheme_summary.tsv`, `scheme_parameters.txt`, `scheme_target_definer_report.txt` | `scheme_summary.tsv`, `schema_evaluator_loci.tsv`, README "Scheme" table (no separate parameter export) |
-| Per-isolate QC, failed targets, locus statistics | `04_qc.py` | `qc.tsv`, `qc_summary.tsv`, `target_failures.tsv`, `locus_stats.tsv` | `sample_qc.tsv`, `allele_call/` stats |
-| Clusters for all isolates incl. singletons, threshold | `05_clusters.py` | `clusters.tsv`, `cluster_summary.tsv`, `cluster_threshold.tsv` | cluster / node tables |
-| MST nodes and edges, UPGMA trees per subset | `06_mst_trees.py` | `mst_nodes.tsv`, `mst_edges.tsv`, `tree_upgma_<subset>.nwk` | `mst_nodes_*.tsv` |
-| Controls vs. references | `07_control_distances.py` | `control_distances.tsv` | `control_check.tsv` |
-| Numbers and species table for the text | `08_paper_numbers.py` | `paper_numbers.md`, `paper_species_table.tsv` | hand-copied numbers |
+| Need | Script | Output |
+|---|---|---|
+| Distances per subset | `02_distance_matrices.py` | `distance_<subset>.tsv`, `distance_summary.tsv` |
+| Scheme: targets, Target Definer settings, filters, funnel, genomes | `03_scheme.py` | `scheme_targets.tsv`, `scheme_loci_classes.tsv` (core / accessory / discarded), `scheme_filters.tsv`, `scheme_funnel.tsv`, `scheme_genomes.tsv`, `scheme_summary.tsv`, `scheme_parameters.txt`, `scheme_target_definer_report.txt` |
+| Per-isolate QC, failed targets, locus statistics | `04_qc.py` | `qc.tsv`, `qc_summary.tsv`, `target_failures.tsv`, `locus_stats.tsv` |
+| Clusters for all isolates incl. singletons, threshold | `05_clusters.py` | `clusters.tsv`, `cluster_summary.tsv`, `cluster_threshold.tsv` |
+| MST nodes and edges, UPGMA trees per subset | `06_mst_trees.py` | `mst_nodes.tsv`, `mst_edges.tsv`, `tree_upgma_<subset>.nwk` |
+| Controls vs. references | `07_control_distances.py` | `control_distances.tsv` |
+| Numbers and species table for the text | `08_paper_numbers.py` | `paper_numbers.md`, `paper_species_table.tsv` |
 
-Findings of the derivation (2026-11-02):
+Findings of the derivation (exports of 2026-11-02):
 
 - **Ridom's MST clusters are single linkage at <= 5 allele differences**: that threshold (and only that one) reproduces the 18 clusters of `ridom-clusters.csv`
   exactly (`cluster_threshold.tsv`); isolates without `-Group-` are singletons.
@@ -96,7 +95,7 @@ Findings of the derivation (2026-11-02):
 - MST edges are recomputed from the Ridom distances (same total length as Ridom's MST, tie-breaking can differ); use the Ridom SVG for the figure.
 - Not exported and not needed: MLST (stays from `ASSEMBLIES/<sample>/5_typing/mlst/`), isolate-data import log (`ridom/metadata.tsv` of `01_export_ridom.py` is the source).
 
-## Not replaceable by Ridom (decide before final report)
+## Not available from Ridom (decide before final report)
 
 SeqSphere+ works on allele profiles. It gives no SNP distances, so these findings of `kansasii-mst` have no Ridom equivalent:
 
@@ -105,27 +104,27 @@ SeqSphere+ works on allele profiles. It gives no SNP distances, so these finding
 - Resolution inside a clonal group where alleles are identical but SNPs differ (node `max_internal_snps`).
 
 Options: (a) keep `kansasii-mst` for a supplementary SNP figure and say so in the methods; (b) drop the SNP statements and report allele
-distances only. Until decided, `kansasii-mst` is obsolete for the main report but not deleted.
+distances only. Until decided, `kansasii-mst` stays in the project but is not used for the main report.
 
-## Still depending on the obsolete repos
+## What `kansasii-mst` and `kansasii-cgmlst` feed
 
 | Dependency | Where | Action |
 |---|---|---|
-| `cgmlst_called_pct` and `excluded` (< 90 % called) | `immensekansasii/scripts/06_screening_map_results.py` reads `output/kansasii-cgmlst/results/sample_qc.tsv` | switch to `ridom_perc_good_targets` once export 7 covers all complex isolates (incl. M055); keep the 90 % threshold |
-| `run_downstream.sh` runs both repos | `immensekansasii/scripts/run_downstream.sh` | drop `kansasii-mst` and steps 08-10 of `kansasii-cgmlst` after the switch, add `kansasii-ridom` `submit_export.sbatch` |
+| `cgmlst_called_pct` and `excluded` (< 90 % called) | `immensekansasii/scripts/06_screening_map_results.py` reads `output/kansasii-cgmlst/results/sample_qc.tsv` | planned: switch to the Ridom good-targets value (`ridom-comparison-table.csv` covers the pool incl. M055); keep the 90 % threshold |
+| `run_downstream.sh` runs both repos | `immensekansasii/scripts/run_downstream.sh` | planned: drop `kansasii-mst` and steps 08-09 of `kansasii-cgmlst` after the switch, add `kansasii-ridom` `submit_export.sbatch` and `submit_all.sbatch` (not in the chain today) |
 | `excluded` read by `kansasii-amr-marker-screen`, `kansasii-mst`, `kansasii-cgmlst` | `screening_map_results.csv` | unchanged |
 
 ## Where the Ridom results go
 
-`kansasii-ridom` (created 2026-10-30) reads the exports. `scripts/00_check_exports.py` compares `data/imm/ridom-*` with the list above
-(`config/expected_exports.tsv`, the five GUI exports) and writes `output/kansasii-ridom/results/export_status.tsv`; run it after every new export. All tables for the report are derived there by scripts 02-08 (table above). `immensekansasii/scripts/06` still
-joins `ridom-clusters.csv` into `screening_map_results.csv` (`ridom_*` columns). Do not extend the obsolete repos.
+`kansasii-ridom` reads the exports. `scripts/00_check_exports.py` compares `data/imm/ridom-*` with the list above
+(`config/expected_exports.tsv`, the five GUI exports) and writes `output/kansasii-ridom/results/export_status.tsv`; run it after every new export. All tables for the report are derived there by scripts 02-08 (table above). `immensekansasii/scripts/06`
+joins `ridom-clusters.csv` into `screening_map_results.csv` (`ridom_*` columns). Do not extend `kansasii-mst` or `kansasii-cgmlst`.
 
 ## Export log
 
 | Date | Files | SeqSphere+ version / scheme | Notes |
 |---|---|---|---|
-| (earlier, undated) | `ridom-clusters.csv`, `ridom-comparison-table-mkan329.csv` | not recorded | version and scheme to be filled in |
-| 2026-11-02 (file date) | `ridom-comparison-table-mkan329.csv` (export 1, replaces the 149-row file) | not recorded | 182 isolates incl. M055 and the 7 references, 1,408 loci; checked by `00_check_exports.py` (OK) |
+| 2026-10-30 (file date) | `ridom-clusters.csv` (export 5) | not recorded | 181 isolates (`keep` cohort + the 7 references); version and scheme to be filled in |
+| 2026-11-02 (file date) | `ridom-comparison-table.csv` (export 1) | not recorded | 182 isolates incl. M055 and the 7 references, 1,407 loci; checked by `00_check_exports.py` (OK) |
 | 2026-11-02 (file date) | `ridom-distance-matrix.meg` (export 2) | not recorded | MEGA (`DataType=distance DataFormat=LowerLeft`), 181 taxa (`keep` cohort + references, without M055); **missing-value handling not recorded in the file: pairwise ignore intended, to be confirmed**; subsets are sliced by `kansasii-ridom/scripts/02_distance_matrices.py` |
-| 2026-11-02 | `ridom-scheme-mkan329.tasktemplate` (export 6) | Ridom Typer 12.0.7 (2026-09), cgMLST Target Definer 1.5, run 2026-10-29 | scheme `... cgMLST 1407 targets ATCC 12478`; 1,407 core, 3,854 accessory, 503 discarded; replaces the csv + parameters exports; `03_scheme.py` |
+| 2026-11-02 | `ridom-scheme.tasktemplate` (export 6) | Ridom Typer 12.0.7 (2026-09), cgMLST Target Definer 1.5, run 2026-10-29 | scheme `... cgMLST 1407 targets ATCC 12478`; 1,407 core, 3,854 accessory, 503 discarded; read by `03_scheme.py` |

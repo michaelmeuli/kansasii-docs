@@ -1,7 +1,7 @@
 # M. kansasii project workflow
 
 How the project-specific scripts around the IMMENSE pipeline fit together
-(the pipeline itself is described in `README.md`). Everything runs on the s3it cluster. Paths in the
+(the pipeline itself is described in `immensekansasii/README.md`; `scripts/` without a repo name means `repos/immensekansasii/scripts/`). Everything runs on the s3it cluster. Paths in the
 tables and text are relative to `/shares/sander.imm.uzh/MM/kansasii/` (`K`) unless
 absolute; **code blocks use full paths** and can be pasted as they are (only
 `<placeholders>` need filling in).
@@ -10,15 +10,14 @@ absolute; **code blocks use full paths** and can be pasted as they are (only
 
 | Path | Content |
 |---|---|
-| `repos/immensekansasii` | this repo: pipeline + project scripts in `scripts/` |
+| `repos/immensekansasii` | pipeline + project scripts in `scripts/` |
 | `repos/mlsa-kansasii` | MLSA / Sanger differentiation (reads `data/imm/screening_map_link.csv`) |
 | `data/imm/` | screening map sources and derived tables |
 | `data/immensekansasii/gtdb/gtdb232/` | GTDB r232 `bac120_*` metadata/taxonomy only (downloaded if missing) |
 | `data/gtdb_genomes/` | genomes downloaded from NCBI, plus symlink dirs for runs |
 | `data/illumina/Mkan329/reads/kansasii/` | delivered paired-end fastq `Mkan329-NNN_r1/_r2.fastq.gz` (lower case; 133 isolates, NR 1-133; NR 134-186 are in `reads/kansasii_jc`) |
 | `data/illumina/Mkan329/batches/<batch>/` | per-batch input from `04_mkan329_batches.sh`: `Mkan329-NNN_R1/_R2.fastq.gz` symlinks + `id_map.tsv` |
-| `runs/<run_name>/` | working dir of a pipeline run (contains large, temporary `work/`) |
-| `output/<run_name>/` | end results of a run (no `work/`); downloaded to local `kansasii_C` |
+| `runs/<run_name>/` | working dir of a pipeline run (contains large, temporary `work/`) and its end results; every script reads the results from here |
 | `output/immensekansasii/gtdb/gtdb232/` | accession lists and type strains derived from the GTDB metadata |
 | `output/immensekansasii/results/iTOL/<run_name>/` | iTOL tree + annotation files per run |
 | `output/mlsa-kansasii/results/` | MLSA outputs |
@@ -45,20 +44,20 @@ sanger-microsynth) as a Slurm dependency chain. Every path below is a constant o
 | 5b | pipeline runs, one batch after another | `run_IMMENSE.sh` (commands printed by 4/5) | none | batches | `runs/mkan329/`, `runs/mkan329_jc/` |
 | 5c | public reads: ENA metadata, download, batches | `scripts/09_public_fetch_metadata.sh`, `10_public_select_and_download.py` (sbatch), `11_public_batches.sh` | `env_mic` (10) | `PROJECTS.md` BioProjects, ENA | `data/illumina/public/<BioProject>/{metadata.tsv,selected.tsv,reads/,batches/}`, then `run_IMMENSE.sh` -> `runs/public_<BioProject>/` |
 | 6 | MIC analysis | `kansasii-mic: submit_mic.sbatch` (`scripts/01_run_analysis.py`) | `env_mic` | `mic.csv`, step 2 | `output/kansasii-mic/results/{mhk,mgit}/` |
-| 7 | MLSA inputs (links, filtered GTDB list) | `mlsa-kansasii: scripts/01..04_*` | `env_mlsa` | steps 1, 2 | `data/gtdb_genomes/.../mlsa-kansasii/`, `data/sanger/seq_kansasii/` |
+| 7 | MLSA inputs (links, filtered GTDB list) | `mlsa-kansasii: scripts/01..03_*` | `env_mlsa` | steps 1, 2 | `data/gtdb_genomes/.../mlsa-kansasii/`, `data/sanger/seq_kansasii/` |
 | 8 | MLSA analysis | `mlsa-kansasii: scripts/04_locus_discovery -> 08_sanger_mlsa` (+ `--exclude-atypical`), `09_sanger_refalign`, `05_genome_identity_check`, `06_make_hsp65_references`; `10_sanger_vs_wgs` after step 9 | `env_mlsa` | step 7 | `output/mlsa-kansasii/results/` |
 | 9 | results table | `scripts/06_screening_map_results.py` | `env_mic` | steps 2, 5b, 6, 8 | `data/imm/screening_map_results.csv` |
 | 9b | hsp65 / gyrA of project and public samples | `hsp65-refalign: submit_validate.sbatch, submit_korean_check.sbatch, submit_public.sbatch [ctl\|persicum]`; `gyrA-refalign: submit_gyrA.sbatch` | `env_mlsa` | steps 5b, 8, 9 | `output/hsp65-refalign/results/`, `output/gyrA-refalign/results/{project,public}/` |
-| 10 | iTOL files | `scripts/07_generate_itol_species_labels.sh` | none | steps 3, 5b, 9 | `output/immensekansasii/results/iTOL/<run>/` |
-| 11 | samples report | `scripts/08_mkan329_samples_report.py` | `env_mic` | steps 5b, 9 | `SAMPLES.md` |
+| 10 | iTOL files | `scripts/07_generate_itol_species_labels.sh`, `scripts/12_generate_itol_ast.py` (env `biopython`) | none | steps 3, 5b, 9 | `output/immensekansasii/results/iTOL/<run>/`, `.../iTOL/mkan329_patients171/` |
+| 11 | samples report | `scripts/08_mkan329_samples_report.py` | `env_mic` | steps 5b, 9 | `kansasii-docs/docs/SAMPLES.md` |
 | 12a | cgMLST scheme, allele calls, per-genome QC | `kansasii-cgmlst: submit_all.sbatch` (steps 00-07) | `env_cgmlst` | steps 2, 5b | `output/kansasii-cgmlst/results/sample_qc.tsv`, `runs/cgmlst/` |
-| 12b | cgMLST distances, MSTs; core-SNP MSTs | `kansasii-cgmlst: submit_all.sbatch` (steps 08-09; step 10, the superseded Ridom archive, is no longer submitted), `kansasii-mst: submit_all.sbatch` | `env_cgmlst`, `env_mst` | steps 5b, 9 | `output/kansasii-cgmlst/results/`, `output/kansasii-mst/results/` |
+| 12b | cgMLST distances, MSTs; core-SNP MSTs | `kansasii-cgmlst: submit_all.sbatch` (steps 08-09), `kansasii-mst: submit_all.sbatch`; not used for the report (`RIDOM.md`) | `env_cgmlst`, `env_mst` | steps 5b, 9 | `output/kansasii-cgmlst/results/`, `output/kansasii-mst/results/` |
 | 13 | AMR marker screen | `kansasii-amr-marker-screen: submit_amr.sbatch`, then `submit_amr_bam.sbatch` (optional) and `submit_amr_reannot.sbatch` | `env_amr` | steps 5b, 6, 9 | `output/kansasii-amr-marker-screen/results/assembly/`, `output/kansasii-amr-marker-screen/results/bam/` |
 | 14 | atypical gyrA / hsp65 samples, output overview | `kansasii-docs: bin/make_atypical_table.py`, `bin/make_summary.py` | `env_mlsa` | step 9b | `output/kansasii-docs/results/atypical_samples/`, `output/SUMMARY.html` |
 | - | Sanger Microsynth mail (independent, routine) | `sanger-microsynth: submit_fetch_analyse.sbatch` | `env_sanger_ms` | mail, step 8 refs | `output/sanger-microsynth/` |
 
-Step 9 needs steps 6, 8 and 12a (`cgmlst_called_pct`) and steps 8 and 12b need step 9 for the `species`/`excluded` columns of the previous table; for the first run the
-cgMLST pool uses the species of the previous results table. Step 9 needs step 8 for the `species_sanger_mlsa`, `species_sanger_mlsa_excl` and `species_sanger_refalign` columns, and step 8 needs the link
+Step 9 needs steps 6, 8 and 12a (`cgmlst_called_pct`), and step 12b needs step 9 for the `species`/`excluded` columns. Step 12a reads species and contamination from the results table that
+exists when it starts, so on a first run without a results table step 9 runs once before 12a (it then leaves `cgmlst_called_pct` empty) and again after it. Step 9 needs step 8 for the `species_sanger_mlsa`, `species_sanger_mlsa_excl` and `species_sanger_refalign` columns, and step 8 needs the link
 table of step 2, so the link table is always built first and the results table last.
 `gtdb232` metadata is downloaded by step 1.
 
@@ -80,7 +79,8 @@ Scripts (`repos/immensekansasii/scripts/`):
 | `09_public_fetch_metadata.sh` | none | ENA run metadata of public BioProjects -> `data/illumina/public/<BioProject>/metadata.tsv` |
 | `10_public_select_and_download.py` | `env_mic` | all runs -> `selected.tsv` (no species/host filtering; single-end or non-Illumina runs go to `not_runnable.tsv`), md5-checked download to `reads/` |
 | `11_public_batches.sh` | none | test batch + batches of 45 per BioProject, prints the `run_IMMENSE.sh` commands (run id `public_<BioProject>`) |
-| `run_downstream.sh` | none | submit steps 6-13 as a Slurm dependency chain |
+| `run_downstream.sh` | none | submit steps 2 and 6-14 as a Slurm dependency chain |
+| `12_generate_itol_ast.py` | `biopython` | patient tree: midpoint root, AST dots, species ring (section 2c) |
 | `install_notes.txt`, `worktree-branching.txt` | - | notes (not runnable) |
 
 ## 1. GTDB reference genomes
@@ -112,8 +112,8 @@ Rules for every run:
 - Start in its own `runs/<run_name>/`, never in `output/`: Nextflow writes `work/` into the
   start directory, it is large and temporary and must not reach `output/` (which is
   downloaded to local).
-- `run_IMMENSE.sh` only submits a SLURM job. When it has finished and been checked, rsync
-  the end results (without `work/`) to `output/<run_name>/` and delete `work/`.
+- `run_IMMENSE.sh` only submits a SLURM job. The end results stay in `runs/<run_name>/`; no run has been
+  copied to `output/`, and every run dir still holds its `work/`.
 - `--kansasii_snippy_db <dir>` is required (one db dir per run under
   `/shares/sander.imm.uzh/software/pipelines/IMMense/IMMense_dependencies/databases/kansasii_complex/`) and the
   dir must exist before the run (`mkdir -p`).
@@ -123,8 +123,6 @@ mkdir -p /shares/sander.imm.uzh/software/pipelines/IMMense/IMMense_dependencies/
 cd /shares/sander.imm.uzh/MM/kansasii/runs/<run_name>
 bash /shares/sander.imm.uzh/MM/kansasii/repos/immensekansasii/run_IMMENSE.sh -j <job_name> -t <input_type> -r <run_name> \
      -x "--kansasii_snippy_db /shares/sander.imm.uzh/software/pipelines/IMMense/IMMense_dependencies/databases/kansasii_complex/<db_name>" -i <input_dir>
-rsync -a --exclude work --exclude .nextflow --exclude '*_transfer_result/genomes/' \
-     /shares/sander.imm.uzh/MM/kansasii/runs/<run_name>/ /shares/sander.imm.uzh/MM/kansasii/output/<run_name>/
 ```
 
 ### 2a. `kansasii_complex_gtdb_representatives` (reference tree, `-t fasta`)
@@ -160,13 +158,13 @@ batches, a small test batch first.
    (sample id = `PROBENNUMMER`; **upper-case `_R1/_R2`**, because the `{R1,R2,1,2}` glob in
    `main.nf` is case-sensitive and would not find the delivered lower-case names) plus
    `id_map.tsv` (`NR`, `PROBENNUMMER`, original paths). **Do not use the bare `NR` as sample
-   id** (as the former `run.sh` did): `checkm.nf` runs `grep ${sample_id}` on the CheckM
+   id**: `checkm.nf` runs `grep ${sample_id}` on the CheckM
    log, a bare number matches nearly every line (timestamps), which garbles
    `<run>_quality.tsv` from `checkm_completeness` on, and `evaluate_QC.py` then crashes in
-   `merge_summaries` (found in the first pilot, 2026-10-03). Proper fix would be anchoring
+   `merge_summaries`. Proper fix would be anchoring
    that grep in `checkm.nf`. Isolates without a complete pair are skipped
    with a warning; after the next delivery rerun the script **before** submitting (batch
-   membership can shift; old `bNN` dirs are removed). It only builds links and prints the
+   membership can shift; existing `bNN` dirs are removed). It only builds links and prints the
    commands below, it submits nothing.
 
    **jc batch (`b05`).** The reads in `reads/kansasii_jc` are named by NGS TNR, so
@@ -209,8 +207,8 @@ batches, a small test batch first.
    (`scripts/08_mkan329_samples_report.py`, built from the per-sample summary tables).
    **Do not run a final `all` batch to get cumulative tables:** `-resume` only reuses a task
    when its input paths are identical (the hash includes the file path), and `batches/all/`
-   has other symlink paths than `b01..b03`, so it re-ran every sample from scratch (0 cache
-   hits; cancelled after 2 min, ~2500 CPU-hours otherwise). `-resume` works for the same
+   has other symlink paths than `b01..b03`, so it re-runs every sample from scratch (0 cache
+   hits, ~2500 CPU-hours). `-resume` works for the same
    command in the same dir (e.g. the pilot). Only one Nextflow run is allowed per dir, so
    **submit the batches one after another** (wait until a batch has finished), not in
    parallel. If a controller job keeps running after the log says "Goodbye" or the log
@@ -239,12 +237,6 @@ batches, a small test batch first.
    bash /shares/sander.imm.uzh/MM/kansasii/repos/immensekansasii/run_IMMENSE.sh -j job_mkan329_$b -t fq_PE -r mkan329 \
         -x "--kansasii_snippy_db /shares/sander.imm.uzh/software/pipelines/IMMense/IMMense_dependencies/databases/kansasii_complex/mkan329" \
         -i /shares/sander.imm.uzh/MM/kansasii/data/illumina/Mkan329/batches/$b
-   ```
-   After the last batch has finished and been checked, copy the end results and delete `work/`:
-   ```bash
-   rsync -a --exclude work --exclude .nextflow --exclude '*_transfer_result/genomes/' \
-        /shares/sander.imm.uzh/MM/kansasii/runs/mkan329/ /shares/sander.imm.uzh/MM/kansasii/output/mkan329/
-   rm -rf /shares/sander.imm.uzh/MM/kansasii/runs/mkan329/work
    ```
 4. **Results table** (`conda activate env_mic`; runs after the MIC analysis and the MLSA
    programs, see "Run order"). `06_screening_map_results.py` reads the per-sample summary tables
@@ -305,7 +297,7 @@ The snippy `Reference` tip of each tree is labelled "Reference genome" (grey).
 Defaults: `-n kansasii_complex_gtdb_representatives` (gtdb) or `mkan329` (samples); `-a` defaults
 to the 7-genome kansasii complex list, use
 `mycobacterium_relevant_species_representative_accessions_renamed.txt` for the 20-genome set,
-whose run is `runs/relevant_species_tree_run/` (copied from `output-old/` without `work/` and
+whose run is `runs/relevant_species_tree_run/` (it has no `work/` and no
 `.nextflow`, so it cannot be resumed; 21 tips = 20 genomes + `Reference`):
 ```bash
 bash /shares/sander.imm.uzh/MM/kansasii/repos/immensekansasii/scripts/07_generate_itol_species_labels.sh \
@@ -319,12 +311,12 @@ via `06_screening_map_results.py`); (3) run the script with `-n <run>` (plus `-m
 (4) check there is no `WARNING: n/m entries have a species`, which means some tips are unlabeled.
 Re-run after the tree is rebuilt, because the files are only valid for the tree they were made with.
 
-Current outputs: `output/immensekansasii/results/iTOL/kansasii_complex_gtdb_representatives/` (8 tips),
-`output/immensekansasii/results/iTOL/relevant_species_tree_run/` (21 tips; deleted 2026-11-12, the command above writes it again), `output/immensekansasii/results/iTOL/mkan329/` (132 tips).
+Current outputs: `output/immensekansasii/results/iTOL/kansasii_complex_gtdb_representatives/` (8 tips) and
+`output/immensekansasii/results/iTOL/mkan329/` (187 tips). There are no files for `relevant_species_tree_run`; the command above writes them.
 
 #### Patient isolates: midpoint-rooted tree, AST dots, species ring
 
-`12_generate_itol_ast.py` (conda env `biopython`, needs Bio.Phylo) prunes a tree (default since 2026-11-12: `kansasii_patients171_tree.treefile` in `mkan329_patients171/`, section 2d; before: the `mkan329` tree) to the 171 patient
+`12_generate_itol_ast.py` (conda env `biopython`, needs Bio.Phylo) prunes a tree (default `--tree`: `kansasii_patients171_tree.treefile` in `mkan329_patients171/`, section 2d) to the 171 patient
 isolates of the complex (no `Reference` tip, no control / type strains with a `LABEL`, no `excluded` isolates),
 roots it at the midpoint, rotates the branches so species sit together (topology unchanged) and writes to `output/immensekansasii/results/iTOL/mkan329_patients171/` (default `--out-dir`): `kansasii_patients_midpoint.nwk`,
 `itol_1_ast_dots.txt` (13 circle rings, filled = resistant, hollow = susceptible or intermediate, none = no MIC),
@@ -333,8 +325,7 @@ roots it at the midpoint, rotates the branches so species sit together (topology
 `scripts/kansasii_cutoffs.py`, the vendored copy of `kansasii-docs/templates/kansasii_cutoffs.py` that kansasii-mic uses too. Tests: `tests/test_itol_ast.py`.
 
 The figure `data/imm/midpoint-rooted-tree.{pdf,svg}` is the iTOL render of these files (tree, `itol_1_ast_dots`,
-`itol_2_species_ring`, leaf labels), exported by hand from itol.embl.de. Since 2026-11-10 it is drawn from the 171-isolate tree in `output/immensekansasii/results/iTOL/mkan329_patients171/` (section 2d; copy of the figure there), not from the files of this
-section; the older render of the 875-column tree in `mkan329_patients/` was deleted 2026-11-12. No script writes or reads the figure; re-export it
+`itol_2_species_ring`, leaf labels), exported by hand from itol.embl.de; a copy is in `output/immensekansasii/results/iTOL/mkan329_patients171/`. No script writes or reads the figure; re-export it
 after the tree or the script is re-run.
 
 Getting the files into iTOL (the script only writes them on the server):
@@ -349,7 +340,7 @@ Getting the files into iTOL (the script only writes them on the server):
 
 ### 2d. Core-SNP phylogeny (`modules/kansasii_phylo.nf`, branch `kansasii`)
 
-The only tree in the project. It is part of the pipeline (called in `main.nf`, skipped with
+The tree-building module of the project. It is part of the pipeline (called in `main.nf`, skipped with
 `--skip_kansasii_phylo true`; it does not use the GTDB-Tk result and also runs with `--skip_gtdb`),
 not a script of this repo. GTDB-Tk gives the species; this gives strain-level relatedness.
 Three processes run in series:
@@ -365,7 +356,7 @@ Three processes run in series:
   All samples are mapped to this one genome whatever their GTDB species, so the whole complex
   shares one coordinate system.
 - **One distant sample shrinks the core for everybody.** `snippy-core` keeps only positions aligned in
-  all samples. Checked for `mkan329` on 2026-11-09 (`scratch/phylo_review_20261109/`): members of the
+  all samples. Checked for `mkan329` (2026-11-09, `scratch/phylo_review_20261109/`): members of the
   complex align 56-97 % of the reference, the six non-complex samples in the db align 0.3-5 %
   (controls Mkan329-126 *M. tuberculosis*, -127 *M. avium*, -129 *M. abscessus*, -130 *M. xenopi*,
   -131 *M. ulcerans*, and the clinical *M. avium* isolate -184). With them the core is 875 columns;
@@ -399,14 +390,12 @@ Three processes run in series:
   `kansasii_complex_tree.iqtree` (log, model, parameters), `kansasii_tree_version.txt`.
   The other `snippy-core` outputs (`.full.aln`, `.tab`, `.vcf`) stay in the Nextflow `work/` dir.
   `main.nf` empties this directory when a run starts, so the tree in it always belongs to the last
-  invocation. Before 2026-11-09 a failed `snippy-core` or IQ-TREE task was ignored (the profile's
-  `errorStrategy`) and the tree of an earlier invocation stayed in place:
-  `runs/public_PRJNA1078897` still has such a tree (50 tips from 2026-10-20, the db has 243 samples).
+  invocation. Exception: the tree in `runs/public_PRJNA1078897` (50 tips, 2026-10-20) does not match its db
+  (243 samples) and the directory has no `core.samples.tsv`; rerun that run id before using it.
 - **Resources** (`s3it.config`): snippy 4 CPU / 4 GB, snippy-core 4 CPU / 8 GB, 30 min x attempt each;
-  IQ-TREE 4 CPU / 4 GB, 2 h x attempt (was 30 min: the 342-tip tree of `public_PRJNA1048499` needs 64 min,
-  so it only finished on the third attempt, and on 2026-10-21 all three attempts ran out of time). `kansasii_ref_dir` and the db are
+  IQ-TREE 4 CPU / 4 GB, 2 h x attempt (the 342-tip tree of `public_PRJNA1048499` needs 64 min). `kansasii_ref_dir` and the db are
   bind-mounted into the containers, so both dirs must exist before the run.
-- **Current `mkan329` tree** (made 2026-10-14 with the old module, not rebuilt): 187 tips (186 samples
+- **Current `mkan329` tree** (made 2026-10-14, without `kansasii_complex_core.samples.tsv`): 187 tips (186 samples
   in the db + `Reference`), 875 alignment columns, 511 parsimony-informative, IQ-TREE reports model
   `GTR+F+G4`. Because of the 875 columns it resolves little within a species: 2,539 of the 14,535
   pairs of clinical isolates are identical in it, against 11 pairs in the 287,242-column core of the
@@ -415,8 +404,8 @@ Three processes run in series:
   `12_generate_itol_ast.py` are in `output/immensekansasii/results/iTOL/mkan329_patients171/` (171 tips; 45
   terminal branches of zero length against 161 in the 875-column tree; `README.md` there says how it was
   made). **This is the tree to draw**; the alignment itself stays in `scratch/phylo_review_20261109/patients171/`.
-  The figure `data/imm/midpoint-rooted-tree.{pdf,svg}` was redrawn from it on 2026-11-10 (copy in that directory); in it
-  every species with more than one isolate is a single clade, which was not so in the 875-column figure.
+  The figure `data/imm/midpoint-rooted-tree.{pdf,svg}` is drawn from it (copy in that directory); in it
+  every species with more than one isolate is a single clade.
 
 Limits of the tree, to keep in mind when reading it:
 - **No branch support.** IQ-TREE runs without `-bb`/`-alrt`, so there are no bootstrap or SH-aLRT values.
@@ -435,7 +424,7 @@ Limits of the tree, to keep in mind when reading it:
 Sources in `data/imm/`: `screening_map_project.csv`, `screening_map_strains.csv`
 (latin-1), `screening_map_ast.csv`, `screening_map_ngs_jc.csv` (reads in `reads/kansasii_jc`),
 `screening_map_ngs_mm.csv` (reads in `reads/kansasii`), `screening_map_ast_jc.csv` (wide MIC table of the
-jc isolates, `NR_JC` = its row number; only used for `MIC_JC`/`MHK` here), old `screening_map.csv` (comparison only).
+jc isolates, `NR_JC` = its row number; only used for `MIC_JC`/`MHK` here), `screening_map.csv` (comparison only).
 
 ```bash
 conda activate env_mic
@@ -452,8 +441,8 @@ Mkan329-056: `TNR` 2022500332, `TNR_MHK` 2022500349). If the order's LNR is not 
 table (case reopened only for the MHK: new LNR, same TNR, see `LNR2`), `TNR_MHK` is the isolate's
 own `TNR` when BESCHREIBUNG names the follow-up order (its LNR or TNR), else empty. Four rows
 (Mkan329-028, -047, -071, -162) have neither a BESCHREIBUNG reference nor the LNR in strains; their
-order was matched by DOB + received date only. They were checked by hand in the LIS (M/LAB): after
-the file was closed the missing information was added as "Bleistift", so the order was made under the
+order is matched by DOB + received date only. They are checked by hand in the LIS (M/LAB): the
+missing information is recorded there as "Bleistift", and the order was made under the
 isolate's own TNR. This is hard-coded as `LIS_VERIFIED_OWN_TNR` in `02_screening_map_link.py`
 (`TNR_MHK` = `TNR`); add further rows there only after such a manual check.
 
@@ -461,9 +450,9 @@ isolate's own TNR. This is hard-coded as `LIS_VERIFIED_OWN_TNR` in `02_screening
 culture than the one sequenced under `TNR`. Currently only
 Mkan329-056: MHK 2023311034 was made on culture 2022500349 (`TNR_JC`, NGS 2023187866), which was
 suspected to be contaminated; it was resequenced (`Mkan329-056-jc`, b06, run `mkan329_jc`) and the new
-reads are clean, but they are not part of the shared `runs/mkan329` tree (b05 skips Mkan329-056). The
+reads are clean; they are not part of the shared `runs/mkan329` tree (b05 skips Mkan329-056). The
 sequenced reads of Mkan329-056 (`NGS_MM`) are from 2022500332. `NGS_USED` is `NGS_MM` for Mkan329-056 (and -009), not the resequenced `-jc` reads. The flag is informational: `kansasii-mic`
-still matches the 13 MIC rows of Mkan329-056 via the `MHK` column (decision: include them). A consumer that
+matches the 13 MIC rows of Mkan329-056 via the `MHK` column (decision: include them). A consumer that
 needs a strict MIC/sequence pairing can drop rows with `MHK_TNR_DIFFERS = yes`.
 Both the Mkan329-056 genome (CheckM 0.61 %) and the resequenced `-jc` genome (0.61 %, purity 99.1 %) are CheckM-clean, so
 `contamination_flag` does not exclude Mkan329-056; its MHK pairing is covered by `MHK_TNR_DIFFERS` only.
@@ -472,7 +461,7 @@ Both the Mkan329-056 genome (CheckM 0.61 %) and the resequenced `-jc` genome (0.
 values for the isolate (37 isolates); for exactly those, `MHK` is set to the same `JC_<NR_JC>` (replacing an
 MGIT-only or empty id). The 13 isolates with panel values in `mic.csv` keep their own MHK id (mic.csv wins).
 So `MHK` is either an AST order TNR or a `JC_n`, never both.
-It also prints a comparison with the old `screening_map.csv`.
+It also prints a comparison with `screening_map.csv`.
 
 **`mlsa-kansasii` is a consumer** and reads only the TNR columns and `PROBENNUMMER`:
 `scripts/03_link_sanger_kansasii.sh` selects the columns by regex `^TNR(_JC|_MM|[0-9]+)?$`
@@ -487,13 +476,14 @@ hand-maintained tuple, which must match the columns produced here.
 `data/imm/screening_map_results.csv` (copy in `output/`): all link columns plus
 - `NGS_USED` (right after `NGS_MM`): the NGS id of the sequencing data that is used. If `NGS_MM` was done it is the one used, not `NGS_JC`; only if there is no `NGS_MM` is `NGS_JC` used. So Mkan329-001..133 = `NGS_MM`, Mkan329-134..186 = `NGS_JC`. Mkan329-009 and -056 have both and use `NGS_MM`; their resequenced `-jc` reads (b06, run `mkan329_jc`) are not used
 - `species`, `gtdb_ani`, `gtdb_af`, `gtdb_reference`: GTDB-Tk call from the run's `quality.tsv`
-- `checkm_contamination`, `contamination_flag`: CheckM contamination (%) of the assembly; flag = `contaminated` above `--max-contamination` (default 5). Flagged samples are mixed cultures, see `SPECIES.md`. CheckM is the criterion for contaminated cultures. MIC values are not used for any isolate with `excluded` = true (which includes the flagged ones) nor for Mkan329-186 (`MANUAL_EXCLUSIONS`): kansasii-mic drops them before QC and lists them in `output/kansasii-mic/results/excluded_isolates.csv` (details in `SPECIES.md`, `EXCLUSIONS.md`). Flagged now: Mkan329-010, -021, -035, -106, -113 (113 has no MIC data)
-- `cgmlst_called_pct`, `excluded` (after `contamination_flag`): `cgmlst_called_pct` = % of the cgMLST95 loci with an allele call (kansasii-cgmlst `output/kansasii-cgmlst/results/sample_qc.tsv`, `--cgmlst-qc`; empty if the isolate is not allele-called); `excluded` = `true` if `contamination_flag` is `contaminated` or `cgmlst_called_pct` < `--min-cgmlst-pct` (default 90, Ridom's good-target threshold), or the row is a clinical sample (`LABEL` empty) with a GTDB species outside the complex (NR 184, *M. avium*), else `false`. Non-complex control strains (`LABEL` set) are not excluded by this. Genome-based repos (cgmlst, mst, amr screen) skip `excluded` isolates. Run order: cgmlst `STEPS="07"` -> 06 -> cgmlst `STEPS="08 09 10"`.
+- `checkm_contamination`, `contamination_flag`: CheckM contamination (%) of the assembly; flag = `contaminated` above `--max-contamination` (default 5). Flagged samples are mixed cultures, see `SPECIES.md`. CheckM is the criterion for contaminated cultures. MIC values are not used for any isolate with `excluded` = true (which includes the flagged ones) nor for Mkan329-186 (`MANUAL_EXCLUSIONS`): kansasii-mic drops them before QC and lists them in `output/kansasii-mic/results/excluded_isolates.csv` (details in `SPECIES.md`, `EXCLUSIONS.md`). Flagged: Mkan329-010, -021, -035, -106, -113 (113 has no MIC data)
+- `cgmlst_called_pct`, `excluded` (after `contamination_flag`): `cgmlst_called_pct` = % of the cgMLST95 loci with an allele call (kansasii-cgmlst `output/kansasii-cgmlst/results/sample_qc.tsv`, `--cgmlst-qc`; empty if the isolate is not allele-called); `excluded` = `true` if `contamination_flag` is `contaminated` or `cgmlst_called_pct` < `--min-cgmlst-pct` (default 90, Ridom's good-target threshold), or the row is a clinical sample (`LABEL` empty) with a GTDB species outside the complex (NR 184, *M. avium*), else `false`. Non-complex control strains (`LABEL` set) are not excluded by this. Genome-based repos (cgmlst, mst, amr screen) skip `excluded` isolates. Run order: cgmlst `STEPS=00:...:07` -> 06 -> cgmlst `STEPS=08:09`.
 - `amr_mut`: markers called `MUT` by kansasii-amr-marker-screen (`output/kansasii-amr-marker-screen/results/assembly/work/report/marker_calls.pass.tsv`), `<gene>-<marker>` comma-joined (e.g. `rpsL-K43R,rrs-A514C`). Includes non-discriminating markers (`discriminating = no`, reference carries the mutant allele), so `rrs-A514C` is in nearly every isolate. Needs the AMR pipeline to have run before this step
 - `species_sanger_mlsa`, `species_sanger_mlsa_excl`: hsp65 `nearest_species` from `isolate_classification.tsv` of mlsa sanger_mlsa and sanger_mlsa_excluded
-- `species_sanger_refalign`: `closest_species` of sanger_refalign `reference_alignment.tsv` for the representative hsp65 read, only if status is `ok` (empty for ambiguous/divergent/no_hit or until sanger_refalign is run)
+- `species_sanger_refalign`: `closest_species` of sanger_refalign `reference_alignment.tsv` for the representative hsp65 read, only if status is `ok` (empty for ambiguous/divergent/no_hit)
 - `TNR_MLSA`: TNR(s) of the representative Sanger reads (`representative_reads.tsv`)
   that differ from the row's `TNR`. Currently only Mkan329-183 (`2023500268`).
+- `resistance_abricate`, `resistance_amrfinder`, per drug `<DRUG>_mic`, `<DRUG>_modified_z`, `<DRUG>_clsi_category` (13 drugs, from kansasii-mic), and last `ridom_perc_good_targets`, `ridom_genome_size_mb`, `ridom_species`, `ridom_mst_cluster` (from `data/imm/ridom-clusters.csv`, `--ridom-clusters`)
 
 ## 4. Uploading input tables from local
 

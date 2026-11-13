@@ -21,7 +21,7 @@ These must exist before anything runs. They come from the lab, the sequencing ce
 | `data/imm/mic.csv` | MIC table (MHK and MGIT) |
 | `data/illumina/Mkan329/reads/kansasii/`, `reads/kansasii_jc/` | delivered paired-end fastq (NR 1-133 and NR 134-186) |
 | `data/sanger/` | Sanger `.ab1` files |
-| `data/imm/ridom-*` | Ridom SeqSphere+ GUI exports (manual, step 9) |
+| `data/imm/ridom-*` | Ridom SeqSphere+ GUI exports (manual, step 6) |
 | `data/papers/`, `data/protocols/` | literature and lab protocols (documentation only) |
 
 ## 1. Clone and set up
@@ -48,7 +48,7 @@ conda env create -f mlsa-kansasii/environment.yml                    # env_mlsa
 conda env create -f kansasii-amr-marker-screen/environment.yml       # env_amr
 conda env create -f kansasii-ridom/environment.yml                   # env_ridom
 conda env create -f kansasii-cgmlst/environment.yml                  # env_cgmlst (only for sample_qc.tsv)
-conda env create -f kansasii-mst/environment.yml                     # env_mst (obsolete, optional)
+conda env create -f kansasii-mst/environment.yml                     # env_mst (optional: not used for the report)
 conda env create -f sanger-microsynth/environment.yml                # env_sanger_ms (routine only)
 conda create -n biopython -c conda-forge biopython                   # used by 12_generate_itol_ast.py
 ```
@@ -91,8 +91,8 @@ Writes `data/imm/screening_map_link.csv`. Everything below that reads isolates r
 
 `run_IMMENSE.sh` only submits a controller job and returns. Submit the next batch only after the previous one has finished
 (`squeue -u $USER` shows no more `job_mkan329_*` / `nf-*` jobs): they share one run dir and one snippy db.
-Each run has its own `runs/<run>/` and `--kansasii_snippy_db`; the db dir must exist (`mkdir -p`). The commands below build the tree as it was built for the current results (all samples of the db; for `mkan329` that is an 875-column core alignment because of the six non-complex samples). Add `--kansasii_min_aligned_fraction 0.3` inside `-x "..."` to leave non-complex samples out of the tree (WORKFLOW.md 2d). After a run, copy the
-end results without `work/` to `output/<run>/` and delete `work/`.
+Each run has its own `runs/<run>/` and `--kansasii_snippy_db`; the db dir must exist (`mkdir -p`). The commands below build the tree as it is in the current results (all samples of the db; for `mkan329` that is an 875-column core alignment because of the six non-complex samples). Add `--kansasii_min_aligned_fraction 0.3` inside `-x "..."` to leave non-complex samples out of the tree (WORKFLOW.md 2d). The end results stay in
+`runs/<run>/`, where every script reads them.
 
 ```bash
 DB=/shares/sander.imm.uzh/software/pipelines/IMMense/IMMense_dependencies/databases/kansasii_complex
@@ -138,14 +138,6 @@ bash $IMM/run_IMMENSE.sh -j job_mkan329_jc -t fq_PE -r mkan329_jc -x "--kansasii
      -i $KANSASII_ROOT/data/illumina/Mkan329/batches/b06
 ```
 
-When the last batch is done and checked:
-
-```bash
-rsync -a --exclude work --exclude .nextflow --exclude '*_transfer_result/genomes/' \
-     $KANSASII_ROOT/runs/mkan329/ $KANSASII_ROOT/output/mkan329/
-rm -rf $KANSASII_ROOT/runs/mkan329/work
-```
-
 **4c. Public reads** (four BioProjects; hundreds of GB, so the download is a job):
 
 ```bash
@@ -156,12 +148,12 @@ sbatch --wrap "source \$(conda info --base)/etc/profile.d/conda.sh; conda activa
 bash scripts/11_public_batches.sh PRJNA1078897      # per BioProject; prints the run_IMMENSE.sh commands (pilot first, then b01.. one after another)
 ```
 
-Run the printed commands for each BioProject (run id `public_<BioProject>`, own snippy db), then rsync as in 4b.
+Run the printed commands for each BioProject (run id `public_<BioProject>`, own snippy db).
 The public BioProjects feed hsp65-refalign, gyrA-refalign and the AMR screen (step 6).
 
 ## 5. Downstream analyses (one command)
 
-Everything after the pipeline runs (steps 6-14 of the "Run order" table in WORKFLOW.md): MIC analysis, MLSA, cgMLST QC, results table,
+Everything after the pipeline runs (steps 2 and 6-14 of the "Run order" table in WORKFLOW.md): MIC analysis, MLSA, cgMLST QC, results table,
 hsp65/gyrA reference alignment, iTOL files, samples report, AMR marker screen, atypical-sample table and `output/SUMMARY.html`
 are submitted as a Slurm dependency chain.
 
@@ -179,15 +171,15 @@ What the chain runs, in dependency order (use this list to rerun a single step b
 | 2 | MIC analysis | `sbatch kansasii-mic/submit_mic.sbatch` |
 | 3 | MLSA inputs | `mlsa-kansasii/scripts/01_download_filter_gtdb.sh`, `02_link_gtdb_kansasii_complex.sh`, `03_link_sanger_kansasii.sh` (env_mlsa) |
 | 4 | MLSA programs | `sbatch mlsa-kansasii/submit_locus_discovery.sbatch`, `submit_locus_discovery_excluded.sbatch`, `scripts/06_make_hsp65_references.py`, `submit_sanger_mlsa.sbatch`, `submit_sanger_mlsa_excluded.sbatch`, `submit_sanger_refalign.sbatch`, `submit_hsp65_amplicon_alignment.sbatch`, `submit_genome_identity_check.sbatch` |
-| 5 | cgMLST per-genome QC | `STEPS=00:01:02:03:04:05:06:07 sbatch --export=ALL kansasii-cgmlst/submit_all.sbatch` (only `sample_qc.tsv` is still used) |
+| 5 | cgMLST per-genome QC | `STEPS=00:01:02:03:04:05:06:07 sbatch --export=ALL kansasii-cgmlst/submit_all.sbatch` (only `sample_qc.tsv` is used) |
 | 6 | **results table** | `python immensekansasii/scripts/06_screening_map_results.py` (env_mic; needs 2, 4, 5) |
 | 7 | validation against the table | `sbatch mlsa-kansasii/submit_sanger_vs_wgs.sbatch`; `sbatch hsp65-refalign/submit_validate.sbatch`, `submit_korean_check.sbatch`, `submit_public.sbatch` (and `... persicum`); `sbatch gyrA-refalign/submit_gyrA.sbatch` |
 | 8 | iTOL, samples report | `bash immensekansasii/scripts/07_generate_itol_species_labels.sh` and `... -m samples -p mkan329_`; `python immensekansasii/scripts/12_generate_itol_ast.py` (env `biopython`); `python immensekansasii/scripts/08_mkan329_samples_report.py` (from `immensekansasii/`) |
 | 9 | AMR marker screen | `sbatch kansasii-amr-marker-screen/submit_amr.sbatch`, optional `submit_amr_bam.sbatch` (via `scripts/run_amr_bam.sh prepare/finish`), then `submit_amr_reannot.sbatch` |
 | 10 | overview | `python kansasii-docs/bin/make_atypical_table.py; python kansasii-docs/bin/make_summary.py` (env_mlsa) |
 
-Not in the chain: the pipeline runs (step 4), `sanger-microsynth` (step 8), the NCBI BLAST of `hsp65-refalign/scripts/02_blast_reads.py`
-(sends sequences out). The obsolete `kansasii-mst` and `kansasii-cgmlst` steps 08-09 are still submitted by `run_downstream.sh` (step 10, the old Ridom archive, no longer since 2026-11-12)
+Not in the chain: the pipeline runs (step 4), `kansasii-ridom` (step 6), `sanger-microsynth` (step 8), the NCBI BLAST of `hsp65-refalign/scripts/02_blast_reads.py`
+(sends sequences out). `run_downstream.sh` also submits `kansasii-mst` and `kansasii-cgmlst` steps 08-09
 (jobs `mst` and `cg2`); nothing depends on them and their outputs are not used for the report.
 
 ## 6. Ridom SeqSphere+ (source of truth for cgMLST, MST and clusters)
@@ -200,23 +192,23 @@ sbatch $KANSASII_ROOT/repos/kansasii-ridom/submit_export.sbatch
 ```
 
 6b. **Manual:** import the archive into SeqSphere+, run the cgMLST scheme and the MST, and export the tables to
-`data/imm/ridom-<content>-mkan329[-<subset>].<ext>` (do not edit them; the list of exports is in RIDOM.md).
+`data/imm/ridom-<content>.<ext>` (do not edit them; the list of exports is in RIDOM.md).
 
 ```bash
-# 6c. refresh the ridom_* columns of the results table (ridom-clusters.csv), then derive all tables and figures of the report
+# 6c. refresh the ridom_* columns of the results table (ridom-clusters.csv), then derive all tables of the report
 python $KANSASII_ROOT/repos/immensekansasii/scripts/06_screening_map_results.py        # env_mic
 sbatch $KANSASII_ROOT/repos/kansasii-ridom/submit_all.sbatch                            # output/kansasii-ridom/results/
 ```
 
 ## 7. Tree figure (manual)
 
-`12_generate_itol_ast.py` (row 8 of the table in step 5) writes the iTOL files into `output/immensekansasii/results/iTOL/mkan329_patients171/`, from the 171-isolate tree in that directory. That tree is not made by the pipeline: `make_tree.sbatch` in the directory made it once (see its `README.md`), so rerun it when the snippy db changes. Copy that directory to a laptop, upload
+`12_generate_itol_ast.py` (row 8 of the table in step 5) writes the iTOL files into `output/immensekansasii/results/iTOL/mkan329_patients171/`, from the 171-isolate tree in that directory. That tree is not made by the pipeline: `make_tree.sbatch` in the directory makes it (see its `README.md`); rerun it when the snippy db changes. Copy that directory to a laptop, upload
 `kansasii_patients_midpoint.nwk` at <https://itol.embl.de>, drag in `itol_1_ast_dots.txt`, `itol_leaf_labels.txt` and last
 `itol_2_species_ring.txt`, and export `data/imm/midpoint-rooted-tree.{pdf,svg}` by hand. Commands: WORKFLOW.md section 2c.
 
 ## 8. Routine: Sanger results by mail (independent)
 
-Not part of the reproduction. It needs the mail account (`sanger-microsynth/mail.env`, template `mail.env.example`) and the
+Not part of the reproduction. It needs the mail account (`~/.config/sanger-microsynth/mail.env`, template `sanger-microsynth/mail.env.example`) and the
 `mlsa-kansasii` hsp65 references from row 4 of the table in step 5.
 
 ```bash
@@ -236,5 +228,5 @@ after a full rerun: 186 rows in `screening_map_results.csv`, 186 with a species;
 
 ## Not reproducible by commands
 
-- The archived kansasii-gwas work (no repo, no output directory) and the superseded results in `output-old/`.
+- The kansasii-gwas work (no repo, no output directory) and the archive in `output-old/`.
 - Files marked manual above: lab inputs (step 0), the Ridom GUI work (6b) and the iTOL figure (7).

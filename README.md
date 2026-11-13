@@ -16,11 +16,11 @@ file. Repo-specific details live in each repo's own README.
 | `data/` | inputs only: GTDB genomes, Illumina reads, Sanger `.ab1`, `imm/` tables, lab protocols | active |
 | `output/` | results, one directory per repo or analysis (see `output/README.md`) | active |
 | `runs/` | Nextflow run dirs (large `work/`) and SLURM logs | temporary, large |
-| `output-old/`, `output/mlsa-old` | superseded results (`output-old/README.md` lists them) | do not use |
-| `scratch/` | unexplained one-off files (`scratch/README.md`) | safe to delete |
+| `output-old/` | archive (`output-old/README.md` lists it); no script reads it | do not use |
+| `scratch/` | one-off files (`scratch/README.md`); `phylo_review_20261109/` holds the core alignment of the 171-isolate tree | check before deleting |
 | `singularity_images_cache/` | container cache | regenerable |
 
-**Source of truth:** typing results (cgMLST, MST, clusters) and the final report come from Ridom SeqSphere+; GUI exports go to `data/imm/ridom-*` ([docs/RIDOM.md](docs/RIDOM.md) lists what is still to be exported). `kansasii-mst` and `kansasii-cgmlst` are obsolete.
+**Source of truth:** typing results (cgMLST, MST, clusters) and the final report come from Ridom SeqSphere+; GUI exports go to `data/imm/ridom-*` ([docs/RIDOM.md](docs/RIDOM.md)). `kansasii-mst` and `kansasii-cgmlst` are not used for the report.
 
 **Rule:** scripts read from `data/` and `runs/` only. `output/` receives copies and results.
 
@@ -34,9 +34,9 @@ file. Repo-specific details live in each repo's own README.
 | `hsp65-refalign` | checks that hsp65 reference alignment of the Sanger reads gives the genome species; atypical hsp65 in project and public assemblies | `submit_validate/korean_check/public.sbatch` |
 | `gyrA-refalign` | gyrA from assemblies vs 72 public genomes: persicum-like/other species, project and public separate | `submit_gyrA.sbatch` |
 | `kansasii-amr-marker-screen` | literature AMR-marker screen on assemblies and reads | `submit_amr*.sbatch` |
-| `kansasii-mst` | core-SNP minimum spanning tree figures. **OBSOLETE**, superseded by Ridom ([docs/RIDOM.md](docs/RIDOM.md)) | `submit_all.sbatch` |
-| `kansasii-cgmlst` | chewBBACA cgMLST scheme and Ridom-style MST. **OBSOLETE**, superseded by Ridom; only `sample_qc.tsv` is still used (the Ridom input is now made by `kansasii-ridom/scripts/01_export_ridom.py`) | `submit_all.sbatch` |
-| `kansasii-ridom` | reads the Ridom SeqSphere+ exports (`data/imm/ridom-*`): export check, then tables and figures of the final report | `submit_all.sbatch` |
+| `kansasii-mst` | core-SNP minimum spanning tree figures. **Not used for the report** ([docs/RIDOM.md](docs/RIDOM.md)) | `submit_all.sbatch` |
+| `kansasii-cgmlst` | chewBBACA cgMLST scheme and Ridom-style MST. **Not used for the report**; only `sample_qc.tsv` is read (it feeds `excluded`) | `submit_all.sbatch` |
+| `kansasii-ridom` | writes the assembly archive for Ridom SeqSphere+ and reads its exports (`data/imm/ridom-*`): export check, then the tables of the final report | `submit_export.sbatch`, `submit_all.sbatch` |
 | `sanger-microsynth` | routine: fetch Microsynth Sanger results by mail, identify, report | `submit_fetch_analyse.sbatch` |
 | `kansasii-docs` | this index, data flow, provenance, shared constants (`templates/`), `bin/` helpers | `bin/check_sync.sh`, `bin/make_summary.py`, `bin/make_atypical_table.py` |
 
@@ -54,7 +54,7 @@ it after a fresh clone.
 - **Run order and every script's inputs/outputs:** `repos/kansasii-docs/docs/WORKFLOW.md`.
 - **Commands to reproduce the whole project, in order:** [docs/REPRODUCE.md](docs/REPRODUCE.md).
 - **Which file feeds which repo (with diagram):** [docs/DATAFLOW.md](docs/DATAFLOW.md).
-- **Ridom as source of truth, exports needed, what the obsolete repos still feed:** [docs/RIDOM.md](docs/RIDOM.md).
+- **Ridom as source of truth, exports needed, what `kansasii-mst` and `kansasii-cgmlst` feed:** [docs/RIDOM.md](docs/RIDOM.md).
 - **Which samples are excluded, and why:** [docs/EXCLUSIONS.md](docs/EXCLUSIONS.md).
 - **Samples with an atypical gyrA or hsp65 (project and public):** [docs/ATYPICAL.md](docs/ATYPICAL.md); the table is
   `output/kansasii-docs/results/atypical_samples/atypical_samples.tsv`.
@@ -62,9 +62,8 @@ it after a fresh clone.
 - **Code copied between repos (refalign, sanger_io, kansasii_paths):** [docs/VENDORED.md](docs/VENDORED.md).
 - **Primers used for the Sanger reads vs. the lab protocols (sequences, read counts):** [docs/PRIMERS.md](docs/PRIMERS.md).
 - **Run everything after the pipeline:** `bash repos/immensekansasii/scripts/run_downstream.sh --dry-run`.
-- **Samples, species, public data:** `immensekansasii/{SAMPLES,SPECIES,PROJECTS}.md`.
-- **Draft article:** `hsp65-refalign/article/hsp65_differentiates_kansasii_complex.md` (the earlier
-  mlsa-kansasii draft was merged into it).
+- **Samples, species, public data:** [docs/SAMPLES.md](docs/SAMPLES.md), [docs/SPECIES.md](docs/SPECIES.md), [docs/PROJECTS.md](docs/PROJECTS.md).
+- **Draft article:** `hsp65-refalign/article/hsp65_differentiates_kansasii_complex.md`.
 - **Overview of all results:** `python3 repos/kansasii-docs/bin/make_summary.py` writes
   `output/SUMMARY.html` (manifests, figure index).
 - **Git conventions:** `kansasii-docs/docs/GIT.md`.
@@ -79,7 +78,7 @@ README.md  CLAUDE.md  environment.yml  pyproject.toml (mypy --strict)  .gitignor
 scripts/          numbered entry points NN_name.{py,sh} in call order; kansasii_paths.py here if there is no package
 submit_<name>.sbatch   one per job, always at the repo root; log in output/<name>/logs/ via #SBATCH --output
 config/           small tab-separated inputs of the analysis (kansasii-amr-marker-screen only)
-tests/            pytest (kansasii-mic, kansasii-cgmlst, immensekansasii)
+tests/            pytest (kansasii-mic, kansasii-cgmlst, kansasii-ridom, immensekansasii)
 ```
 
 Conda environments are `env_<short name>`: `env_immense`, `env_mic`, `env_mlsa` (also hsp65-refalign, gyrA-refalign, kansasii-docs

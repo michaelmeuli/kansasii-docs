@@ -13,7 +13,7 @@ excluded from the kansasii analyses.** This rests on sequence data only; single-
   - Sanger hsp65 / MLSA says *ostraviense* because most of the template in the PCR was *M. ostraviense* (139x depth, 96.7% covered).
     The best hsp65 read matches ostraviense at 99.47%.
   - Neither method needs to have made an error. If the sample is not a single species, there is no single correct answer.
-- **Four independent lines of evidence agree with a mixture:** CheckM (113.37% contamination), a 13.3 Mb assembly
+- **Four independent lines of evidence agree with a mixture:** CheckM (113.37% contamination), a 13.05 Mb assembly
   (about twice one genome), mixed Sanger hsp65 traces, and the read mapping below.
 - **Why exclude it:** a mixed sample has no valid species label, genome, resistance profile or MIC. The assembly joins
   contigs of two species, so SNPs, gene content (including resistance genes) and the tree position of this isolate are not
@@ -32,7 +32,7 @@ excluded from the kansasii analyses.** This rests on sequence data only; single-
 | sanger_mlsa hsp65+16S | ostraviense |
 | sanger_refalign reference alignment (hsp65, 65kDa 5ul read) | ostraviense 99.47% (2 diffs / 374 bp), gastri 97.86% |
 
-`species_mlsa1`, `species_mlsa2` and `species_ref` in screening_map_results.csv all say ostraviense.
+`species_sanger_mlsa`, `species_sanger_mlsa_excl` and `species_sanger_refalign` in screening_map_results.csv all say ostraviense.
 
 **Conclusion:** the contamination flag, the Sanger traces and the read mapping together indicate that the sample
 contains both species. The two calls therefore do not conflict (see Summary). The 16S read cannot break the
@@ -64,7 +64,7 @@ Reading this:
 
 ## Can mixed bases alone exclude an isolate from Sanger identification?
 
-Not by a fixed threshold. `mlsa/sanger_io.py` now has `mixed_peak_fraction` (share of base calls in the
+Not by a fixed threshold. `mlsa/sanger_io.py` has `mixed_peak_fraction` (share of base calls in the
 Mott-trimmed read whose second peak is at least 25% of the primary one), and sanger_mlsa writes `mixed_fraction` (chosen read)
 and `max_mixed_fraction` (worst usable read) to `representative_reads.tsv`. No flag is applied. For Mkan329-035 the
 best hsp65 read has 2.1% (second read 5.3%, 16S 0.1%), because the two noisiest reads are trimmed below 100 bp and never reach sanger_mlsa.
@@ -86,14 +86,14 @@ the exclusion signal.
    (as the 16S tie here).
 6. **Neighbours and controls.** Look for an identical sequence in a nearby well or run, and check the no-template control.
 7. **WGS.** CheckM contamination or mapping to both reference species
-   (the route that already caught this isolate).
+   (the route that caught this isolate).
 
 
 ## Read mapping to both references (2026-10-05)
 
 The Illumina reads (`Mkan329-035_r1/r2`) were mapped with bwa-mem to one combined reference of
 *M. kansasii* GCF_000157895.3 and *M. ostraviense* GCF_002705925.1 (job 7033025, files in
-`output/mapping_Mkan329-035/`). Only primary reads with MAPQ >= 20 are counted, i.e. reads that tell the two genomes apart.
+`output/immensekansasii/results/mapping_Mkan329-035/`). Only primary reads with MAPQ >= 20 are counted, i.e. reads that tell the two genomes apart.
 
 | | kansasii | ostraviense |
 |---|---|---|
@@ -107,7 +107,7 @@ The Illumina reads (`Mkan329-035_r1/r2`) were mapped with bwa-mem to one combine
 **Interpretation:** the sample contains two near-complete genomes, each covered over about 97% of its
 length with almost no mismatches. A single isolate would give few reads on the wrong reference, or reads with many more
 mismatches, because these species differ by several percent in ANI. The depths suggest roughly 30% kansasii and
-70% ostraviense, which matches the 13.3 Mb assembly (about twice the size of one genome), the
+70% ostraviense, which matches the 13.05 Mb assembly (about twice the size of one genome), the
 CheckM contamination of 113% and the mixed hsp65 traces. The Sanger hsp65 call (ostraviense) matches the
 dominant component, and GTDB's kansasii call picks up the minor one. So neither call needs to be wrong, and the
 data are consistent with a mixed culture of *M. kansasii* and *M. ostraviense*.

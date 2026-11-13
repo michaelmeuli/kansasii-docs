@@ -3,8 +3,7 @@
 Checked 2026-11-12 against the 12 files in `data/protocols/`.
 
 **Conclusion:** every primer used for the kansasii Sanger reads has its sequence written in a lab protocol,
-except IMM F (2 reads). Mbak14 and Mbak259r were only named until chapters 32.43304 and 32.46026 were added on
-2026-11-12; 32.43304 gives both sequences.
+except IMM F (2 reads). Chapter 32.43304 gives the sequences of Mbak14 and Mbak259r.
 
 ## Primers used for the kansasii reads
 

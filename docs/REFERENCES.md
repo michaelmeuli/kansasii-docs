@@ -142,7 +142,7 @@ Found by PubMed search 2026-10-29; abstracts read, full texts not. The rrs rows 
 |---|---|---|
 | rpsL K88R | `hlaing2017mutations`, `khosravi2017frequency` | Lys88Arg (and Lys88Thr) in STR-R isolates; 3 of 32 in the Iranian series |
 | gid A205A | `sun2016characterization`, `jagielski2014screening`, `wang2019roles` | E92D (a276c) + A205A (a615g) co-occur and mark the Beijing lineage |
-| doxycycline GAP | `li2023vitro` | poor in vitro activity of six tetracyclines incl. doxycycline against *M. kansasii*, MIC >= 8 (no resistance rate in the abstract; the earlier "96 %" figure has no source here); no mechanism |
+| doxycycline GAP | `li2023vitro` | poor in vitro activity of six tetracyclines incl. doxycycline against *M. kansasii*, MIC >= 8 (no resistance rate in the abstract); no mechanism |
 | SXT GAP | `liu2015role` | folP1/folP2 expression changes SMX/TMP MIC in *M. smegmatis*/Mtb; mechanism only, no *M. kansasii* marker |
 
 ### rrs positions, checked against full texts (2026-11-02; PDFs in `data/papers/`)
@@ -150,8 +150,8 @@ Found by PubMed search 2026-10-29; abstracts read, full texts not. The rrs rows 
 Read: `wang2019roles`, `shrestha2020molecular`, `finken1993molecular`. `cooksey1996characterization` and the rest were abstract only.
 
 - **530 loop:** 513 and 516 (Finken 1993), 514 and 517 (Wang 2019, Shrestha 2020; A514C, C517T). Position 512 is not reported in any of the three.
-- **912 region:** 906 (Wang 2019, A906G); A906G, A907C, A908C, A912C (Shrestha 2020); A904G (Meier et al., cited by Shrestha 2020, not read). 903 and 905 are not reported. The row used to be named "530 loop (positions 903-906)"; it is now "912 region (positions 903-906)".
-- **1401/1402:** not mentioned in any of the three papers, and no streptomycin source was found. The row used to be named "1401/1402 cluster II"; it is now "positions 1401/1402 (streptomycin link unverified)". Its evidence level (`VALIDATED_OTHER_SPECIES`) is unchanged and probably too high.
+- **912 region:** 906 (Wang 2019, A906G); A906G, A907C, A908C, A912C (Shrestha 2020); A904G (Meier et al., cited by Shrestha 2020, not read). 903 and 905 are not reported. The row is named "912 region (positions 903-906)".
+- **1401/1402:** not mentioned in any of the three papers, and no streptomycin source was found. The row is named "positions 1401/1402 (streptomycin link unverified)". Its evidence level (`VALIDATED_OTHER_SPECIES`) is probably too high.
 
 No marker rows at all (genes extracted but not screened): tap, folP (2 copies), folC, dfrA, thyA. Their only link to resistance is the drug name in `config/targets.tsv`.
 

@@ -9,9 +9,9 @@ data separately, says what is known about each and what is not.
 **Source of truth:** `output/kansasii-docs/results/atypical_samples/atypical_samples.tsv` (one row per sample and flag, with strain, country and BioSample for
 public samples) and `output/kansasii-docs/results/atypical_samples/ATYPICAL_SAMPLES.md` (the same as tables), written by
 `kansasii-docs/bin/make_atypical_table.py` from the outputs of `hsp65-refalign` and `gyrA-refalign`. If this page and the table disagree,
-the table wins. Figures below are from the run of 2026-10-25 (project: 186 rows of `screening_map_results.csv`, 178 Mkan329 isolates
-after the reference strains 126-133; public: 1039 GTDB-complex samples of the four BioProjects), with the public parts rerun on 2026-11-03: **public samples with CheckM
-contamination above 5 % (27 of the 1039) are left out of every public result below**, which leaves 1012; 29 of those have no CheckM result and are kept (not assessed). Project isolates are unchanged:
+the table wins. Figures below are from the run of 2026-11-03 (project: 186 rows of `screening_map_results.csv`, 178 Mkan329 isolates
+after the reference strains 126-133; public: 1039 GTDB-complex samples of the four BioProjects). **Public samples with CheckM
+contamination above 5 % (27 of the 1039) are left out of every public result below**, which leaves 1012; 29 of those have no CheckM result and are kept (not assessed). Project isolates:
 flagged isolates stay in the primary result and are reported as mixed cultures (see section 2).
 
 ## How atypical is decided
@@ -45,11 +45,11 @@ call them hsp65 types Ib/IIb with WGS subtype I). The three are near-clonal (ANI
 
 **hsp65.** No uncontaminated kansasii isolate carries the Korean-type hsp65: of 121 kansasii isolates the closest the assembly amplicon comes to the Korean amplicon is
 10 differences, and the farthest from the ATCC 12478 amplicon is 1 (`korean_type_check.tsv`). So the atypical lineage is **absent from the project**.
-The Sanger hsp65 reads give 108 correct calls and 0 wrong among the 132 analysed isolates; 24 isolates have no call: 13 whose reads are a *Rothia mucilaginosa*
+The Sanger hsp65 reads give 108 correct calls and 0 wrong among the 132 isolates without a contamination flag (with the 4 flagged ones: 110 correct, 1 wrong, Mkan329-035, of 136); 24 of the 132 have no call: 13 whose reads are a *Rothia mucilaginosa*
 contaminant (`hsp65_read_not_genome`, genomes clean, CheckM <= 3.3 %), 11 whose traces are unusable or poor (details: hsp65-refalign README, `isolates.tsv`).
 
-**gyrA.** gyrA agrees with the genome species in 171 of 171 callable uncontaminated isolates. No kansasii isolate is persicum-like at gyrA and all 28
-persicum-like gyrA calls are genome-persicum. Exceptions and notes:
+**gyrA.** gyrA agrees with the genome species in 171 of 171 callable uncontaminated isolates. No kansasii isolate is persicum-like at gyrA and all 27
+persicum gyrA calls with status `ok` are genome-persicum. Exceptions and notes:
 
 | Isolate | Genome | Finding | Reading |
 |---|---|---|---|
@@ -84,7 +84,7 @@ Emerg Infect Dis 2024, doi 10.3201/eid3008.240021):
 
 **Read-level check (`gyrA-refalign` scripts 04 and 05, `output/gyrA-refalign/results/public_reads/`).** The raw reads of all six, with one concordant kansasii and one concordant persicum control (SRR28038241, SRR28038325), were mapped to gyrA, rpoB, recA and tuf and the hsp65 amplicon. In all six the reads carry the other species' gyrA (99.6-99.98 % of bases at the 182 sites fixed between kansasii and persicum; reads carrying both alleles are at control noise level; no breakpoint in the gene), while rpoB, recA and tuf carry the GTDB species. They are **interspecies gyrA mosaics**, not mixed cultures or assembly artefacts. The four persicum samples fall into two gyrA haplotypes (316/318 and 242/317), so about two events. hsp65 (read consensus, 441 bp): the four persicum samples are identical to the Korean-type amplicon (1 difference to persicum, 10 to typical kansasii), hence persicum with the 7 representative genomes and `ambiguous` with the 72; the two kansasii samples are typical kansasii (margin 8). So hsp65 gives the genome species, or flags ambiguity, in all six. Limits: short reads only (no long-read proof of recombination); whether the gyrA region is related to the persicum-derived segment found by the GWAS work (`NC_022663.1:1,929,793-1,994,501`) was not checked.
 
-Left out as contaminated: SRR28038252 (GTDB persicum with a kansasii gyrA, the seventh disagreement before the exclusion), CheckM contamination 100 %, assembly 10.5 Mb. The full list of the 27 left-out public samples is `output/gyrA-refalign/results/public/excluded_contaminated.tsv`.
+Left out as contaminated: SRR28038252 (GTDB persicum with a kansasii gyrA), CheckM contamination 100 %, assembly 10.5 Mb. The full list of the 27 left-out public samples is `output/gyrA-refalign/results/public/excluded_contaminated.tsv`.
 
 Six public samples are too fragmented for gyrA (`gyrA_low_coverage`): SRR27048690 (PRJNA1048499), SRR12599239 and SRR12599307 (PRJNA323639), SRR19543410, -452, -482 (PRJNA845115).
 Further, 76 public samples have a gyrA haplotype that matches none of the 72 genomes while the species call agrees (`gyrA_novel_haplotype`; 31 of them are kansasii:
@@ -95,7 +95,7 @@ A 77th callable sample has a novel haplotype too, but its gyrA call disagrees wi
 
 - A Sanger hsp65 call of persicum or kansasii is a 3-base decision and a Korean-type kansasii would be called persicum. Confirm those with **gyrA**
   (this is also what `sanger-microsynth` reports as "confirm with gyrA" when the closest reference is the atypical genome). gyrA is itself discordant with the genome in 6 of 1006 public samples (interspecies mosaics, see above), so a persicum/kansasii call that matters is best backed by both loci.
-- In our cohort no isolate would have been misidentified by hsp65 because of an atypical lineage; the only discordant project sample is a mixed culture.
+- In our cohort no isolate is misidentified by hsp65 because of an atypical lineage; the only discordant project sample is a mixed culture.
 - In public data, discordance between gyrA/hsp65 and the genome species is rare (6 of 1006 for gyrA, 3 of 857 for hsp65 among kansasii) and concentrated in one
   BioProject, so use the genome (GTDB) species, not a marker, when assigning species to public data.
 

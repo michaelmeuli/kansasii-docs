@@ -174,7 +174,7 @@ What the chain runs, in dependency order (use this list to rerun a single step b
 | 5 | cgMLST per-genome QC | `STEPS=00:01:02:03:04:05:06:07 sbatch --export=ALL kansasii-cgmlst/submit_all.sbatch` (only `sample_qc.tsv` is used) |
 | 6 | **results table** | `python immensekansasii/scripts/06_screening_map_results.py` (env_mic; needs 2, 4, 5) |
 | 7 | validation against the table | `sbatch mlsa-kansasii/submit_sanger_vs_wgs.sbatch`; `sbatch hsp65-refalign/submit_validate.sbatch`, `submit_korean_check.sbatch`, `submit_public.sbatch` (and `... persicum`); `sbatch gyrA-refalign/submit_gyrA.sbatch` |
-| 8 | iTOL, samples report | `bash immensekansasii/scripts/07_generate_itol_species_labels.sh` and `... -m samples -p mkan329_`; `python immensekansasii/scripts/12_generate_itol_ast.py` (env `biopython`); `python immensekansasii/scripts/08_mkan329_samples_report.py` (from `immensekansasii/`) |
+| 8 | iTOL, samples report | `bash immensekansasii/scripts/07_generate_itol_species_labels.sh` (reference tree); `python immensekansasii/scripts/12_generate_itol_ast.py` (env `biopython`); `python immensekansasii/scripts/08_mkan329_samples_report.py` (from `immensekansasii/`) |
 | 9 | AMR marker screen | `sbatch kansasii-amr-marker-screen/submit_amr.sbatch`, optional `submit_amr_bam.sbatch` (via `scripts/run_amr_bam.sh prepare/finish`), then `submit_amr_reannot.sbatch` |
 | 10 | overview | `python kansasii-docs/bin/make_atypical_table.py; python kansasii-docs/bin/make_summary.py` (env_mlsa) |
 
@@ -228,5 +228,5 @@ after a full rerun: 186 rows in `screening_map_results.csv`, 186 with a species;
 
 ## Not reproducible by commands
 
-- The kansasii-gwas work (no repo, no output directory) and the archive in `output-old/`.
+- The kansasii-gwas work (no repo, no output directory).
 - Files marked manual above: lab inputs (step 0), the Ridom GUI work (6b) and the iTOL figure (7).

@@ -247,24 +247,6 @@ batches, a small test batch first.
    ```
    Samples are named `Mkan329-NNN`, so no `--id-map` is needed. Check the printed counts
    (186 rows, 186 with species) and the contamination warning.
-5. **iTOL labels** for the sample tree:
-   ```bash
-   bash /shares/sander.imm.uzh/MM/kansasii/repos/immensekansasii/scripts/07_generate_itol_species_labels.sh -m samples -p mkan329_
-   ```
-   writes `mkan329_itol_species_labels.txt` (`Species [Mkan329-NNN]`) and
-   `mkan329_itol_species_colorstrip.txt` and a copy of the tree to `output/immensekansasii/results/iTOL/mkan329/`.
-   Copy them to your computer and load them into iTOL as described in section 2c.
-
-   In `samples` mode the script uses `PROBENNUMMER` (`Mkan329-NNN`) as the tree tip id and
-   species from `data/imm/screening_map_results.csv`. It keeps only isolates that are tips of the
-   tree (the csv also lists undelivered isolates), reads the tree from `runs/<run>/`, and adds the snippy `Reference` tip as "Reference genome"
-   (grey). Bare species epithets (`kansasii`) get a `Mycobacterium ` prefix for the colour strip.
-
-   **Tested:** on the current `runs/mkan329` tree (186 isolates + `Reference` = 187 tips, all labeled):
-   180 kansasii complex (125 kansasii, 31 persicum, 20 pseudokansasii, 2 attenuatum, 1 innocens,
-   1 ostraviense), 2 avium, 1 tuberculosis, 3 other (abscessus, xenopi, marinum). Re-run it after the
-   tree is rebuilt.
-
    **Tested:** `-resume` does not reuse finished samples across batch dirs (see 2).
 
 Where results are: species is **not** in `assembly/results/<s>/5_typing/` (that holds
@@ -292,7 +274,7 @@ The snippy `Reference` tip of each tree is labelled "Reference genome" (grey).
 | Run type | Command | Tip ids | Species from |
 |---|---|---|---|
 | GTDB reference genomes (default `-m gtdb`) | `07_generate_itol_species_labels.sh [-a ACCESSIONS] [-n RUN]` | `GCF_xxx_query` from the `*_accessions_renamed.txt` file | GTDB metadata `bac120_metadata_r232.tsv` (`s__` token) |
-| real isolates (`-m samples`) | `07_generate_itol_species_labels.sh -m samples -p mkan329_ [-n RUN]` | `Mkan329-NNN` (`PROBENNUMMER`), only isolates that are tips of the tree | `species` column of `data/imm/screening_map_results.csv` (`LABEL` as fallback) |
+| real isolates (`-m samples`; not part of `run_downstream.sh`) | `07_generate_itol_species_labels.sh -m samples -p mkan329_ [-n RUN]` | `Mkan329-NNN` (`PROBENNUMMER`), only isolates that are tips of the tree; the snippy `Reference` tip becomes "Reference genome" | `species` column of `data/imm/screening_map_results.csv` (`LABEL` as fallback) |
 
 Defaults: `-n kansasii_complex_gtdb_representatives` (gtdb) or `mkan329` (samples); `-a` defaults
 to the 7-genome kansasii complex list, use
@@ -311,8 +293,8 @@ via `06_screening_map_results.py`); (3) run the script with `-n <run>` (plus `-m
 (4) check there is no `WARNING: n/m entries have a species`, which means some tips are unlabeled.
 Re-run after the tree is rebuilt, because the files are only valid for the tree they were made with.
 
-Current outputs: `output/immensekansasii/results/iTOL/kansasii_complex_gtdb_representatives/` (8 tips) and
-`output/immensekansasii/results/iTOL/mkan329/` (187 tips). There are no files for `relevant_species_tree_run`; the command above writes them.
+Current outputs: `output/immensekansasii/results/iTOL/kansasii_complex_gtdb_representatives/` (8 tips) and, from `12_generate_itol_ast.py`,
+`mkan329_patients171/` (below). There are no label files for the 187-tip `mkan329` pipeline tree (875 columns, section 2d; not drawn) nor for `relevant_species_tree_run`; the commands above write them.
 
 #### Patient isolates: midpoint-rooted tree, AST dots, species ring
 
@@ -356,7 +338,7 @@ Three processes run in series:
   All samples are mapped to this one genome whatever their GTDB species, so the whole complex
   shares one coordinate system.
 - **One distant sample shrinks the core for everybody.** `snippy-core` keeps only positions aligned in
-  all samples. Checked for `mkan329` (2026-11-09, `scratch/phylo_review_20261109/`): members of the
+  all samples. Checked for `mkan329` (2026-11-09): members of the
   complex align 56-97 % of the reference, the six non-complex samples in the db align 0.3-5 %
   (controls Mkan329-126 *M. tuberculosis*, -127 *M. avium*, -129 *M. abscessus*, -130 *M. xenopi*,
   -131 *M. ulcerans*, and the clinical *M. avium* isolate -184). With them the core is 875 columns;
@@ -403,7 +385,7 @@ Three processes run in series:
   171-isolate tree (IQ-TREE GTR+G, seed 1, 43 min on 8 CPUs) and its iTOL inputs from
   `12_generate_itol_ast.py` are in `output/immensekansasii/results/iTOL/mkan329_patients171/` (171 tips; 45
   terminal branches of zero length against 161 in the 875-column tree; `README.md` there says how it was
-  made). **This is the tree to draw**; the alignment itself stays in `scratch/phylo_review_20261109/patients171/`.
+  made). **This is the tree to draw**; the alignment itself is not kept (`make_tree.sbatch` in that directory rebuilds it).
   The figure `data/imm/midpoint-rooted-tree.{pdf,svg}` is drawn from it (copy in that directory); in it
   every species with more than one isolate is a single clade.
 

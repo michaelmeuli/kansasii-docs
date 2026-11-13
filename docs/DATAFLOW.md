@@ -39,11 +39,12 @@ flowchart TD
   PIPE --> AMR
   PIPE --> MST["kansasii-mst"]
   PIPE --> CG["kansasii-cgmlst"]
-  RT --> ITOL["iTOL labels, SAMPLES.md"]
+  RT --> REP["SAMPLES.md"]
   PIPE --> TREE["kansasii_phylo.nf: snippy per sample, snippy-core over the db, IQ-TREE"]
   TREE --> TT[("kansasii_complex_tree.treefile")]
-  TT --> ITOL
-  TT --> AST["12 generate_itol_ast.py: prune to patients, midpoint root, AST dots, species ring"]
+  TT --> ITOL["07 iTOL labels (reference-tree run)"]
+  PIPE --> T171["make_tree.sbatch: snippy-core over the 171 patient dirs of the snippy db, IQ-TREE"]
+  T171 --> AST["12 generate_itol_ast.py: midpoint root, AST dots, species ring"]
   RT --> AST
   AST --> FIG["iTOL web export by hand: midpoint-rooted-tree.pdf/svg"]
   SANG --> MS["sanger-microsynth routine"]
@@ -72,7 +73,7 @@ flowchart TD
 | `data/imm/ridom-kansasii-plasmids.csv` | NCBI Genome export (manual) | docs/PLASMIDS.md only |
 | `output/kansasii-ridom/ridom_assemblies.tar.gz`, `output/kansasii-ridom/ridom_assemblies.zip` (182 incl. M055) | `kansasii-ridom/scripts/01_export_ridom.py` (`submit_export.sbatch`) | Ridom SeqSphere+ (manual) |
 | snippy db `IMMense_dependencies/databases/kansasii_complex/<db>/<sample_id>/` (`/shares/sander.imm.uzh/software/pipelines/IMMense/`; `mkan329` has 186 samples) | `kansasii_snippy` (`immensekansasii/modules/kansasii_phylo.nf`), filled per sample; passed with `--kansasii_snippy_db` | `kansasii_snippy_core` (takes every usable sample dir of the db: the tree contains whatever is in the dir, minus empty samples and those below `--kansasii_min_aligned_fraction`) |
-| `runs/<run>/<run>_transfer_result/kansasii_phylogeny/kansasii_complex_{core.aln,core.txt,core.samples.tsv,tree.treefile,tree.iqtree}` (`runs/mkan329`: 187 tips = 186 samples + `Reference`, 875 alignment columns because of six non-complex samples, see `WORKFLOW.md` 2d) | `kansasii_snippy_core` + `kansasii_tree` (core-SNP alignment, IQ-TREE GTR+G; unrooted, no support values), see `WORKFLOW.md` 2d | `07_generate_itol_species_labels.sh` (copy + labels in `output/immensekansasii/results/iTOL/<run>/`), `12_generate_itol_ast.py` |
+| `runs/<run>/<run>_transfer_result/kansasii_phylogeny/kansasii_complex_{core.aln,core.txt,core.samples.tsv,tree.treefile,tree.iqtree}` (`runs/mkan329`: 187 tips = 186 samples + `Reference`, 875 alignment columns because of six non-complex samples, see `WORKFLOW.md` 2d) | `kansasii_snippy_core` + `kansasii_tree` (core-SNP alignment, IQ-TREE GTR+G; unrooted, no support values), see `WORKFLOW.md` 2d | `07_generate_itol_species_labels.sh` (copy + labels in `output/immensekansasii/results/iTOL/<run>/`; in the chain only for the reference-tree run) |
 | `output/immensekansasii/results/iTOL/mkan329_patients171/{kansasii_patients_midpoint.nwk,itol_*.txt}` | `immensekansasii/scripts/12_generate_itol_ast.py` (reads `kansasii_patients171_tree.treefile` of that directory, keeps the 171 patients, midpoint root, AST dots, species ring; input also `screening_map_results.csv`) | iTOL web (manual upload) |
 | `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of the `mkan329_patients171/` files above; copy in that directory | figure only, no script reads it |
 | `output/immensekansasii/results/iTOL/mkan329_patients171/` (tree of the 171 clinical isolates alone, 287,242 core columns, with iTOL inputs; `README.md` in the dir) | one-off job (`make_tree.sbatch` in the dir: `snippy-core` over the 171 sample dirs of the `mkan329` snippy db, IQ-TREE), then `12_generate_itol_ast.py --tree ... --out-dir ...` | iTOL web (manual): basis of the tree figure `data/imm/midpoint-rooted-tree.{pdf,svg}` |
@@ -82,7 +83,7 @@ flowchart TD
 If `NGS_MM` was done it is used, not `NGS_JC`; `NGS_JC` only if there is no `NGS_MM` (Mkan329-001..133
 = `NGS_MM`, 134..186 = `NGS_JC`). Mkan329-009 and -056 have both and use `NGS_MM`; their `-jc`
 resequencing (run `mkan329_jc`) is not used. The canonical files are in `data/imm/` (`SCREENING_MAP_LINK`, `SCREENING_MAP_RESULTS`); scripts read only these. `output/` gets a copy
-with a `<file>.MANIFEST.txt` from 02 and 06; `output/immensekansasii/results/iTOL/mkan329/` holds the copy that `07_generate_itol_species_labels.sh` makes for iTOL (not read by any script).
+with a `<file>.MANIFEST.txt` from 02 and 06.
 
 `bash immensekansasii/scripts/run_downstream.sh` runs every row above except the pipeline and sanger-microsynth; the order of
 its dependency chain is the order of this table.

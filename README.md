@@ -16,9 +16,7 @@ file. Repo-specific details live in each repo's own README.
 | `data/` | inputs only: GTDB genomes, Illumina reads, Sanger `.ab1`, `imm/` tables, lab protocols | active |
 | `output/` | results, one directory per repo or analysis (see `output/README.md`) | active |
 | `runs/` | Nextflow run dirs (large `work/`) and SLURM logs | temporary, large |
-| `output-old/` | archive (`output-old/README.md` lists it); no script reads it | do not use |
-| `scratch/` | one-off files (`scratch/README.md`); `phylo_review_20261109/` holds the core alignment of the 171-isolate tree | check before deleting |
-| `singularity_images_cache/` | container cache | regenerable |
+| `gtdb232_check/`, `lit/` | one-off check of the GTDB-Tk r232 package (tar listing); MetaPhlAn species list and accession test lists | not read by scripts |
 
 **Source of truth:** typing results (cgMLST, MST, clusters) and the final report come from Ridom SeqSphere+; GUI exports go to `data/imm/ridom-*` ([docs/RIDOM.md](docs/RIDOM.md)). `kansasii-mst` and `kansasii-cgmlst` are not used for the report.
 

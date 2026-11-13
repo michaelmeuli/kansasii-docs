@@ -48,6 +48,7 @@ Batches of one project run one after another in `runs/public_<BioProject>/` (Slu
 the four projects run in parallel. `SBATCH_DEPENDENCY` is ignored here, so `run_IMMENSE.sh` cannot chain:
 call `sbatch --dependency=... bin/submit_to_cluster.sh <main_dir> fastq NO <run_id> <batch_dir> "--kansasii_snippy_db <db>"` directly.
 Check `slurm-<jobid>.out` of every batch for "Execution status: OK"; the chain continues after a failed batch.
+`RUNS.md` lists every controller job with its end status and, per sample, whether the results the project reads exist.
 
 Findings from the runs: the coordinator sometimes stalled with work left (no tasks, no workers) and held the chain until the 24 h limit,
 which also corrupts `.nextflow/cache` (moved aside, resume lost for that batch). `bin/nxf_watchdog.sh` stops a stalled coordinator

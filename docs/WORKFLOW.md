@@ -108,6 +108,9 @@ bash /shares/sander.imm.uzh/MM/kansasii/repos/immensekansasii/scripts/01_gtdb_my
 
 ## 2. Pipeline runs
 
+What the runs produced per sample, with the log evidence (controller jobs, trace rows, result files, exceptions): `RUNS.md`
+(regenerate with `kansasii-docs/bin/make_runs_report.py` after a run).
+
 Rules for every run:
 - Start in its own `runs/<run_name>/`, never in `output/`: Nextflow writes `work/` into the
   start directory, it is large and temporary and must not reach `output/` (which is

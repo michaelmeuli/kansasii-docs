@@ -388,7 +388,8 @@ Three processes run in series:
   made). **This is the tree to draw**; the alignment itself is not kept. The job is `submit_patients171_tree.sbatch` (`sbatch` it from the repo; not part of
   `run_downstream.sh`): it writes the sample list `patients171.txt` with `12_generate_itol_ast.py --patient-list` (no `LABEL`,
   not `excluded`, species in the complex), runs `snippy-core` and IQ-TREE in `runs/phylo_patients171/` and copies the tree
-  files to that directory. Rerun it when the snippy db or the `excluded` column changes.
+  files to that directory. Rerun it when the snippy db or the `excluded` column changes. A rerun is not
+  byte-identical in spite of `-seed 1`: branches below one SNP can resolve differently (`README.md` of the directory).
   The figure `data/imm/midpoint-rooted-tree.{pdf,svg}` is drawn from it (copy in that directory); in it
   every species with more than one isolate is a single clade.
 

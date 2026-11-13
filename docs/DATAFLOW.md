@@ -43,7 +43,7 @@ flowchart TD
   PIPE --> TREE["kansasii_phylo.nf: snippy per sample, snippy-core over the db, IQ-TREE"]
   TREE --> TT[("kansasii_complex_tree.treefile")]
   TT --> ITOL["07 iTOL labels (reference-tree run)"]
-  PIPE --> T171["13 patients171_tree.sbatch: snippy-core over the 171 patient dirs of the snippy db, IQ-TREE"]
+  PIPE --> T171["submit_patients171_tree.sbatch: snippy-core over the 171 patient dirs of the snippy db, IQ-TREE"]
   T171 --> AST["12 generate_itol_ast.py: midpoint root, AST dots, species ring"]
   RT --> AST
   AST --> FIG["iTOL web export by hand: midpoint-rooted-tree.pdf/svg"]
@@ -76,7 +76,7 @@ flowchart TD
 | `runs/<run>/<run>_transfer_result/kansasii_phylogeny/kansasii_complex_{core.aln,core.txt,core.samples.tsv,tree.treefile,tree.iqtree}` (`runs/mkan329`: 187 tips = 186 samples + `Reference`, 875 alignment columns because of six non-complex samples, see `WORKFLOW.md` 2d) | `kansasii_snippy_core` + `kansasii_tree` (core-SNP alignment, IQ-TREE GTR+G; unrooted, no support values), see `WORKFLOW.md` 2d | `07_generate_itol_species_labels.sh` (copy + labels in `output/immensekansasii/results/iTOL/<run>/`; in the chain only for the reference-tree run) |
 | `output/immensekansasii/results/iTOL/mkan329_patients171/{kansasii_patients_midpoint.nwk,itol_*.txt}` | `immensekansasii/scripts/12_generate_itol_ast.py` (reads `kansasii_patients171_tree.treefile` of that directory, keeps the 171 patients, midpoint root, AST dots, species ring; input also `screening_map_results.csv`) | iTOL web (manual upload) |
 | `data/imm/midpoint-rooted-tree.{pdf,svg}` | iTOL web export (manual) of the `mkan329_patients171/` files above; copy in that directory | figure only, no script reads it |
-| `output/immensekansasii/results/iTOL/mkan329_patients171/` (tree of the 171 clinical isolates alone, 287,242 core columns, with iTOL inputs; `README.md` in the dir) | `immensekansasii/scripts/13_patients171_tree.sbatch` (by hand, not in `run_downstream.sh`: sample list `patients171.txt` from `12_generate_itol_ast.py --patient-list`, `snippy-core` over those sample dirs of the `mkan329` snippy db, IQ-TREE), then `12_generate_itol_ast.py` | iTOL web (manual): basis of the tree figure `data/imm/midpoint-rooted-tree.{pdf,svg}` |
+| `output/immensekansasii/results/iTOL/mkan329_patients171/` (tree of the 171 clinical isolates alone, 287,242 core columns, with iTOL inputs; `README.md` in the dir) | `immensekansasii/submit_patients171_tree.sbatch` (by hand, not in `run_downstream.sh`: sample list `patients171.txt` from `12_generate_itol_ast.py --patient-list`, `snippy-core` over those sample dirs of the `mkan329` snippy db, IQ-TREE), then `12_generate_itol_ast.py` | iTOL web (manual): basis of the tree figure `data/imm/midpoint-rooted-tree.{pdf,svg}` |
 | `output/kansasii-amr-marker-screen/results/assembly/`, `output/kansasii-amr-marker-screen/results/bam/` | `kansasii-amr-marker-screen/submit_amr*.sbatch` | reports only |
 
 `screening_map_results.csv` has `NGS_USED` (after `NGS_MM`): the sequencing data used per isolate.

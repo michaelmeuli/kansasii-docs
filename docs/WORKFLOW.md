@@ -48,7 +48,7 @@ sanger-microsynth) as a Slurm dependency chain. Every path below is a constant o
 | 8 | MLSA analysis | `mlsa-kansasii: scripts/04_locus_discovery -> 08_sanger_mlsa` (+ `--exclude-atypical`), `09_sanger_refalign`, `05_genome_identity_check`, `06_make_hsp65_references`; `10_sanger_vs_wgs` after step 9 | `env_mlsa` | step 7 | `output/mlsa-kansasii/results/` |
 | 9 | results table | `scripts/06_screening_map_results.py` | `env_mic` | steps 2, 5b, 6, 8 | `data/imm/screening_map_results.csv` |
 | 9b | hsp65 / gyrA of project and public samples | `hsp65-refalign: submit_validate.sbatch, submit_korean_check.sbatch, submit_public.sbatch [ctl\|persicum]`; `gyrA-refalign: submit_gyrA.sbatch` | `env_mlsa` | steps 5b, 8, 9 | `output/hsp65-refalign/results/`, `output/gyrA-refalign/results/{project,public}/` |
-| 10 | iTOL files | `scripts/07_generate_itol_species_labels.sh`, `scripts/12_generate_itol_ast.py` (env `biopython`); the patient tree it reads: `scripts/13_patients171_tree.sbatch` (by hand) | none | steps 3, 5b, 9 | `output/immensekansasii/results/iTOL/<run>/`, `.../iTOL/mkan329_patients171/` |
+| 10 | iTOL files | `scripts/07_generate_itol_species_labels.sh`, `scripts/12_generate_itol_ast.py` (env `biopython`); the patient tree it reads: `submit_patients171_tree.sbatch` (by hand) | none | steps 3, 5b, 9 | `output/immensekansasii/results/iTOL/<run>/`, `.../iTOL/mkan329_patients171/` |
 | 11 | samples report | `scripts/08_mkan329_samples_report.py` | `env_mic` | steps 5b, 9 | `kansasii-docs/docs/SAMPLES.md` |
 | 12a | cgMLST scheme, allele calls, per-genome QC | `kansasii-cgmlst: submit_all.sbatch` (steps 00-07) | `env_cgmlst` | steps 2, 5b | `output/kansasii-cgmlst/results/sample_qc.tsv`, `runs/cgmlst/` |
 | 12b | cgMLST distances, MSTs; core-SNP MSTs | `kansasii-cgmlst: submit_all.sbatch` (steps 08-09), `kansasii-mst: submit_all.sbatch`; not used for the report (`RIDOM.md`) | `env_cgmlst`, `env_mst` | steps 5b, 9 | `output/kansasii-cgmlst/results/`, `output/kansasii-mst/results/` |
@@ -385,7 +385,7 @@ Three processes run in series:
   171-isolate tree (IQ-TREE GTR+G, seed 1, 43 min on 8 CPUs) and its iTOL inputs from
   `12_generate_itol_ast.py` are in `output/immensekansasii/results/iTOL/mkan329_patients171/` (171 tips; 45
   terminal branches of zero length against 161 in the 875-column tree; `README.md` there says how it was
-  made). **This is the tree to draw**; the alignment itself is not kept. The job is `scripts/13_patients171_tree.sbatch` (`sbatch` it from the repo; not part of
+  made). **This is the tree to draw**; the alignment itself is not kept. The job is `submit_patients171_tree.sbatch` (`sbatch` it from the repo; not part of
   `run_downstream.sh`): it writes the sample list `patients171.txt` with `12_generate_itol_ast.py --patient-list` (no `LABEL`,
   not `excluded`, species in the complex), runs `snippy-core` and IQ-TREE in `runs/phylo_patients171/` and copies the tree
   files to that directory. Rerun it when the snippy db or the `excluded` column changes.

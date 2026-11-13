@@ -3,7 +3,7 @@
 Notable changes to data tables and outputs, newest first.
 
 ## 2026-11-13 (tree job of the 171 isolates moved into immensekansasii)
-- `make_tree.sbatch` (was only in `output/immensekansasii/results/iTOL/mkan329_patients171/`, in no repo) is now `immensekansasii/scripts/13_patients171_tree.sbatch`. It uses the `kansasii_paths.sh` constants, writes the sample list `patients171.txt` itself (`12_generate_itol_ast.py --patient-list`, new flag: the rule script 12 prunes with), copies treefile, `.iqtree` and `core.txt` into the output directory and writes `MANIFEST_tree.txt`. Work dir `runs/phylo_patients171/` (no `patients171/` subdirectory any more). Dropped: the `all186` set and the `GTR+G+ASC` tree of the review. Not in `run_downstream.sh`.
+- `make_tree.sbatch` (was only in `output/immensekansasii/results/iTOL/mkan329_patients171/`, in no repo) is now `immensekansasii/submit_patients171_tree.sbatch`. It uses the `kansasii_paths.sh` constants, writes the sample list `patients171.txt` itself (`12_generate_itol_ast.py --patient-list`, new flag: the rule script 12 prunes with), copies treefile, `.iqtree` and `core.txt` into the output directory and writes `MANIFEST_tree.txt`. Work dir `runs/phylo_patients171/` (no `patients171/` subdirectory any more). Dropped: the `all186` set and the `GTR+G+ASC` tree of the review. Not in `run_downstream.sh`.
 - **Not rerun:** the tree, `patients171.txt` and the iTOL files are unchanged (the new flag reproduces `patients171.txt`, a default run of script 12 the four iTOL files, byte for byte); `MANIFEST_tree.txt` appears with the next run of the job.
 
 ## 2026-11-13 (iTOL/mkan329 dropped, removed directories out of the docs)

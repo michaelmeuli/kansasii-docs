@@ -364,7 +364,3 @@ It writes to `output/mlsa-kansasii/results/genome_identity_check/`:
 The sbatch file excludes node `u24-cva0000-129`, which has no
 `/etc/resolv.conf`, so Singularity fails there.
 
-The original run (job 6226012, 2026-09-21) is in
-`output-old/mlsa/genome_identity_check/`. The folder was moved there
-together with the rest of `output/`. The rerun on 2026-09-26 gives an
-identical `skani_long.tsv`.

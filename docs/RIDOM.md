@@ -7,14 +7,12 @@ are decided.
 
 ## Rules
 
-- Ridom is operated in the GUI. Every export goes to `data/imm/` as `ridom-<content>-mkan329[-<subset>].<ext>` (CSV, `;`-separated as
+- Ridom is operated in the GUI. Every export goes to `data/imm/` as `data/imm/ridom-*` (CSV, `;`-separated as
   SeqSphere writes it; figures as SVG/PDF). Do not edit exported files; derived tables belong in `output/`.
 - `data/imm/` files have no MANIFEST. Record each export in the table below (date, SeqSphere+ version, project, who) when you add it.
 - The input to Ridom is `output/kansasii-ridom/ridom_assemblies.{tar.gz,zip}` (made by `kansasii-ridom/scripts/01_export_ridom.py`, `sbatch submit_export.sbatch`;
   isolates `M001` ..., controls by `LABEL`, references by accession; `ridom/metadata.tsv` for the isolate-data import). It holds the pool of 175 complex
   isolates (incl. M055, `excluded` by chewBBACA coverage only, so Ridom can give its good-target value) + 7 references = 182. Plasmids are removed by Ridom.
-  The earlier archive of `kansasii-cgmlst` (181, without M055) is superseded; the 181 genomes are the same files, except that the ATCC 12478 reference
-  now keeps its plasmid contig.
 - Why the pool is 175 (`load_cohort()` in `kansasii-ridom/scripts/common.py`: complex species and not `contaminated`; it does not filter on `excluded`):
 
   | Step | Count |

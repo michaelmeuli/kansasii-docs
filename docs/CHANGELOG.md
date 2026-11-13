@@ -102,7 +102,7 @@ Notable changes to data tables and outputs, newest first.
 - hsp65-refalign: the Korean-type check wrote its manifest to a directory `korean_check/` that never held outputs; it is now
   `MANIFEST_korean_type_check.txt` next to the outputs. `submit_public.sbatch persicum` runs the in-silico hsp65 on all GTDB-persicum samples.
 - `run_downstream.sh` now covers hsp65-refalign, gyrA-refalign, both cgMLST phases, the atypical-sample table and SUMMARY.html; whole chain rerun
-  2026-10-25 (log `runs/downstream-20261025/`). Outputs of before the rerun: `output-old/pre-rerun_2026-10-25.tar.gz`, `pre-rerun_runs-cgmlst_2026-10-25.tar.gz`.
+  2026-10-25 (log `runs/downstream-20261025/`).
 - New `docs/ATYPICAL.md` + `output/atypical_samples/` (samples with an atypical gyrA or hsp65, project and public), `docs/VENDORED.md`.
 - Fixed strict-typing errors in `immensekansasii/scripts/06` and `10` (they had been unchecked).
 

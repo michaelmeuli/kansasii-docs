@@ -236,5 +236,4 @@ after a full rerun: 186 rows in `screening_map_results.csv`, 186 with a species;
 
 ## Not reproducible by commands
 
-- The archived kansasii-gwas work (no repo, no output directory) and the superseded results in `output-old/`.
 - Files marked manual above: lab inputs (step 0), the Ridom GUI work (6b) and the iTOL figure (7).

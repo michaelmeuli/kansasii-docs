@@ -16,11 +16,8 @@ file. Repo-specific details live in each repo's own README.
 | `data/` | inputs only: GTDB genomes, Illumina reads, Sanger `.ab1`, `imm/` tables, lab protocols | active |
 | `output/` | results, one directory per repo or analysis (see `output/README.md`) | active |
 | `runs/` | Nextflow run dirs (large `work/`) and SLURM logs | temporary, large |
-| `output-old/`, `output/mlsa-old` | superseded results (`output-old/README.md` lists them) | do not use |
-| `scratch/` | unexplained one-off files (`scratch/README.md`) | safe to delete |
-| `singularity_images_cache/` | container cache | regenerable |
 
-**Source of truth:** typing results (cgMLST, MST, clusters) and the final report come from Ridom SeqSphere+; GUI exports go to `data/imm/ridom-*` ([docs/RIDOM.md](docs/RIDOM.md) lists what is still to be exported). `kansasii-mst` and `kansasii-cgmlst` are obsolete.
+**Source of truth:** typing results (cgMLST, MST, clusters) and the final report come from Ridom SeqSphere+; GUI exports go to `data/imm/ridom-*`. `kansasii-mst` and `kansasii-cgmlst` are obsolete.
 
 **Rule:** scripts read from `data/` and `runs/` only. `output/` receives copies and results.
 

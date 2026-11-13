@@ -2,6 +2,12 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-13 (MGIT MIC: I counts as inhibited)
+- kansasii-mic: the MGIT MIC of an isolate is now the lowest concentration called S **or I** (was S only), as in the lab workbook `data/imm/20200723_NTM MGIT langsam-komplett.xlsx` (bin = S + I). One constant, `MGIT_INHIBITED_CALLS` in `overview.py`; `("S",)` restores the old rule.
+- Reran `output/kansasii-mic/results/` (`submit_mic.sbatch`; 65 MGIT isolates, MHK unchanged). `mgit_mic_counts_per_concentration.csv`, old -> new: Amikacin 1 / 4 / 20 mg/L 3 / 55 / 4 -> 8 / 51 / 3; Clofazimin 0.25 / 0.5 / 1 1 / 5 / 48 -> 3 / 4 / 47; Linezolid 1 / 4 23 / 7 -> 28 / 2; Rifabutin 0.1 / 0.4 / 2 61 / 1 / 1 -> 62 / 1 / 0. Other drugs and all per-drug totals unchanged.
+- `overview_table.csv`: Amikacin 58 S / 4 unclassifiable -> 59 S / 3; rest unchanged. `tnr_mgit_resistance_ranking.csv`: still one isolate with `n_R_mic` > 0 (Mkan329-108, rifampicin).
+- Raw-call outputs (`mgit_summary_per_antibiotic.csv`, heatmap, `mgit_int_erg_I_R_highest_concentration.csv`) are not affected: I stays I there.
+
 ## 2026-11-12 (stale-output check)
 - All `MANIFEST*.txt` under `output/` compared with repo HEADs and input dates. Rerun, content unchanged (only the manifests are new): `output/kansasii-ridom/results/` (`submit_all.sbatch`, all 36 files byte-identical; the manifest named a commit older than the 11-08 distance tables), `output/gyrA-refalign/results/public_reads/hsp65_*` (`submit_hsp65_reads.sbatch`; the old manifest was from a dirty tree and older than its inputs), `output/immensekansasii/results/iTOL/mkan329/` (`07_generate_itol_species_labels.sh -m samples -p mkan329_`; labels and colour strip identical, the copied `screening_map_results.csv` is now the 11-12 table).
 - `output/hsp65-refalign/results/figures/hsp65_identity_margin.{png,pdf}` redrawn with `03_figure.py` from the `reads.tsv` of 11-03: png byte-identical to the one of 11-01.

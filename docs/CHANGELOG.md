@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-14 (one constant for the CheckM contamination threshold)
+- The 5 % CheckM contamination threshold is now set once, as `MAX_CHECKM_CONTAMINATION` in `kansasii_paths.{py,sh}` (template, vendored in every repo). It replaces `PUBLIC_MAX_CONTAMINATION` of hsp65-refalign and gyrA-refalign, the literal default of `--max-contamination` in `immensekansasii/scripts/06_screening_map_results.py` and the literal `MAX_CONTAM` of `08_mkan329_samples_report.py`. The `--max-contamination` flags remain. Value unchanged, nothing rerun.
+
 ## 2026-11-14 (CheckM for the 29 public samples without a result; public hsp65 / gyrA rerun)
 - New `immensekansasii/submit_public_checkm.sbatch`: runs the command of `modules/checkm.nf` in the same container for every public sample with an assembly but no CheckM result, and writes the same files into `3_quality/checkM/` plus `checkm_rerun.txt`; values in `runs/public_checkm_rerun/rerun.tsv`. Run for the 27 samples of the entry below (job 8352087) and for two more (job 8370119).
 - **Finding: SRR12599271 and SRR12599297 (PRJNA323639) had a CheckM table without a result row.** A resumed `checkm` task stopped after 1-2 s with `Unexpected error: <class 'PermissionError'>` and replaced the table of the first task; their summaries keep the first values (0.15 % and 100 %). `checkm_contamination()` returned `None` for them, so they were kept as "not assessed". `make_runs_report.py` now requires the result row. Own isolates: all 188 tables have it.

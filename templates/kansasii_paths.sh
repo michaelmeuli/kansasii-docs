@@ -46,6 +46,7 @@ PUBLIC_READS=$ILLUMINA_DIR/public
 
 ASSEMBLIES=$RUNS/mkan329/assembly/results
 PUBLIC_PROJECTS=(PRJNA1078897 PRJNA1048499 PRJNA845115 PRJNA323639)
+MAX_CHECKM_CONTAMINATION=5.0   # CheckM contamination (%) above which a sample counts as contaminated (see kansasii_paths.py)
 public_assemblies () { echo "$RUNS/public_$1/assembly/results"; }
 
 # External software that is not part of the project (pipeline databases, container cache).

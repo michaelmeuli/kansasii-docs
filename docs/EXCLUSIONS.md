@@ -6,7 +6,7 @@ explains it. If the two disagree, the CSV wins. Counts as of 2026-11-12 (186 row
 
 ## 1. The `excluded` column
 
-`excluded` = true when `contamination_flag` = `contaminated` (CheckM contamination > 5 %, `--max-contamination`), **or**
+`excluded` = true when `contamination_flag` = `contaminated` (CheckM contamination > 5 %: `MAX_CHECKM_CONTAMINATION` in `kansasii_paths`, the default of `--max-contamination`), **or**
 `cgmlst_called_pct` < 90 (Ridom's good-target threshold), **or** the row is a clinical sample (`LABEL` empty) whose GTDB species is
 outside the complex. Seven isolates:
 

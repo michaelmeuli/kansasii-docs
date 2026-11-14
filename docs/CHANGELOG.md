@@ -2,6 +2,10 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-14 (RUNS.md: delivered reads of the own isolates are checked against the runs)
+- `make_runs_report.py` took the samples of a run from its result directories only, so reads that never entered a run would not have appeared. It now also starts from the delivered reads (`data/illumina/Mkan329/reads/<delivery>/`) and follows the batch symlinks (`data/illumina/Mkan329/batches/<batch>/`) to the sample: a read pair is flagged when a file has no batch link, or when its sample has no result directory in `mkan329` or `mkan329_jc`. New section "Reads of the own isolates" in `RUNS.md`, new table `output/kansasii-docs/results/pipeline_runs/reads_coverage.tsv` (one row per read pair), and a `WARNING` on stderr per flagged pair. New options `--reads` and `--batches`.
+- Result: all 188 read pairs are in a run (`kansasii`: 133 in `mkan329`; `kansasii_jc`: 53 in `mkan329` as Mkan329-134 to -186, 2 in `mkan329_jc`); none flagged. The reads of the public BioProjects are not checked this way.
+
 ## 2026-11-14 (summary tables of the 29 public samples with a redone CheckM)
 - `immensekansasii/submit_public_checkm.sbatch` now also sets the three `checkm_*` columns of `3_quality/summary/<sample>.tab` from the sample's `checkm_output.tsv`, for every sample with a `checkm_rerun.txt` (the file is replaced, so the hard-linked copy in `work/` keeps the pipeline's row; nothing else in the row changes). Run as job 8370949: 27 tables changed from `null` to the values (`runs/public_checkm_rerun/summary_updates.tsv`); SRR12599271 and SRR12599297 already held the same values. Only SRR27048649 (no assembly) still has `null`. The merged tables in `<run>_transfer_result/` are not rewritten.
 

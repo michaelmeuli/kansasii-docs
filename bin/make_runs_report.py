@@ -177,7 +177,11 @@ class Run:
 
     def has(self, sample: str, o: Output) -> bool:
         f = self.results(sample) / o.relpath.format(s=sample)
-        return f.is_file() and f.stat().st_size > 0
+        if not (f.is_file() and f.stat().st_size > 0):
+            return False
+        if o.key == "checkm":  # a resumed checkm task that stopped with an error leaves a table without the result row
+            return any(line.split()[:1] == [sample] for line in f.read_text().splitlines())
+        return True
 
     def rows(self, process: str, tag: str) -> list[tuple[list[str], str]]:
         return self.trace.get((process, tag), [])
@@ -307,6 +311,14 @@ def run_section(run: Run) -> list[str]:
     for o in run.required():
         have = sum(run.has(s, o) for s in run.samples)
         md.append(f"| {o.key} | `{o.relpath.format(s='<sample>')}` | {'**' + str(have) + '**' if have == n else have} of {n} |")
+    redone = [s for s in run.samples if (run.results(s) / "3_quality" / "checkM" / "checkm_rerun.txt").is_file()]
+    if redone:
+        md += ["", f"{len(redone)} of the CheckM results were not written by a Nextflow task but by `immensekansasii/submit_public_checkm.sbatch` "
+               "(same command and container as `modules/checkm.nf`; the directory holds a `checkm_rerun.txt`, the values are in "
+               "`runs/public_checkm_rerun/rerun.tsv`), because the pipeline had left no result: `checkm` was never submitted (no MetaPhlAn4 "
+               "classification) or a resumed `checkm` task had replaced the table by one without a result row. They have no completed `checkm` "
+               "row of their own in the trace table above, and their per-sample summary keeps `null` or the value of the first task: "
+               + ", ".join(redone) + "."]
     bad = {s: run.missing(s) for s in run.samples if run.missing(s)}
     md += ["", f"**{n - len(bad)} of {n} samples complete.**", ""]
     if not bad:
@@ -379,7 +391,8 @@ def main() -> None:
           "task and then ignores it, so `Failed` in a job summary is never 0 and `Execution status: OK` does not prove that every sample has every "
           "result. The trace does: a sample counts for a process when one attempt is `COMPLETED` (or `CACHED` on resume).",
           "3. **Result files** (`runs/<run>/assembly/results/<sample>/`): the file each downstream analysis reads exists and is not empty.", "",
-          "A sample is **complete** when all result files the project reads for its kind of run exist (own isolates: also a GTDB species and a "
+          "A sample is **complete** when all result files the project reads for its kind of run exist (the CheckM table must hold the result row "
+          "of the sample; own isolates: also a GTDB species and a "
           "CheckM contamination in the summary). Processes the project does not read (Bakta annotation, MetaPhlAn4, pyMLST, QUAST, ... and, for "
           "public samples, everything except assembly, GTDB and CheckM) are shown in the process tables but do not enter the verdict.", "",
           "| Result | Process | Read for own isolates by | Read for public samples by |", "|---|---|---|---|"]

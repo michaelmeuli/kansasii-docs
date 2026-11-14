@@ -73,7 +73,7 @@ had not finished after 3.5 h at 40 GB, so the rerun was cancelled on 2026-10-24.
 | *Sphingomonas aquatilis* | 1 | 1 | 0 | 0 | 0 |
 | *M. parascrofulaceum* | 1 | 1 | 0 | 0 | 0 |
 
-The table counts every GTDB-Tk call. Downstream analyses of the public samples (hsp65-refalign, gyrA-refalign, `ATYPICAL.md`) leave out samples with CheckM contamination above 5 % (27 of the 1039 complex samples, including 23 kansasii and 2 persicum); the counts there are therefore smaller.
+The table counts every GTDB-Tk call. Downstream analyses of the public samples (hsp65-refalign, gyrA-refalign, `ATYPICAL.md`) leave out samples with CheckM contamination above 5 % (29 of the 1039 complex samples, including 25 kansasii and 2 persicum); the counts there are therefore smaller.
 
 The non-complex calls (CAIMFV01, *Sediminibacterium*, *Sphingomonas*, *M. parascrofulaceum*) are not checked against the metadata.
 

@@ -673,7 +673,7 @@ task_id	hash	native_id	name	status	exit	submit	duration
 | gtdb | `3_quality/GTDB/<sample>.tsv_gtdb_summary.tsv` | **243** of 243 |
 | checkm | `3_quality/checkM/checkm_output.tsv` | **243** of 243 |
 
-10 of the CheckM results were not written by a Nextflow task but by `immensekansasii/submit_public_checkm.sbatch` (same command and container as `modules/checkm.nf`; the directory holds a `checkm_rerun.txt`, the values are in `runs/public_checkm_rerun/rerun.tsv`), because the pipeline had left no result: `checkm` was never submitted (no MetaPhlAn4 classification) or a resumed `checkm` task had replaced the table by one without a result row. They have no completed `checkm` row of their own in the trace table above, and their per-sample summary keeps `null` or the value of the first task: SRR28038254, SRR28038261, SRR28038262, SRR28038271, SRR28038274, SRR28038287, SRR28038366, SRR28038371, SRR28038377, SRR28038459.
+10 of the CheckM results were not written by a Nextflow task but by `immensekansasii/submit_public_checkm.sbatch` (same command and container as `modules/checkm.nf`; the directory holds a `checkm_rerun.txt`, the values are in `runs/public_checkm_rerun/rerun.tsv`), because the pipeline had left no result: `checkm` was never submitted (no MetaPhlAn4 classification) or a resumed `checkm` task had replaced the table by one without a result row. They have no completed `checkm` row of their own in the trace table above; the checkm columns of their per-sample summary were set from the new table by the same job (`runs/public_checkm_rerun/summary_updates.tsv`): SRR28038254, SRR28038261, SRR28038262, SRR28038271, SRR28038274, SRR28038287, SRR28038366, SRR28038371, SRR28038377, SRR28038459.
 
 **243 of 243 samples complete.**
 
@@ -954,7 +954,7 @@ task_id	hash	native_id	name	status	exit	submit	duration
 | gtdb | `3_quality/GTDB/<sample>.tsv_gtdb_summary.tsv` | 341 of 342 |
 | checkm | `3_quality/checkM/checkm_output.tsv` | 341 of 342 |
 
-12 of the CheckM results were not written by a Nextflow task but by `immensekansasii/submit_public_checkm.sbatch` (same command and container as `modules/checkm.nf`; the directory holds a `checkm_rerun.txt`, the values are in `runs/public_checkm_rerun/rerun.tsv`), because the pipeline had left no result: `checkm` was never submitted (no MetaPhlAn4 classification) or a resumed `checkm` task had replaced the table by one without a result row. They have no completed `checkm` row of their own in the trace table above, and their per-sample summary keeps `null` or the value of the first task: SRR27048409, SRR27048445, SRR27048486, SRR27048499, SRR27048501, SRR27048502, SRR27048554, SRR27048572, SRR27048607, SRR27048611, SRR27048654, SRR27048676.
+12 of the CheckM results were not written by a Nextflow task but by `immensekansasii/submit_public_checkm.sbatch` (same command and container as `modules/checkm.nf`; the directory holds a `checkm_rerun.txt`, the values are in `runs/public_checkm_rerun/rerun.tsv`), because the pipeline had left no result: `checkm` was never submitted (no MetaPhlAn4 classification) or a resumed `checkm` task had replaced the table by one without a result row. They have no completed `checkm` row of their own in the trace table above; the checkm columns of their per-sample summary were set from the new table by the same job (`runs/public_checkm_rerun/summary_updates.tsv`): SRR27048409, SRR27048445, SRR27048486, SRR27048499, SRR27048501, SRR27048502, SRR27048554, SRR27048572, SRR27048607, SRR27048611, SRR27048654, SRR27048676.
 
 **341 of 342 samples complete.**
 
@@ -1514,7 +1514,7 @@ task_id	hash	native_id	name	status	exit	submit	duration
 | gtdb | `3_quality/GTDB/<sample>.tsv_gtdb_summary.tsv` | **243** of 243 |
 | checkm | `3_quality/checkM/checkm_output.tsv` | **243** of 243 |
 
-7 of the CheckM results were not written by a Nextflow task but by `immensekansasii/submit_public_checkm.sbatch` (same command and container as `modules/checkm.nf`; the directory holds a `checkm_rerun.txt`, the values are in `runs/public_checkm_rerun/rerun.tsv`), because the pipeline had left no result: `checkm` was never submitted (no MetaPhlAn4 classification) or a resumed `checkm` task had replaced the table by one without a result row. They have no completed `checkm` row of their own in the trace table above, and their per-sample summary keeps `null` or the value of the first task: SRR12599271, SRR12599297, SRR3665644, SRR3665984, SRR3665990, SRR3665991, SRR3665999.
+7 of the CheckM results were not written by a Nextflow task but by `immensekansasii/submit_public_checkm.sbatch` (same command and container as `modules/checkm.nf`; the directory holds a `checkm_rerun.txt`, the values are in `runs/public_checkm_rerun/rerun.tsv`), because the pipeline had left no result: `checkm` was never submitted (no MetaPhlAn4 classification) or a resumed `checkm` task had replaced the table by one without a result row. They have no completed `checkm` row of their own in the trace table above; the checkm columns of their per-sample summary were set from the new table by the same job (`runs/public_checkm_rerun/summary_updates.tsv`): SRR12599271, SRR12599297, SRR3665644, SRR3665984, SRR3665990, SRR3665991, SRR3665999.
 
 **243 of 243 samples complete.**
 

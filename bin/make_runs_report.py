@@ -9,11 +9,17 @@ Covers the run of the own isolates (mkan329), the resequenced pair (mkan329_jc) 
   .nextflow/history                           the command line
   assembly/results/<sample>/                  the result files the project reads (OUTPUTS below)
 
+The samples of a run are its result directories, so reads that never entered a run would not appear there. For the own
+isolates the report therefore also starts from the delivered reads (data/illumina/Mkan329/reads/<delivery>/) and
+follows the batch symlinks (data/illumina/Mkan329/batches/<batch>/<sample>_R[12].fastq.gz) to the sample: a read pair
+is flagged when a file has no batch link, or when its sample has no result directory in mkan329 or mkan329_jc.
+
 A sample is `complete` when every result file the project reads for that kind of run exists and is not empty.
 Log snippets are quoted as they are in the log, after removing terminal control codes.
 
-Writes docs/RUNS.md and <out>/{sample_evidence.tsv, MANIFEST.txt} (one row per sample).
-Usage: make_runs_report.py [--runs DIR] [--out DIR] [--md FILE]    Standard library only.
+Writes docs/RUNS.md and <out>/{sample_evidence.tsv, reads_coverage.tsv, MANIFEST.txt} (one row per sample / per read
+pair). Flagged reads are also printed as a warning on stderr.
+Usage: make_runs_report.py [--runs DIR] [--reads DIR] [--batches DIR] [--out DIR] [--md FILE]    Standard library only.
 """
 from __future__ import annotations
 
@@ -28,9 +34,12 @@ from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "templates"))
-from kansasii_paths import MANIFEST_SCRIPT, OUT_DOCS, PUBLIC_PROJECTS, REPOS, ROOT, RUNS  # noqa: E402
+from kansasii_paths import ILLUMINA_DIR, MANIFEST_SCRIPT, OUT_DOCS, PUBLIC_PROJECTS, REPOS, ROOT, RUNS  # noqa: E402
 
 OWN_RUNS = ["mkan329", "mkan329_jc"]
+OWN_READS = ILLUMINA_DIR / "Mkan329" / "reads"      # <delivery>/<id>_{r,R}{1,2}.fastq.gz, the files as delivered
+OWN_BATCHES = ILLUMINA_DIR / "Mkan329" / "batches"  # <batch>/<sample>_R{1,2}.fastq.gz, symlinks into OWN_READS
+READ_FILE = re.compile(r"(.+)_[rR]([12])\.fastq\.gz$")
 OK_STATUS = {"COMPLETED", "CACHED"}
 TRACE_COLS = 8  # task_id hash native_id name status exit submit duration
 MAX_ROWS = 45   # trace rows quoted per exception group
@@ -233,6 +242,77 @@ def read_run(runs: Path, name: str) -> Run:
     return run
 
 
+@dataclass
+class ReadPair:
+    """The delivered read files of one isolate (reads/<delivery>/<name>_{r,R}{1,2}.fastq.gz) and where they went."""
+    delivery: str
+    name: str
+    files: list[Path] = field(default_factory=list)
+    unlinked: list[Path] = field(default_factory=list)                  # files that no batch symlink points to
+    links: dict[str, set[str]] = field(default_factory=dict)            # sample name of the links -> batches
+    verdicts: list[tuple[str, str, str]] = field(default_factory=list)  # (run, sample, verdict)
+
+    def flag(self) -> str:
+        """"" when every file is linked into a batch and every linked sample has a result directory in a run."""
+        if len(self.unlinked) == len(self.files):
+            return "not linked into a batch"
+        flags = [f"{f.name} not linked into a batch" for f in self.unlinked]
+        if len(self.files) != 2:
+            flags.append(f"{len(self.files)} read file{'s' if len(self.files) > 1 else ''} instead of a pair")
+        have = {s for _, s, _ in self.verdicts}
+        flags += [f"linked as {s} ({', '.join(sorted(b))}), no result directory in {' or '.join(OWN_RUNS)}"
+                  for s, b in sorted(self.links.items()) if s not in have]
+        return "; ".join(flags)
+
+
+def read_coverage(reads: Path, batches: Path, own: list[Run]) -> list[ReadPair]:
+    """Every read file below reads/<delivery>/, followed through the batch symlinks to its sample and run."""
+    linked: dict[Path, set[tuple[str, str]]] = defaultdict(set)  # real file -> {(sample, batch)}
+    for link in sorted(batches.glob("*/*.fastq.gz")):
+        m = READ_FILE.match(link.name)
+        if m:
+            linked[link.resolve()].add((m.group(1), link.parent.name))
+    pairs: dict[tuple[str, str], ReadPair] = {}
+    for f in sorted(reads.glob("*/*.fastq.gz")):
+        m = READ_FILE.match(f.name)
+        name = m.group(1) if m else f.name
+        pair = pairs.setdefault((f.parent.name, name), ReadPair(f.parent.name, name))
+        pair.files.append(f)
+        hits = linked.get(f.resolve())
+        if not hits:
+            pair.unlinked.append(f)
+        for sample, batch in hits or ():
+            pair.links.setdefault(sample, set()).add(batch)
+    for pair in pairs.values():
+        pair.verdicts = [(r.name, s, r.verdict(s)) for s in sorted(pair.links) for r in own if s in r.samples]
+    return list(pairs.values())
+
+
+def reads_section(pairs: list[ReadPair], reads: Path, batches: Path) -> list[str]:
+    md = ["## Reads of the own isolates", "",
+          f"The samples of a run are its result directories, so this section starts from the other end: every read file in `{rel(reads)}/<delivery>/` "
+          f"is followed through the symlinks in `{rel(batches)}/<batch>/` (the input directories of the controller jobs; the link name is the sample "
+          "name) to its sample and run. A read pair is flagged when a file has no batch link, or when its sample has no result directory in "
+          + " or ".join(f"`{r}`" for r in OWN_RUNS) + ".", "",
+          "| Delivery | Read pairs | Linked into a batch | " + " | ".join(f"Sample in `{r}`" for r in OWN_RUNS) + " | Complete | Flagged |",
+          "|---|---|---|" + "---|" * len(OWN_RUNS) + "---|---|"]
+    for d in dict.fromkeys(p.delivery for p in pairs):
+        mine = [p for p in pairs if p.delivery == d]
+        in_run = [str(sum(any(r == run for r, _, _ in p.verdicts) for p in mine)) for run in OWN_RUNS]
+        n_flag = sum(bool(p.flag()) for p in mine)
+        md.append(f"| `{d}` | {len(mine)} | {sum(not p.unlinked for p in mine)} | {' | '.join(in_run)} | "
+                  f"{sum(bool(p.verdicts) and all(v == 'complete' for _, _, v in p.verdicts) for p in mine)} | "
+                  f"{'**' + str(n_flag) + '**' if n_flag else 0} |")
+    flagged = [p for p in pairs if p.flag()]
+    md.append("")
+    if flagged:
+        md += [f"**{len(flagged)} of {len(pairs)} read pairs are flagged; they are in no run of this report:**", "",
+               *(f"- `{p.delivery}/{p.name}`: {p.flag()}" for p in flagged), ""]
+    else:
+        md += [f"**All {len(pairs)} read pairs are linked into a batch and have a result directory in a run.**", ""]
+    return md
+
+
 def code(lines: list[str]) -> list[str]:
     return ["```text", *lines, "```", ""]
 
@@ -353,6 +433,8 @@ def run_section(run: Run) -> list[str]:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--runs", type=Path, default=RUNS, help="directory with the run dirs")
+    ap.add_argument("--reads", type=Path, default=OWN_READS, help="delivered reads of the own isolates (<delivery>/*.fastq.gz)")
+    ap.add_argument("--batches", type=Path, default=OWN_BATCHES, help="batch input directories of the own isolates (symlinks into --reads)")
     ap.add_argument("--out", type=Path, default=OUT_DOCS / "results" / "pipeline_runs", help="directory of sample_evidence.tsv")
     ap.add_argument("--md", type=Path, default=REPOS / "kansasii-docs" / "docs" / "RUNS.md")
     args = ap.parse_args()
@@ -375,6 +457,17 @@ def main() -> None:
                 w.writerow([run.name, s, run.batch_of.get(s, "-"), run.verdict(s), summ.get("gtdb_species", ""),
                             summ.get("checkm_contamination", ""), *cells])
 
+    pairs = read_coverage(args.reads, args.batches, [r for r in runs if r.kind == "own"])
+    flagged = [p for p in pairs if p.flag()]
+    reads_tsv = args.out / "reads_coverage.tsv"
+    with reads_tsv.open("w", newline="") as fh:
+        w = csv.writer(fh, delimiter="\t", lineterminator="\n")
+        w.writerow(["delivery", "read_id", "files", "sample", "batches", "run", "verdict", "flag"])
+        for p in pairs:
+            w.writerow([p.delivery, p.name, ";".join(f.name for f in p.files), ";".join(sorted(p.links)),
+                        ";".join(sorted({b for bs in p.links.values() for b in bs})), ";".join(r for r, _, _ in p.verdicts),
+                        ";".join(v for _, _, v in p.verdicts), p.flag()])
+
     total = sum(len(r.samples) for r in runs)
     complete = sum(r.verdict(s) == "complete" for r in runs for s in r.samples)
     md = ["# Pipeline runs: evidence that the pipeline finished for the project samples", "",
@@ -384,6 +477,9 @@ def main() -> None:
           "the account of the stalls, cache errors and faulty nodes is in `PROJECTS.md`.", "",
           f"**Result: {complete} of {total} samples are complete** (table below; the others are listed under \"Exceptions\" of their run). "
           f"Per-sample table: `{rel(tsv)}`.", "",
+          (f"**Reads of the own isolates: {len(flagged)} of {len(pairs)} delivered read pairs are in no run** (section \"Reads of the own isolates\")."
+           if flagged else f"All {len(pairs)} delivered read pairs of the own isolates are in a run (section \"Reads of the own isolates\").")
+          + f" Per-pair table: `{rel(reads_tsv)}`.", "",
           "## What is shown, and what counts as complete", "",
           "A batch is one controller job (`runs/<run>/slurm-<job>.out`) that runs Nextflow on one input directory. Three kinds of evidence:", "",
           "1. **Controller log:** it ends with `Execution status: OK` and the task counts when Nextflow finished. Jobs that stalled, were cancelled or "
@@ -407,14 +503,17 @@ def main() -> None:
         revs = ", ".join(sorted({j.revision for j in r.jobs if j.revision}))
         md.append(f"| `{r.name}` | {len(r.samples)} | {revs} | {sum(j.ok for j in r.jobs)} / {len(r.jobs)} | {v['complete']} | {exc} |")
     md.append("")
+    md += reads_section(pairs, args.reads, args.batches)
     for r in runs:
         md += run_section(r)
     md += ["## Regenerate", "", "```bash", f"python3 {REPOS / 'kansasii-docs' / 'bin' / 'make_runs_report.py'}", "```", ""]
     args.md.write_text("\n".join(md))
 
     subprocess.run(["bash", str(MANIFEST_SCRIPT), str(args.out), str(REPOS / "kansasii-docs"), "bin/make_runs_report.py",
-                    *(str(args.runs / n) for n in names)], check=True)
-    print(f"{complete} of {total} samples complete -> {args.md}, {tsv}")
+                    *(str(args.runs / n) for n in names), str(args.reads), str(args.batches)], check=True)
+    print(f"{complete} of {total} samples complete, {len(pairs) - len(flagged)} of {len(pairs)} own read pairs in a run -> {args.md}, {tsv}, {reads_tsv}")
+    for p in flagged:
+        print(f"WARNING: reads {p.delivery}/{p.name}: {p.flag()}", file=sys.stderr)
 
 
 if __name__ == "__main__":

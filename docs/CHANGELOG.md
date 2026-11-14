@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-14 (summary tables of the 29 public samples with a redone CheckM)
+- `immensekansasii/submit_public_checkm.sbatch` now also sets the three `checkm_*` columns of `3_quality/summary/<sample>.tab` from the sample's `checkm_output.tsv`, for every sample with a `checkm_rerun.txt` (the file is replaced, so the hard-linked copy in `work/` keeps the pipeline's row; nothing else in the row changes). Run as job 8370949: 27 tables changed from `null` to the values (`runs/public_checkm_rerun/summary_updates.tsv`); SRR12599271 and SRR12599297 already held the same values. Only SRR27048649 (no assembly) still has `null`. The merged tables in `<run>_transfer_result/` are not rewritten.
+
 ## 2026-11-14 (one constant for the CheckM contamination threshold)
 - The 5 % CheckM contamination threshold is now set once, as `MAX_CHECKM_CONTAMINATION` in `kansasii_paths.{py,sh}` (template, vendored in every repo). It replaces `PUBLIC_MAX_CONTAMINATION` of hsp65-refalign and gyrA-refalign, the literal default of `--max-contamination` in `immensekansasii/scripts/06_screening_map_results.py` and the literal `MAX_CONTAM` of `08_mkan329_samples_report.py`. The `--max-contamination` flags remain. Value unchanged, nothing rerun.
 

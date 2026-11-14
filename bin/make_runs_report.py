@@ -317,7 +317,8 @@ def run_section(run: Run) -> list[str]:
                "(same command and container as `modules/checkm.nf`; the directory holds a `checkm_rerun.txt`, the values are in "
                "`runs/public_checkm_rerun/rerun.tsv`), because the pipeline had left no result: `checkm` was never submitted (no MetaPhlAn4 "
                "classification) or a resumed `checkm` task had replaced the table by one without a result row. They have no completed `checkm` "
-               "row of their own in the trace table above, and their per-sample summary keeps `null` or the value of the first task: "
+               "row of their own in the trace table above; the checkm columns of their per-sample summary were set from the new table by the "
+               "same job (`runs/public_checkm_rerun/summary_updates.tsv`): "
                + ", ".join(redone) + "."]
     bad = {s: run.missing(s) for s in run.samples if run.missing(s)}
     md += ["", f"**{n - len(bad)} of {n} samples complete.**", ""]

@@ -2,12 +2,12 @@
 
 One place that lists which isolates/genomes are left out of which analysis. The per-sample source of truth is
 `output/immensekansasii/results/screening_map_results.csv` (built by `immensekansasii/scripts/06_screening_map_results.py`); this file only
-explains it. If the two disagree, the CSV wins. Counts as of 2026-11-12 (186 rows, NR 1-186). Rule: `excluded` = contaminated, or < 90 % cgMLST loci called, or a clinical sample (`LABEL` empty) outside the complex.
+explains it. If the two disagree, the CSV wins. Counts as of 2026-11-12 (186 rows, NR 1-186). Rule: `excluded` = contaminated, or < 90 % good cgMLST targets in Ridom, or a clinical sample (`LABEL` empty) outside the complex.
 
 ## 1. The `excluded` column
 
 `excluded` = true when `contamination_flag` = `contaminated` (CheckM contamination > 5 %: `MAX_CHECKM_CONTAMINATION` in `kansasii_paths`, the default of `--max-contamination`), **or**
-`cgmlst_called_pct` < 90 (Ridom's good-target threshold), **or** the row is a clinical sample (`LABEL` empty) whose GTDB species is
+`ridom_perc_good_targets` < 90 (Ridom's good-target threshold; value from `data/imm/ridom-comparison-table.csv`), **or** the row is a clinical sample (`LABEL` empty) whose GTDB species is
 outside the complex. Seven isolates:
 
 | NR | Isolate | Species | Reason | Value |
@@ -15,7 +15,7 @@ outside the complex. Seven isolates:
 | 10 | Mkan329-010 | persicum | contaminated | CheckM 7.67 % |
 | 21 | Mkan329-021 | kansasii | contaminated | CheckM 7.76 % |
 | 35 | Mkan329-035 | kansasii | contaminated | CheckM 113.37 % (diagnosis: `Mkan329-035_contamination.md`) |
-| 55 | Mkan329-055 | persicum | low cgMLST coverage | 79.4 % good targets in Ridom (1,117 of 1,407, `ridom-comparison-table.csv`); the flag is still set from the chewBBACA value `cgmlst_called_pct` = 81.52 % (CheckM 2.47 %, not contaminated) |
+| 55 | Mkan329-055 | persicum | low cgMLST coverage | 79.4 % good targets in Ridom (1,117 of 1,407, `ridom-comparison-table.csv`; CheckM 2.47 %, not contaminated) |
 | 106 | Mkan329-106 | kansasii | contaminated | CheckM 20.44 % |
 | 113 | Mkan329-113 | persicum | contaminated | CheckM 61.40 % |
 | 184 | Mkan329-184 | avium | not in the *M. kansasii* complex | clinical sample, `LABEL` empty |
@@ -65,7 +65,7 @@ Mkan329-056 was suspected contaminated, resequenced as `Mkan329-056-jc`; `contam
 ## 7. Ridom export (`output/kansasii-ridom/ridom_assemblies.tar.gz`, `.zip`)
 
 The archive is made by `kansasii-ridom/scripts/01_export_ridom.py` and covers the pool, not `keep`: 175 cohort assemblies (the 174 of `keep`
-plus Mkan329-055, excluded only for low chewBBACA coverage, so Ridom can give its own good-target value), 3 of them complex control strains
+plus Mkan329-055, excluded only for its low good-target value in Ridom, which needs the genome in the archive), 3 of them complex control strains
 (NR 128, 132, 133), plus the 7 public GTDB references = 182 FASTA files and `ridom/metadata.tsv`. The assemblies are unmodified; the ATCC 12478
 reference keeps its plasmid contig, which Ridom removes.
 

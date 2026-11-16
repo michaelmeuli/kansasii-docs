@@ -9,7 +9,7 @@
 | `gyrA-refalign` | gyrA from the assemblies vs the 72 public genomes: is any sample persicum-like or another species at gyrA (project and public kept apart) |
 | `kansasii-amr-marker-screen` | literature AMR-marker screen on assemblies and reads |
 | `kansasii-mst` | core-SNP minimum spanning tree figures (complex, kansasii, pseudokansasii, persicum); not used for the report (`RIDOM.md`) |
-| `kansasii-cgmlst` | chewBBACA cgMLST scheme for the complex + Ridom-style allele MST figures (pairwise deletion); not used for the report, only `sample_qc.tsv` is read (`RIDOM.md`) |
+| `kansasii-cgmlst` | chewBBACA cgMLST scheme for the complex + Ridom-style allele MST figures (pairwise deletion); obsolete: not used for the report and nothing reads it (`RIDOM.md`) |
 | `kansasii-ridom` | assembly archive for Ridom SeqSphere+, check of its exports (`data/imm/ridom-*`) and the tables of the final report derived from them |
 | `sanger-microsynth` | routine: fetch Microsynth Sanger results by mail, identify, report |
 | `kansasii-docs` | project index, data flow, provenance, shared constants (`templates/kansasii_paths.{py,sh}`), `check_sync.sh`, overview and atypical-sample tables |

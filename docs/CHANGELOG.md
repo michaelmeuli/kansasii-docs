@@ -2,6 +2,11 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-16 (`excluded` comes from Ridom, not chewBBACA)
+- `immensekansasii/scripts/06_screening_map_results.py` computes `excluded` from Ridom's good-targets value in `data/imm/ridom-comparison-table.csv` (new constant `RIDOM_COMPARISON` in `kansasii_paths`; flags `--ridom-comparison`, `--min-good-targets-pct`, threshold 90 % as before) instead of `output/kansasii-cgmlst/results/sample_qc.tsv`. The column `cgmlst_called_pct` is removed from `screening_map_results.csv`. `ridom_perc_good_targets`, `ridom_genome_size_mb` and `ridom_species` are now read from the comparison table (182 rows) instead of `ridom-clusters.csv` (181), so Mkan329-055 has them (79.4 %, 5.9 Mb, M. persicum); `ridom_mst_cluster` still comes from `ridom-clusters.csv`.
+- Result: `excluded` is identical on all 186 rows (7 true; Mkan329-055 is the only isolate excluded by coverage, Ridom 79.4 % versus chewBBACA 81.52 %; next lowest in Ridom M082, 90.8 %). No downstream output changes. A complex isolate without a Ridom value is warned about and not excluded by coverage.
+- `run_downstream.sh`: the `kansasii-cgmlst` (00-07, 08-09) and `kansasii-mst` jobs are removed; `kansasii-ridom` `submit_export.sbatch` and `submit_all.sbatch` run after the results table. Nothing reads `kansasii-cgmlst` or `kansasii-mst` any more.
+
 ## 2026-11-14 (RUNS.md: delivered reads of the own isolates are checked against the runs)
 - `make_runs_report.py` took the samples of a run from its result directories only, so reads that never entered a run would not have appeared. It now also starts from the delivered reads (`data/illumina/Mkan329/reads/<delivery>/`) and follows the batch symlinks (`data/illumina/Mkan329/batches/<batch>/`) to the sample: a read pair is flagged when a file has no batch link, or when its sample has no result directory in `mkan329` or `mkan329_jc`. New section "Reads of the own isolates" in `RUNS.md`, new table `output/kansasii-docs/results/pipeline_runs/reads_coverage.tsv` (one row per read pair), and a `WARNING` on stderr per flagged pair. New options `--reads` and `--batches`.
 - Result: all 188 read pairs are in a run (`kansasii`: 133 in `mkan329`; `kansasii_jc`: 53 in `mkan329` as Mkan329-134 to -186, 2 in `mkan329_jc`); none flagged. The reads of the public BioProjects are not checked this way.

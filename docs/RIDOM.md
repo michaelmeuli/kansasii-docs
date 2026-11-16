@@ -12,7 +12,7 @@ are decided.
 - `data/imm/` files have no MANIFEST. Record each export in the table below (date, SeqSphere+ version, project, who) when you add it.
 - The input to Ridom is `output/kansasii-ridom/ridom_assemblies.{tar.gz,zip}` (made by `kansasii-ridom/scripts/01_export_ridom.py`, `sbatch submit_export.sbatch`;
   isolates `M001` ..., controls by `LABEL`, references by accession; `ridom/metadata.tsv` for the isolate-data import). It holds the pool of 175 complex
-  isolates (incl. M055, `excluded` by chewBBACA coverage only, so Ridom can give its good-target value) + 7 references = 182. The assemblies are
+  isolates (incl. M055, `excluded` only for its good-target value of 79.4 %, which Ridom can give only if the genome is in the archive) + 7 references = 182. The assemblies are
   unmodified (the ATCC 12478 reference keeps its plasmid contig); plasmids are removed by Ridom.
 - Why the pool is 175 (`load_cohort()` in `kansasii-ridom/scripts/common.py`: complex species and not `contaminated`; it does not filter on `excluded`):
 
@@ -23,7 +23,7 @@ are decided.
   | Contaminated, CheckM > 5 % (NR 10, 21, 35, 106, 113) | -5 = 176 |
   | NR 184, clinical *M. avium* (`LABEL` empty, not in the complex) | -1 = **175** (the pool) |
 
-  The 3 complex controls (NR 128, 132, 133) stay in. M055 (NR 55, 79.4 % good targets in Ridom, 81.5 % of chewBBACA loci called, CheckM 2.47 %) is in the pool but `excluded`, so the
+  The 3 complex controls (NR 128, 132, 133) stay in. M055 (NR 55, 79.4 % good targets in Ridom, CheckM 2.47 %) is in the pool but `excluded`, so the
   `keep` cohort of the distance matrices and MSTs is 174. The archive adds the 7 references: 175 + 7 = 182 (`N_POOL` in `01_export_ridom.py`
   asserts 175). Cross-check: `excluded` has 7 rows (5 contaminated, M055, NR 184); 186 - 5 - 7 = 174 = `keep`.
 - Sample ids in Ridom exports: `Mkan329-081` is `M081`, controls use `LABEL` (`M_kansasii_ATCC_12478`, ...); `ridom_id()` in
@@ -106,13 +106,13 @@ SeqSphere+ works on allele profiles. It gives no SNP distances, so these finding
 Options: (a) keep `kansasii-mst` for a supplementary SNP figure and say so in the methods; (b) drop the SNP statements and report allele
 distances only. Until decided, `kansasii-mst` stays in the project but is not used for the main report.
 
-## What `kansasii-mst` and `kansasii-cgmlst` feed
+## What `kansasii-mst` and `kansasii-cgmlst` fed (nothing any more)
 
 | Dependency | Where | Action |
 |---|---|---|
-| `cgmlst_called_pct` and `excluded` (< 90 % called) | `immensekansasii/scripts/06_screening_map_results.py` reads `output/kansasii-cgmlst/results/sample_qc.tsv` | planned: switch to the Ridom good-targets value (`ridom-comparison-table.csv` covers the pool incl. M055); keep the 90 % threshold |
-| `run_downstream.sh` runs both repos | `immensekansasii/scripts/run_downstream.sh` | planned: drop `kansasii-mst` and steps 08-09 of `kansasii-cgmlst` after the switch, add `kansasii-ridom` `submit_export.sbatch` and `submit_all.sbatch` (not in the chain today) |
-| `excluded` read by `kansasii-amr-marker-screen`, `kansasii-mst`, `kansasii-cgmlst` | `screening_map_results.csv` | unchanged |
+| `excluded` (< 90 % good targets) | `immensekansasii/scripts/06_screening_map_results.py` reads `data/imm/ridom-comparison-table.csv` (covers the pool incl. M055) | done 2026-11-16: Ridom good-targets value, 90 % threshold kept; the chewBBACA column `cgmlst_called_pct` is gone |
+| `run_downstream.sh` ran both repos | `immensekansasii/scripts/run_downstream.sh` | done 2026-11-16: `kansasii-mst` and `kansasii-cgmlst` are no longer run; `kansasii-ridom` `submit_export.sbatch` and `submit_all.sbatch` run after the results table |
+| `excluded` read by `kansasii-amr-marker-screen`, `kansasii-ridom`, `kansasii-mic` (and the obsolete `kansasii-mst`, `kansasii-cgmlst`) | `screening_map_results.csv` | unchanged (same 7 isolates) |
 
 ## Where the Ridom results go
 

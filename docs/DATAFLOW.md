@@ -37,8 +37,13 @@ flowchart TD
   RT --> AMR["kansasii-amr-marker-screen"]
   MIC --> AMR
   PIPE --> AMR
-  PIPE --> MST["kansasii-mst"]
-  PIPE --> CG["kansasii-cgmlst"]
+  PIPE --> RX["kansasii-ridom 01: archive for SeqSphere+"]
+  RT --> RX
+  RX --> RID(["Ridom SeqSphere+ (GUI)"])
+  RID --> REXP[("data/imm/ridom-*")]
+  REXP -- "good targets: excluded" --> RES
+  REXP --> RD["kansasii-ridom 02-08: tables for the report"]
+  RT --> RD
   RT --> REP["SAMPLES.md"]
   PIPE --> TREE["kansasii_phylo.nf: snippy per sample, snippy-core over the db, IQ-TREE"]
   TREE --> TT[("kansasii_complex_tree.treefile")]
@@ -51,19 +56,19 @@ flowchart TD
   MLSA -. references .-> MS
 ```
 
-> **Ridom is the source of truth** for cgMLST/MST/clusters ([RIDOM.md](RIDOM.md)). `kansasii-mst` and `kansasii-cgmlst` in the diagram are not used for the report; of their outputs only `sample_qc.tsv` is read. `kansasii-ridom` (archive for Ridom, tables from its exports) is not in the diagram and not in `run_downstream.sh`.
+> **Ridom is the source of truth** for cgMLST/MST/clusters ([RIDOM.md](RIDOM.md)). `excluded` in the results table comes from Ridom's good-targets value (`ridom-comparison-table.csv`). `kansasii-mst` and `kansasii-cgmlst` are obsolete: nothing reads their outputs and `run_downstream.sh` does not run them.
 
 ## Key files
 
 | File | Produced by | Consumed by |
 |---|---|---|
 | `data/imm/screening_map_link.csv` | `immensekansasii/scripts/02_screening_map_link.py` | mic, mlsa, amr, mst, cgmlst |
-| `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | amr (reannot), mlsa sanger_vs_wgs, hsp65-refalign, gyrA-refalign, iTOL, SAMPLES.md, mst, cgmlst (`excluded`) |
+| `data/imm/screening_map_results.csv` | `immensekansasii/scripts/06_screening_map_results.py` | amr (reannot), mlsa sanger_vs_wgs, hsp65-refalign, gyrA-refalign, iTOL, SAMPLES.md, ridom (`excluded`) |
 | `GTDB_REPRESENTATIVES` (`data/gtdb_genomes/.../kansasii_complex_gtdb_representatives/`) | `immensekansasii/scripts/03_run_gtdb_tree.sh` (links of the 7 type-strain genomes) | mlsa `09/10`, hsp65-refalign `01`, sanger-microsynth, cgmlst `00`, amr `03b` (flag `--gtdb-representatives` / `-g`) |
 | `HSP65_AMPLICONS` (`.../kansasii_complex_hsp65_amplicons/`) | `mlsa-kansasii/scripts/06_make_hsp65_references.py` | hsp65-refalign `04/05`, mlsa `submit_hsp65_amplicon_alignment`, sanger-microsynth (flag `--hsp65-amplicons`) |
 | `GYRA_REFERENCES` (`.../kansasii_complex_gyrA/`) | `gyrA-refalign/scripts/01` | gyrA-refalign `02/03` (flag `--gyra-references`) |
 | `GTDB_COMPLEX_GENOMES` (`.../mlsa-kansasii/<species>/`) | `mlsa-kansasii/scripts/02_link_gtdb_kansasii_complex.sh` | mlsa `04/05/08`, gyrA-refalign `01` (flag `--complex-genomes`) |
-| `output/kansasii-cgmlst/results/sample_qc.tsv` | `kansasii-cgmlst/scripts/07_summarise_scheme.py` | results table (`cgmlst_called_pct`, `excluded`) |
+| `data/imm/ridom-comparison-table.csv` | Ridom SeqSphere+ (manual export, `RIDOM.md`) | results table (`excluded`, `ridom_perc_good_targets`, `ridom_genome_size_mb`, `ridom_species`), kansasii-ridom |
 | `output/kansasii-mic/results/{mhk,mgit}/` | `kansasii-mic/submit_mic.sbatch` (`scripts/01_run_analysis.py`) | results table, amr |
 | `output/mlsa-kansasii/results/<program>/` (locus_discovery, sanger_mlsa, sanger_refalign, sanger_vs_wgs, ...) | `mlsa-kansasii` `submit_*.sbatch` (`scripts/04-10`) | results table (`species_sanger_mlsa`/`species_sanger_mlsa_excl`, `species_ref`), sanger-microsynth |
 | `runs/<run>/` | `run_IMMENSE.sh` | results table, amr, mst, cgmlst (reads `runs/mkan329/assembly/results/` directly), hsp65/gyrA-refalign |

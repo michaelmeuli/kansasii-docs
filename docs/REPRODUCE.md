@@ -47,7 +47,7 @@ conda env create -f kansasii-mic/environment.yml                     # env_mic
 conda env create -f mlsa-kansasii/environment.yml                    # env_mlsa
 conda env create -f kansasii-amr-marker-screen/environment.yml       # env_amr
 conda env create -f kansasii-ridom/environment.yml                   # env_ridom
-conda env create -f kansasii-cgmlst/environment.yml                  # env_cgmlst (only for sample_qc.tsv)
+conda env create -f kansasii-cgmlst/environment.yml                  # env_cgmlst (optional: obsolete, not used)
 conda env create -f kansasii-mst/environment.yml                     # env_mst (optional: not used for the report)
 conda env create -f sanger-microsynth/environment.yml                # env_sanger_ms (routine only)
 conda create -n biopython -c conda-forge biopython                   # used by 12_generate_itol_ast.py
@@ -171,16 +171,16 @@ What the chain runs, in dependency order (use this list to rerun a single step b
 | 2 | MIC analysis | `sbatch kansasii-mic/submit_mic.sbatch` |
 | 3 | MLSA inputs | `mlsa-kansasii/scripts/01_download_filter_gtdb.sh`, `02_link_gtdb_kansasii_complex.sh`, `03_link_sanger_kansasii.sh` (env_mlsa) |
 | 4 | MLSA programs | `sbatch mlsa-kansasii/submit_locus_discovery.sbatch`, `submit_locus_discovery_excluded.sbatch`, `scripts/06_make_hsp65_references.py`, `submit_sanger_mlsa.sbatch`, `submit_sanger_mlsa_excluded.sbatch`, `submit_sanger_refalign.sbatch`, `submit_hsp65_amplicon_alignment.sbatch`, `submit_genome_identity_check.sbatch` |
-| 5 | cgMLST per-genome QC | `STEPS=00:01:02:03:04:05:06:07 sbatch --export=ALL kansasii-cgmlst/submit_all.sbatch` (only `sample_qc.tsv` is used) |
+| 5 | Ridom export | by hand in SeqSphere+: `data/imm/ridom-comparison-table.csv` (good targets, feeds `excluded`) and the other `ridom-*` files (`RIDOM.md`) |
 | 6 | **results table** | `python immensekansasii/scripts/06_screening_map_results.py` (env_mic; needs 2, 4, 5) |
 | 7 | validation against the table | `sbatch mlsa-kansasii/submit_sanger_vs_wgs.sbatch`; `sbatch hsp65-refalign/submit_validate.sbatch`, `submit_korean_check.sbatch`, `submit_public.sbatch` (and `... persicum`); `sbatch gyrA-refalign/submit_gyrA.sbatch` |
 | 8 | iTOL, samples report | `bash immensekansasii/scripts/07_generate_itol_species_labels.sh` (reference tree); `python immensekansasii/scripts/12_generate_itol_ast.py` (env `biopython`); `python immensekansasii/scripts/08_mkan329_samples_report.py` (from `immensekansasii/`) |
 | 9 | AMR marker screen | `sbatch kansasii-amr-marker-screen/submit_amr.sbatch`, optional `submit_amr_bam.sbatch` (via `scripts/run_amr_bam.sh prepare/finish`), then `submit_amr_reannot.sbatch` |
 | 10 | overview | `python kansasii-docs/bin/make_atypical_table.py; python kansasii-docs/bin/make_summary.py` (env_mlsa) |
 
-Not in the chain: the pipeline runs (step 4), `kansasii-ridom` (step 6), `sanger-microsynth` (step 8), the NCBI BLAST of `hsp65-refalign/scripts/02_blast_reads.py`
-(sends sequences out). `run_downstream.sh` also submits `kansasii-mst` and `kansasii-cgmlst` steps 08-09
-(jobs `mst` and `cg2`); nothing depends on them and their outputs are not used for the report.
+Not in the chain: the pipeline runs (step 4), Ridom SeqSphere+ itself (GUI), `sanger-microsynth` (step 8), the NCBI BLAST of `hsp65-refalign/scripts/02_blast_reads.py`
+(sends sequences out), and the obsolete `kansasii-mst` and `kansasii-cgmlst`. After the results table `run_downstream.sh` submits
+`kansasii-ridom/submit_export.sbatch` and `submit_all.sbatch` (jobs `ridom_export` and `ridom`).
 
 ## 6. Ridom SeqSphere+ (source of truth for cgMLST, MST and clusters)
 

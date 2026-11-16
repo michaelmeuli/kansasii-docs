@@ -22,8 +22,8 @@ printed as a warning on each run). Isolates flagged in the mkan329 run:
 Only 035 shows a species disagreement; 010, 021, 106 and 113 are flagged but GTDB and
 MetaPhlAn4 agree. hsp65: 021 and 106 are called kansasii (correct), 113 has no usable read, 010 has no hsp65 read.
 
-MIC values are excluded for every isolate with `excluded` = true in `screening_map_results.csv` (contaminated, < 90 % cgMLST
-loci called, or a clinical sample outside the complex; `EXCLUSIONS.md`), plus Mkan329-186 (`MANUAL_EXCLUSIONS` in kansasii-mic,
+MIC values are excluded for every isolate with `excluded` = true in `screening_map_results.csv` (contaminated, < 90 % good cgMLST
+targets in Ridom, or a clinical sample outside the complex; `EXCLUSIONS.md`), plus Mkan329-186 (`MANUAL_EXCLUSIONS` in kansasii-mic,
 'nicht rein'). kansasii-mic drops them before QC. Of these 8 isolates, 7 have MIC data (010, 021, 035, 055, 106, 184, 186;
 `output/kansasii-mic/results/excluded_isolates.csv`, run 2026-11-13); 113 has none.
 
@@ -46,7 +46,7 @@ single colonies. Until then, treat the species of 035 as undetermined (mixed).
 
 ## Species coverage (non-contaminated isolates)
 
-`excluded` (same file) = contaminated, < 90 % of the cgMLST loci called, or a clinical sample outside the complex; it additionally removes Mkan329-055 (chewBBACA 81.5 %, Ridom 79.4 % good targets, persicum) and Mkan329-184 (avium) from the genome-based analyses. The counts below only use `contamination_flag`.
+`excluded` (same file) = contaminated, < 90 % good cgMLST targets in Ridom, or a clinical sample outside the complex; it additionally removes Mkan329-055 (79.4 % good targets, persicum) and Mkan329-184 (avium) from the genome-based analyses. The counts below only use `contamination_flag`.
 
 Counts per species in `screening_map_results.csv` for the mkan329 run, excluding the 5
 isolates with `contamination_flag == contaminated` (010, 021, 035, 106, 113); n = 181.

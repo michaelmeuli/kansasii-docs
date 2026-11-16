@@ -19,6 +19,7 @@ directory, a `MANIFEST.txt`. The path constants are `OUT_*` in `kansasii_paths` 
 | `kansasii-docs` | `atypical_samples/` from `bin/make_atypical_table.py` (`docs/ATYPICAL.md`) |
 | `immensekansasii` | `gtdb/` (GTDB look-ups); `results/{iTOL,screening_map_*,*_Mkan329-035}` (pipeline results, iTOL files, one-off contamination diagnostics for isolate Mkan329-035). The reference-tree run itself stays in `runs/kansasii_complex_gtdb_representatives` |
 | `sanger-microsynth` | `<date>_species_panel`, `report_<date>_<time>.pdf`, `examples_7genomes` (no `results/` level) |
+| `cosmic-seq` | `results/gtdb232/` (accession lists, `unavailable_accessions.txt`), `results/primers/` (check of `primers.tsv` against the handbooks), `results/references/` (`fasta/<amplicon>.fasta`, `amplicons.tsv`, `coverage.tsv`) |
 | `SUMMARY.html` | `kansasii-docs/bin/make_summary.py` (project-wide index, stays at the top) |
 
 Each directory should hold a `MANIFEST.txt` (commit, script, inputs); see

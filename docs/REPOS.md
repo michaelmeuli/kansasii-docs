@@ -12,6 +12,7 @@
 | `kansasii-cgmlst` | chewBBACA cgMLST scheme for the complex + Ridom-style allele MST figures (pairwise deletion); obsolete: not used for the report and nothing reads it (`RIDOM.md`) |
 | `kansasii-ridom` | assembly archive for Ridom SeqSphere+, check of its exports (`data/imm/ridom-*`) and the tables of the final report derived from them |
 | `sanger-microsynth` | routine: fetch Microsynth Sanger results by mail, identify, report |
+| `cosmic-seq` | reference sequences of the mycobacterial Sanger assays: handbook primers (`docs/PRIMERS.md` there) run in silico on the GTDB Mycobacteriaceae species representatives; independent of the kansasii cohort |
 | `kansasii-docs` | project index, data flow, provenance, shared constants (`templates/kansasii_paths.{py,sh}`), `check_sync.sh`, overview and atypical-sample tables |
 
 **Run order:** `WORKFLOW.md`, section "Run order". Scripts carry the number of their

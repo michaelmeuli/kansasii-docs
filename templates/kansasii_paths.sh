@@ -19,6 +19,7 @@ OUT_GYRA=$OUTPUT_ROOT/gyrA-refalign
 OUT_HSP65=$OUTPUT_ROOT/hsp65-refalign
 OUT_IMM=$OUTPUT_ROOT/immensekansasii
 OUT_MICROSYNTH=$OUTPUT_ROOT/sanger-microsynth
+OUT_COSMIC=$OUTPUT_ROOT/cosmic-seq
 MANIFEST_SCRIPT=$REPOS/kansasii-docs/bin/write_manifest.sh
 
 GTDB_DIR=$DATA/gtdb_genomes/Mycobacteriaceae
@@ -35,6 +36,7 @@ ATCC12478_DIR=$NCBI_DATASET/$ATCC12478_ACCESSION
 ATCC12478_FASTA=$ATCC12478_DIR/${ATCC12478_ACCESSION}_ASM15789v2_genomic.fna
 ATCC12478_GFF=$ATCC12478_DIR/genomic.gff
 
+HANDBOOK_DIR=$DATA/Arbeitshandbücher
 IMM_DIR=$DATA/imm
 MIC_CSV=$IMM_DIR/mic.csv
 SCREENING_MAP_LINK=$IMM_DIR/screening_map_link.csv

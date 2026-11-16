@@ -2,6 +2,10 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-16 (new repo cosmic-seq: Sanger reference sequences from the handbook primers)
+- New repo `cosmic-seq`. `scripts/01` follows `immensekansasii/scripts/01_gtdb_mycobacteria_genomes.sh` and fills the same `data/gtdb_genomes/Mycobacteriaceae/` (only missing genomes; 18,613 of 18,624 present, the 11 that NCBI no longer delivers are remembered in `output/cosmic-seq/results/gtdb232/unavailable_accessions.txt`). `scripts/02` checks the curated `primers.tsv` (115 primers, 59 primer pairs of the mycobacterial Sanger assays) against `data/Arbeitshandbücher` and writes `cosmic-seq/docs/PRIMERS.md`; `scripts/03` cuts every amplicon in silico from the 1,812 GTDB species representatives (`output/cosmic-seq/results/references/`).
+- `kansasii_paths.{py,sh}`: new constants `OUT_COSMIC` and `HANDBOOK_DIR` (`data/Arbeitshandbücher`); the vendored copies of all repos updated.
+
 ## 2026-11-16 (`excluded` comes from Ridom, not chewBBACA)
 - `immensekansasii/scripts/06_screening_map_results.py` computes `excluded` from Ridom's good-targets value in `data/imm/ridom-comparison-table.csv` (new constant `RIDOM_COMPARISON` in `kansasii_paths`; flags `--ridom-comparison`, `--min-good-targets-pct`, threshold 90 % as before) instead of `output/kansasii-cgmlst/results/sample_qc.tsv`. The column `cgmlst_called_pct` is removed from `screening_map_results.csv`. `ridom_perc_good_targets`, `ridom_genome_size_mb` and `ridom_species` are now read from the comparison table (182 rows) instead of `ridom-clusters.csv` (181), so Mkan329-055 has them (79.4 %, 5.9 Mb, M. persicum); `ridom_mst_cluster` still comes from `ridom-clusters.csv`.
 - Result: `excluded` is identical on all 186 rows (7 true; Mkan329-055 is the only isolate excluded by coverage, Ridom 79.4 % versus chewBBACA 81.52 %; next lowest in Ridom M082, 90.8 %). No downstream output changes. A complex isolate without a Ridom value is warned about and not excluded by coverage.

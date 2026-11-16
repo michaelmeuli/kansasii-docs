@@ -23,7 +23,7 @@ are decided.
   | Contaminated, CheckM > 5 % (NR 10, 21, 35, 106, 113) | -5 = 176 |
   | NR 184, clinical *M. avium* (`LABEL` empty, not in the complex) | -1 = **175** (the pool) |
 
-  The 3 complex controls (NR 128, 132, 133) stay in. M055 (NR 55, 81.5 % of loci called, CheckM 2.47 %) is in the pool but `excluded`, so the
+  The 3 complex controls (NR 128, 132, 133) stay in. M055 (NR 55, 79.4 % good targets in Ridom, 81.5 % of chewBBACA loci called, CheckM 2.47 %) is in the pool but `excluded`, so the
   `keep` cohort of the distance matrices and MSTs is 174. The archive adds the 7 references: 175 + 7 = 182 (`N_POOL` in `01_export_ridom.py`
   asserts 175). Cross-check: `excluded` has 7 rows (5 contaminated, M055, NR 184); 186 - 5 - 7 = 174 = `keep`.
 - Sample ids in Ridom exports: `Mkan329-081` is `M081`, controls use `LABEL` (`M_kansasii_ATCC_12478`, ...); `ridom_id()` in

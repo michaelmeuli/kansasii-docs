@@ -46,7 +46,7 @@ single colonies. Until then, treat the species of 035 as undetermined (mixed).
 
 ## Species coverage (non-contaminated isolates)
 
-`excluded` (same file) = contaminated, < 90 % of the cgMLST loci called, or a clinical sample outside the complex; it additionally removes Mkan329-055 (81.5 %, persicum) and Mkan329-184 (avium) from the genome-based analyses. The counts below only use `contamination_flag`.
+`excluded` (same file) = contaminated, < 90 % of the cgMLST loci called, or a clinical sample outside the complex; it additionally removes Mkan329-055 (chewBBACA 81.5 %, Ridom 79.4 % good targets, persicum) and Mkan329-184 (avium) from the genome-based analyses. The counts below only use `contamination_flag`.
 
 Counts per species in `screening_map_results.csv` for the mkan329 run, excluding the 5
 isolates with `contamination_flag == contaminated` (010, 021, 035, 106, 113); n = 181.

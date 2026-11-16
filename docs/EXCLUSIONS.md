@@ -15,7 +15,7 @@ outside the complex. Seven isolates:
 | 10 | Mkan329-010 | persicum | contaminated | CheckM 7.67 % |
 | 21 | Mkan329-021 | kansasii | contaminated | CheckM 7.76 % |
 | 35 | Mkan329-035 | kansasii | contaminated | CheckM 113.37 % (diagnosis: `Mkan329-035_contamination.md`) |
-| 55 | Mkan329-055 | persicum | low cgMLST coverage | 81.52 % of loci called (CheckM 2.47 %, not contaminated) |
+| 55 | Mkan329-055 | persicum | low cgMLST coverage | 79.4 % good targets in Ridom (1,117 of 1,407, `ridom-comparison-table.csv`); the flag is still set from the chewBBACA value `cgmlst_called_pct` = 81.52 % (CheckM 2.47 %, not contaminated) |
 | 106 | Mkan329-106 | kansasii | contaminated | CheckM 20.44 % |
 | 113 | Mkan329-113 | persicum | contaminated | CheckM 61.40 % |
 | 184 | Mkan329-184 | avium | not in the *M. kansasii* complex | clinical sample, `LABEL` empty |

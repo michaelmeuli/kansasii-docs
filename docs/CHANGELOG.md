@@ -2,6 +2,10 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-17 (shared constants imported, not repeated)
+- `kansasii_paths.py`: new constant `GTDB_REPRESENTATIVE_GENOMES` (the 7 GTDB representatives, accession -> species, ATCC 12478 first); vendored copies updated.
+- Literal copies of `kansasii_paths` constants replaced with imports: `refalign.py` (mlsa-kansasii, sanger-microsynth, hsp65-refalign, gyrA-refalign: `REPRESENTATIVES`, `ATYPICAL_HSP65`, `SPECIES_ORDER`), `kansasii-ridom/scripts/common.py` (`REFERENCES`), `gyrA-refalign/scripts/05` (`MAP_REF`), `mlsa-kansasii/mlsa/loci.py` (`TYPE_STRAIN`). `kansasii-mic` gets a test that its `SCREENING_MAP_TNR_COLUMNS` equals `TNR_COLUMNS`. Values unchanged, nothing rerun.
+
 ## 2026-11-16 (new repo cosmic-seq: Sanger reference sequences from the handbook primers)
 - New repo `cosmic-seq`. `scripts/01` follows `immensekansasii/scripts/01_gtdb_mycobacteria_genomes.sh` and fills the same `data/gtdb_genomes/Mycobacteriaceae/` (only missing genomes; 18,613 of 18,624 present, the 11 that NCBI no longer delivers are remembered in `output/cosmic-seq/results/gtdb232/unavailable_accessions.txt`). `scripts/02` checks the curated `primers.tsv` (115 primers, 59 primer pairs of the mycobacterial Sanger assays) against `data/Arbeitshandbücher` and writes `cosmic-seq/docs/PRIMERS.md`; `scripts/03` cuts every amplicon in silico from the 1,812 GTDB species representatives (`output/cosmic-seq/results/references/`).
 - `kansasii_paths.{py,sh}`: new constants `OUT_COSMIC` and `HANDBOOK_DIR` (`data/Arbeitshandbücher`); the vendored copies of all repos updated.

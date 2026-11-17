@@ -14,6 +14,11 @@ The repos are independent (each has its own git history and can be cloned alone)
 
 `templates/kansasii_paths.sh` is not copied: shell and sbatch files `source` it from kansasii-docs.
 Change a shared constant in the template and run `bash repos/check_sync.sh --fix`, then commit in each repo.
+Code imports a shared value from its vendored `kansasii_paths` and does not repeat it as a literal: e.g. `refalign.py` takes
+`REPRESENTATIVES`, `ATYPICAL_HSP65` and `SPECIES_ORDER` from `GTDB_REPRESENTATIVE_GENOMES`, `ATYPICAL_HSP65_GENOMES` and `SPECIES`, and
+`kansasii-ridom/scripts/common.py` sets `REFERENCES = GTDB_REPRESENTATIVE_GENOMES`. Exceptions: `kansasii-mic` keeps
+`SCREENING_MAP_TNR_COLUMNS` in its package (a test checks it against `TNR_COLUMNS`); `kansasii-cgmlst` (obsolete) keeps its literal
+`REFERENCES`; the iTOL colour strip of `immensekansasii/scripts/07` has its own palette, not `SPECIES_COLORS`.
 
 ## 2. Vendored analysis code (copies that may differ; keep the matching logic in sync by hand)
 
@@ -24,7 +29,6 @@ Change a shared constant in the template and run `bash repos/check_sync.sh --fix
 | in-silico hsp65 PCR (`in_silico_pcr`, TB-11/TB-12(w)) | `mlsa-kansasii/mlsa/loci.py` + `protocols.py` | `hsp65-refalign/hsp65_refalign/insilico.py` | primers are constants there; mlsa reads them from the lab protocol `.docx` |
 | in-silico PCR, general (`find_sites`, `products`) | `cosmic-seq/cosmic_seq/insilico.py` | none | started from the hsp65-refalign copy, same matching rule (IUPAC, substitutions only, 3 mismatches); returns all products of any primer pair and prefilters. Not kept in sync with the hsp65 copies. |
 | `ridom_id()` (`Mkan329-081` -> `M081`, controls by `LABEL`) | `immensekansasii/scripts/06_screening_map_results.py` | `kansasii-cgmlst/scripts/10_export_ridom.py`, `kansasii-ridom/scripts/common.py` | same rule; change all three together |
-| `REFERENCES` (7 GTDB accessions -> species) | `kansasii-cgmlst/scripts/common.py` | `kansasii-ridom/scripts/common.py` | same list; the ridom copy is the one to change (cgmlst is not used for the report) |
 | `common.load_samples` (QC exclusion rules) | `kansasii-mst/scripts/common.py` | `kansasii-cgmlst/scripts/common.py` | cgmlst keeps complex control strains (NR 128/132/133) and has the `in_pool` column on purpose |
 
 When the alignment or trimming logic changes in `mlsa-kansasii`, apply it to the three copies and rerun their checks

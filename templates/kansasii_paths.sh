@@ -49,6 +49,9 @@ PUBLIC_READS=$ILLUMINA_DIR/public
 ASSEMBLIES=$RUNS/mkan329/assembly/results
 PUBLIC_PROJECTS=(PRJNA1078897 PRJNA1048499 PRJNA845115 PRJNA323639)
 MAX_CHECKM_CONTAMINATION=5.0   # CheckM contamination (%) above which a sample counts as contaminated (see kansasii_paths.py)
+# species order and colours; must equal SPECIES / SPECIES_COLORS of kansasii_paths.py (check_sync.sh compares them)
+SPECIES=(kansasii persicum pseudokansasii innocens attenuatum ostraviense gastri)
+SPECIES_COLORS=(kansasii=#1b9e77 persicum=#d95f02 pseudokansasii=#7570b3 innocens=#e7298a attenuatum=#66a61e ostraviense=#e6ab02 gastri=#a6761d)
 public_assemblies () { echo "$RUNS/public_$1/assembly/results"; }
 
 # External software that is not part of the project (pipeline databases, container cache).

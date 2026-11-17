@@ -2,6 +2,10 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-17 (iTOL species colour strip uses SPECIES_COLORS)
+- `immensekansasii/scripts/07_generate_itol_species_labels.sh` `-m samples` coloured the species with its own palette (kansasii `#4daf4a`, gastri `#1b9e77` = kansasii's colour everywhere else). It now takes them from `SPECIES_COLORS`, new in the shell twin `kansasii_paths.sh` together with `SPECIES`; `check_sync.sh` checks that they equal `kansasii_paths.py`. The complex-level colours (gtdb mode, MTBC/MAC/simiae/other) are unchanged.
+- No output changed: the gtdb-mode strip in `output/immensekansasii/results/iTOL/kansasii_complex_gtdb_representatives/` is byte-identical when rerun, no samples-mode strip had been written, and the `mkan329_patients171` tree figure takes its species ring from `scripts/12`, which already used `SPECIES_COLORS` (all 171 isolates have the same colour in both files).
+
 ## 2026-11-17 (shared constants imported, not repeated)
 - `kansasii_paths.py`: new constant `GTDB_REPRESENTATIVE_GENOMES` (the 7 GTDB representatives, accession -> species, ATCC 12478 first); vendored copies updated.
 - Literal copies of `kansasii_paths` constants replaced with imports: `refalign.py` (mlsa-kansasii, sanger-microsynth, hsp65-refalign, gyrA-refalign: `REPRESENTATIVES`, `ATYPICAL_HSP65`, `SPECIES_ORDER`), `kansasii-ridom/scripts/common.py` (`REFERENCES`), `gyrA-refalign/scripts/05` (`MAP_REF`), `mlsa-kansasii/mlsa/loci.py` (`TYPE_STRAIN`). `kansasii-mic` gets a test that its `SCREENING_MAP_TNR_COLUMNS` equals `TNR_COLUMNS`. Values unchanged, nothing rerun.

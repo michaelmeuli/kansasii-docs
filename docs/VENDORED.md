@@ -18,7 +18,7 @@ Code imports a shared value from its vendored `kansasii_paths` and does not repe
 `REPRESENTATIVES`, `ATYPICAL_HSP65` and `SPECIES_ORDER` from `GTDB_REPRESENTATIVE_GENOMES`, `ATYPICAL_HSP65_GENOMES` and `SPECIES`, and
 `kansasii-ridom/scripts/common.py` sets `REFERENCES = GTDB_REPRESENTATIVE_GENOMES`. Exceptions: `kansasii-mic` keeps
 `SCREENING_MAP_TNR_COLUMNS` in its package (a test checks it against `TNR_COLUMNS`); `kansasii-cgmlst` (obsolete) keeps its literal
-`REFERENCES`; the iTOL colour strip of `immensekansasii/scripts/07` has its own palette, not `SPECIES_COLORS`.
+`REFERENCES`. Shell scripts take `SPECIES` and `SPECIES_COLORS` from `kansasii_paths.sh`; `check_sync.sh` checks that they equal the Python ones.
 
 ## 2. Vendored analysis code (copies that may differ; keep the matching logic in sync by hand)
 

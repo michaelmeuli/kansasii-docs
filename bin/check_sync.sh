@@ -3,7 +3,8 @@
 # Reports: uncommitted changes, unpushed/unpulled commits per local branch,
 # and branches without an upstream. Exit code 1 if anything is out of sync.
 # Also checks that .gitattributes, .vscode/settings.json and the vendored kansasii_paths.py
-# match kansasii-docs/templates/{gitattributes,vscode-settings.json,kansasii_paths.py}, that any vendored
+# match kansasii-docs/templates/{gitattributes,vscode-settings.json,kansasii_paths.py}, that kansasii_paths.sh has the
+# same SPECIES/SPECIES_COLORS as kansasii_paths.py, that any vendored
 # kansasii_cutoffs.py matches its template, that
 # .gitignore holds every line of templates/gitignore, that no tracked file has CRLF and the
 # shared repo layout (README.md, CLAUDE.md, environment.yml, pyproject.toml; sbatch files only
@@ -31,6 +32,14 @@ canon_ignore="$root/kansasii-docs/templates/gitignore"
 ROOT_LITERAL='/shares/sander.imm.uzh/MM/kansasii'
 
 status=0
+# the shell twin templates/kansasii_paths.sh must hold the same SPECIES and SPECIES_COLORS as kansasii_paths.py
+twin_py=$(python3 -c "import sys; sys.path.insert(0, sys.argv[1]); import kansasii_paths as k; \
+print(' '.join(k.SPECIES)); print(' '.join(f'{s}={c}' for s, c in k.SPECIES_COLORS.items()))" "$root/kansasii-docs/templates")
+twin_sh=$(bash -c 'source "$1"; echo "${SPECIES[*]}"; echo "${SPECIES_COLORS[*]}"' _ "$root/kansasii-docs/templates/kansasii_paths.sh")
+if [ "$twin_py" != "$twin_sh" ]; then
+    status=1
+    printf '\033[31mDIFF\033[0m kansasii-docs/templates\n       - kansasii_paths.sh SPECIES/SPECIES_COLORS differ from kansasii_paths.py\n'
+fi
 for gitdir in "$root"/*/.git; do
     [ -e "$gitdir" ] || continue
     repo="$(dirname "$gitdir")"

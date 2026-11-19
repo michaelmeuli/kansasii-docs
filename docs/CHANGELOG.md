@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-19 (rpoB regions of the routine Sanger files documented)
+- New `docs/SANGER_RPOB.md` and `bin/sanger_rpob.py`: file-name rules that separate the NTM species-ID rpoB region (rpoB-2573f/3337r, `rpoBs`/`rpoB-S`, bare `rpoB`) from the Mtb RRDR (TR1/TR2b, `81bp`), the Xpert region (F1/F2/R2) and the 5' region (Tb176); checked against the RRDR sequence in the reads. Documentation only, no data or output changed.
+
 ## 2026-11-19 (lab-number scheme of the routine Sanger files documented)
 - New `docs/SANGER_LABNUMBERS.md` and `bin/sanger_labnumbers.py`: the lab numbers in `data/sanger/seq_mol_routine/` are year + 6-digit yearly counter; 500xxx = tbe, 333xxx-343xxx = tbc (since 2016; 176xxx-185xxx probably before), 186xxx and 316/317xxx separate counters. Documentation only, no data or output changed.
 

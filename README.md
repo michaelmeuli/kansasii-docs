@@ -55,6 +55,7 @@ it after a fresh clone.
 - **Which file feeds which repo (with diagram):** [docs/DATAFLOW.md](docs/DATAFLOW.md).
 - **Ridom as source of truth, exports needed, what `kansasii-mst` and `kansasii-cgmlst` feed:** [docs/RIDOM.md](docs/RIDOM.md).
 - **Which samples are excluded, and why:** [docs/EXCLUSIONS.md](docs/EXCLUSIONS.md).
+- **Ethionamide-resistant Mkan329-054 (ETH 10): no explaining mutation in ethA or genome-wide:** [docs/Mkan329-054.md](docs/Mkan329-054.md).
 - **Samples with an atypical gyrA or hsp65 (project and public):** [docs/ATYPICAL.md](docs/ATYPICAL.md); the table is
   `output/kansasii-docs/results/atypical_samples/atypical_samples.tsv`.
 - **Sequence and literature references of the AMR marker screen (accessions, checksums, BibTeX):** [docs/REFERENCES.md](docs/REFERENCES.md), [docs/references.bib](docs/references.bib).

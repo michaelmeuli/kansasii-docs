@@ -2,6 +2,9 @@
 
 Notable changes to data tables and outputs, newest first.
 
+## 2026-11-19 (lab-number scheme of the routine Sanger files documented)
+- New `docs/SANGER_LABNUMBERS.md` and `bin/sanger_labnumbers.py`: the lab numbers in `data/sanger/seq_mol_routine/` are year + 6-digit yearly counter; 500xxx = tbe, 333xxx-343xxx = tbc (since 2016; 176xxx-185xxx probably before), 186xxx and 316/317xxx separate counters. Documentation only, no data or output changed.
+
 ## 2026-11-17 (iTOL species colour strip uses SPECIES_COLORS)
 - `immensekansasii/scripts/07_generate_itol_species_labels.sh` `-m samples` coloured the species with its own palette (kansasii `#4daf4a`, gastri `#1b9e77` = kansasii's colour everywhere else). It now takes them from `SPECIES_COLORS`, new in the shell twin `kansasii_paths.sh` together with `SPECIES`; `check_sync.sh` checks that they equal `kansasii_paths.py`. The complex-level colours (gtdb mode, MTBC/MAC/simiae/other) are unchanged.
 - No output changed: the gtdb-mode strip in `output/immensekansasii/results/iTOL/kansasii_complex_gtdb_representatives/` is byte-identical when rerun, no samples-mode strip had been written, and the `mkan329_patients171` tree figure takes its species ring from `scripts/12`, which already used `SPECIES_COLORS` (all 171 isolates have the same colour in both files).

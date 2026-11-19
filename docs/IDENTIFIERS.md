@@ -127,7 +127,7 @@ For the one *M. ostraviense* isolate of the cohort the following numbers all ref
 |---|---|---|
 | `Mkan329-181` | `PROBENNUMMER` in `screening_map*.csv`, project sample ID | the project's isolate ID (the project label; `M181` in the Ridom cgMLST table) |
 | `3188826` | `LNR` | lab number, joins to `screening_map_strains.csv` (meaning of the abbreviation not documented here) |
-| `2022500313` | `TNR` / `TNR_JC` | lab number carried by the Sanger hsp65 trace file `2022500313 hsp65_Tb-11.ab1` |
+| `2022500313` | `TNR` / `TNR_JC` | lab number carried by the Sanger hsp65 trace file `2022500313 hsp65_Tb-11.ab1`; year + counter, `500` = tbe, see [SANGER_LABNUMBERS.md](SANGER_LABNUMBERS.md) |
 | `2023187867` | `NGS_JC` | number in the NGS column of the JC table (presumably the one the Illumina data are filed under; not verified) |
 | `GCF_002705925.1` | public | the public ostraviense reference genome (241/15), **not** this isolate |
 

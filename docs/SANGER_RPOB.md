@@ -21,6 +21,22 @@ path for every file). Primer sequences: `cosmic-seq/docs/PRIMERS.md`; lab number
 The `S` in `rpoBs` / `rpoB-S` marks the NTM species-ID assay ("Spezies"); it never means the RRDR.
 "Mtb" names the assay, not the organism: TR1/TR2b is sometimes run on NTM (`M.avium_ATCC_TR1`, tbe lab numbers 500xxx).
 
+### Xpert region (rpoB-F1/F2/R/R2)
+
+Protocol NZM 21 (`21-32.435XX-MTB-Komplex rpob-seq aus MTB-RIF GeneXpert.doc`, scientific NZM folder, not part of the
+accredited MOL handbook; created and released 16.08.2018). The Cepheid Xpert MTB/RIF Ultra cartridge amplifies the rpoB RRDR
+directly from patient material and calls rifampicin resistance from the melting curves of four probes (rpo1–4). A shifted peak
+shows *that* the RRDR is mutated, not *which* mutation. On request of the head of the mycobacteriology lab, the PCR product
+(~35 µl) is drawn from the used cartridge's reaction chamber with a syringe, purified (QIAGEN PCR Purification Kit) and
+Sanger-sequenced with rpoB-F2 and rpoB-R. This gives the exact mutation without a culture.
+
+The primers are those of the Xpert Ultra nested PCR: phase 1 rpoB-F1 + rpoB-R (192 bp; F1 carries one deliberate mismatch to
+Mtb), phase 2 rpoB-F2 + rpoB-R2 (146 bp, only traces); the cartridge mainly holds F2 + rpoB-R (164 bp), which is the product
+sequenced. It is the same RRDR as TR1/TR2b, only shorter and from direct material; a parser that only separates "NTM species ID"
+from "Mtb rifampicin" can merge the two. All 28 files come from three lab numbers sequenced in August 2018, right after the
+protocol was released (2018338854, 2018338876, 2018339379); the assay has not been run since. The reads are ~150–230 bp with the
+RRDR near their ends, which is why only half of them hit the RRDR motifs (see Sequence check).
+
 ## Parser rules
 
 1. **Cut the name down to its marker part.** Remove the extension (`.ab1`, `.seq`, `.fasta`), `_Peaktraced`, the run suffix
